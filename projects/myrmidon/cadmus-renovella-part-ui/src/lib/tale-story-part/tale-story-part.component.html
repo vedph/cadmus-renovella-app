@@ -1,0 +1,365 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Tale Story Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+        <!-- GENERAL -->
+        <mat-tab label="general">
+          <!-- date -->
+          <div>
+            <cadmus-historical-date-editor
+              [date]="date?.value"
+              (dateChange)="onDateChange($event)"
+            ></cadmus-historical-date-editor>
+          </div>
+          <div>
+            <h3>places</h3>
+            <div formArrayName="places">
+              <div>
+                <button
+                  type="button"
+                  mat-icon-button
+                  color="primary"
+                  (click)="addPlace()"
+                >
+                  <mat-icon>add_circle</mat-icon>
+                  add place
+                </button>
+              </div>
+              <div
+                *ngFor="
+                  let item of places.controls;
+                  let i = index;
+                  let first = first;
+                  let last = last
+                "
+              >
+                <!-- child form -->
+                <div [formGroupName]="i">
+                  <!-- child actions -->
+                  {{ i + 1 }}.
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Remove this place"
+                    color="warn"
+                    (click)="removePlace(i)"
+                  >
+                    <mat-icon>remove_circle</mat-icon>
+                  </button>
+                  <button
+                    [disabled]="first"
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Move place up"
+                    (click)="movePlaceUp(i)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    [disabled]="last"
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Move place down"
+                    (click)="movePlaceDown(i)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+
+                  <!-- child controls -->
+                  <!-- type (bound) -->
+                  <mat-form-field
+                    *ngIf="storyPlaceTypeEntries?.length"
+                    style="width: 8em"
+                  >
+                    <mat-select formControlName="type" placeholder="type">
+                      <mat-option
+                        *ngFor="let e of storyPlaceTypeEntries"
+                        [value]="e.id"
+                        >{{ e.value }}</mat-option
+                      >
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        $any(item)['controls'].type.errors?.required &&
+                        ($any(item)['controls'].type.dirty ||
+                          $any(item)['controls'].type.touched)
+                      "
+                      >type required</mat-error
+                    >
+                  </mat-form-field>
+                  <!-- type (free) -->
+                  <mat-form-field
+                    *ngIf="!storyPlaceTypeEntries?.length"
+                    style="width: 8em"
+                  >
+                    <input matInput formControlName="type" placeholder="type" />
+                    <mat-error
+                      *ngIf="
+                        $any(item)['controls'].type.errors?.required &&
+                        ($any(item)['controls'].type.dirty ||
+                          $any(item)['controls'].type.touched)
+                      "
+                      >type required</mat-error
+                    >
+                    <mat-error
+                      *ngIf="
+                        $any(item)['controls'].type.errors?.maxLength &&
+                        ($any(item)['controls'].type.dirty ||
+                          $any(item)['controls'].type.touched)
+                      "
+                      >type too long</mat-error
+                    >
+                  </mat-form-field>
+
+                  <!-- name -->
+                  &nbsp;
+                  <mat-form-field>
+                    <input matInput formControlName="name" placeholder="name" />
+                    <mat-error
+                      *ngIf="
+                        $any(item)['controls'].name.errors?.maxLength &&
+                        ($any(item)['controls'].name.dirty ||
+                          $any(item)['controls'].name.touched)
+                      "
+                      >name too long</mat-error
+                    >
+                  </mat-form-field>
+
+                  <!-- location -->
+                  &nbsp;
+                  <mat-form-field>
+                    <input
+                      matInput
+                      formControlLocation="location"
+                      placeholder="location"
+                    />
+                    <mat-error
+                      *ngIf="
+                        $any(item)['controls'].location.errors?.maxLength &&
+                        ($any(item)['controls'].location.dirty ||
+                          $any(item)['controls'].location.touched)
+                      "
+                      >location too long</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- summary -->
+          <div>
+            <mat-form-field class="long-text">
+              <textarea
+                rows="3"
+                matInput
+                [formControl]="summary"
+                placeholder="summary"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  summary.errors?.required && (summary.dirty || summary.touched)
+                "
+                >summary required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  summary.errors?.maxLength &&
+                  (summary.dirty || summary.touched)
+                "
+                >summary too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <!-- prologue -->
+          <div>
+            <mat-form-field class="long-text">
+              <textarea
+                rows="2"
+                matInput
+                [formControl]="prologue"
+                placeholder="prologue"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  prologue.errors?.maxLength &&
+                  (prologue.dirty || prologue.touched)
+                "
+                >prologue too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <!-- epilogue -->
+          <div>
+            <mat-form-field class="long-text">
+              <textarea
+                rows="2"
+                matInput
+                [formControl]="epilogue"
+                placeholder="epilogue"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  epilogue.errors?.maxLength &&
+                  (epilogue.dirty || epilogue.touched)
+                "
+                >epilogue too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </mat-tab>
+        <!-- CHARACTERS -->
+        <mat-tab label="characters">
+          <div formArrayName="characters">
+            <div>
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                (click)="addCharacter()"
+              >
+                <mat-icon>add_circle</mat-icon>
+                add character
+              </button>
+            </div>
+            <div
+              *ngFor="
+                let item of characters.controls;
+                let i = index;
+                let first = first;
+                let last = last
+              "
+            >
+              <!-- child form -->
+              <div [formGroupName]="i">
+                <!-- child actions -->
+                {{ i + 1 }}.
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Remove this character"
+                  color="warn"
+                  (click)="removeCharacter(i)"
+                >
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <button
+                  [disabled]="first"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move character up"
+                  (click)="moveCharacterUp(i)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  [disabled]="last"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move character down"
+                  (click)="moveCharacterDown(i)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+
+                <!-- child controls -->
+                <!-- role (bound) -->
+                <mat-form-field
+                  *ngIf="storyRoleEntries?.length"
+                  style="width: 8em"
+                >
+                  <mat-select formControlName="role" placeholder="role">
+                    <mat-option
+                      *ngFor="let e of storyRoleEntries"
+                      [value]="e.id"
+                      >{{ e.value }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].role.errors?.required &&
+                      ($any(item)['controls'].role.dirty ||
+                        $any(item)['controls'].role.touched)
+                    "
+                    >role required</mat-error
+                  >
+                </mat-form-field>
+                <!-- role (free) -->
+                <mat-form-field
+                  *ngIf="!storyRoleEntries?.length"
+                  style="width: 8em"
+                >
+                  <input matInput formControlName="role" placeholder="role" />
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].role.errors?.required &&
+                      ($any(item)['controls'].role.dirty ||
+                        $any(item)['controls'].role.touched)
+                    "
+                    >role required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].role.errors?.maxLength &&
+                      ($any(item)['controls'].role.dirty ||
+                        $any(item)['controls'].role.touched)
+                    "
+                    >role too long</mat-error
+                  >
+                </mat-form-field>
+
+                <!-- group -->
+                &nbsp;
+                <mat-checkbox formControlName="isGroup">group</mat-checkbox>
+
+                <!-- name -->
+                &nbsp;
+                <mat-form-field>
+                  <input matInput formControlName="name" placeholder="name" />
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].name.errors?.required &&
+                      ($any(item)['controls'].name.dirty ||
+                        $any(item)['controls'].name.touched)
+                    "
+                    >name required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].name.errors?.maxLength &&
+                      ($any(item)['controls'].name.dirty ||
+                        $any(item)['controls'].name.touched)
+                    "
+                    >name too long</mat-error
+                  >
+                </mat-form-field>
+
+                <!-- sex -->
+                &nbsp;
+                <mat-form-field style="width: 2.5em">
+                  <mat-select formControlName="sex" placeholder="sex">
+                    <mat-option [value]="null">-</mat-option>
+                    <mat-option value="M">M</mat-option>
+                    <mat-option value="F">F</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>

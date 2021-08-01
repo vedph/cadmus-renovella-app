@@ -1,0 +1,44 @@
+<div style="margin: 0 16px">
+  <div class="banner">
+    <img
+      class="banner-img"
+      srcset="
+        ./assets/img/banner-1024.jpg 1024w,
+        ./assets/img/banner-512.jpg   512w
+      "
+      sizes="(max-width: 600px) 512px, 1024px"
+    />
+  </div>
+  <article>
+    <h2>Cadmus Re.Novella</h2>
+    <h3>Cadmus GitHub resources</h3>
+    <ul>
+      <li>
+        <a href="https://github.com/vedph/cadmus_tgr_doc" target="_blank"
+          >Cadmus documentation</a
+        >
+      </li>
+      <li>
+        <a href="https://github.com/vedph/cadmus_renovella" target="_blank"
+          >Core</a
+        >: models specific to the Re.Novella projects.
+      </li>
+      <li>
+        <a href="https://github.com/vedph/cadmus_renovella_api" target="_blank"
+          >Web API</a
+        >: the Re.Novella web API, powering this application.
+      </li>
+      <li>
+        <a href="https://github.com/vedph/cadmus_renovella_app" target="_blank"
+          >Web app</a
+        >: this web application.
+      </li>
+    </ul>
+    <p *ngIf="!logged" style="margin-bottom: 8px">
+      <a mat-mini-fab color="primary" routerLink="/login"
+        ><mat-icon>login</mat-icon></a
+      >
+      <span style="margin-left: 8px">Login (for project editors)</span>
+    </p>
+  </article>
+</div>

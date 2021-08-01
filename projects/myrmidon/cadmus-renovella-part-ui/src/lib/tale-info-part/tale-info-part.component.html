@@ -1,0 +1,257 @@
+<form [formGroup]="form" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Tale Info Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group>
+        <!-- GENERAL -->
+        <mat-tab label="general">
+          <div>
+            <!-- isCollection -->
+            <mat-checkbox [formControl]="isCollection">collection</mat-checkbox>
+            &nbsp;
+            <!-- collectionId -->
+            <mat-form-field *ngIf="isCollection?.value">
+              <input
+                matInput
+                [formControl]="collectionId"
+                placeholder="collection ID"
+              />
+              <mat-error
+                *ngIf="
+                  collectionId.errors?.required &&
+                  (collectionId.dirty || collectionId.touched)
+                "
+                >collection ID required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  collectionId.errors?.maxLength &&
+                  (collectionId.dirty || collectionId.touched)
+                "
+                >collection ID too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div *ngIf="!isCollection?.value">
+            <!-- containerId -->
+            <cadmus-lookup-pin
+              lookupKey="collection"
+              label="container"
+              [initialValue]="initialContainerId"
+              (entryChange)="onContainerEntryChange($event)"
+            ></cadmus-lookup-pin>
+            <!-- ordinal -->
+            &nbsp;
+            <mat-form-field>
+              <input matInput [formControl]="ordinal" placeholder="ordinal" />
+              <mat-error
+                *ngIf="
+                  ordinal.errors?.required && (ordinal.dirty || ordinal.touched)
+                "
+                >ordinal required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  ordinal.errors?.maxLength &&
+                  (ordinal.dirty || ordinal.touched)
+                "
+                >ordinal too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div>
+            <!-- title -->
+            <mat-form-field>
+              <input matInput [formControl]="title" placeholder="title" />
+              <mat-error
+                *ngIf="title.errors?.required && (title.dirty || title.touched)"
+                >title required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  title.errors?.maxLength && (title.dirty || title.touched)
+                "
+                >title too long</mat-error
+              >
+            </mat-form-field>
+            &nbsp;
+            <!-- language (bound) -->
+            <mat-form-field *ngIf="taleLangEntries?.length" style="width: 8em">
+              <mat-select [formControl]="language" placeholder="language">
+                <mat-option *ngFor="let e of taleLangEntries" [value]="e.id">{{
+                  e.value
+                }}</mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  language.errors?.required &&
+                  (language.dirty || language.touched)
+                "
+                >language required</mat-error
+              >
+            </mat-form-field>
+
+            <!-- language (free) -->
+            <mat-form-field *ngIf="!taleLangEntries?.length" style="width: 8em">
+              <input matInput [formControl]="language" placeholder="language" />
+              <mat-error
+                *ngIf="
+                  language.errors?.required &&
+                  (language.dirty || language.touched)
+                "
+                >language required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  language.errors?.maxLength &&
+                  (language.dirty || language.touched)
+                "
+                >language too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div>
+            <!-- place -->
+            <mat-form-field>
+              <input matInput [formControl]="place" placeholder="place" />
+              <mat-error
+                *ngIf="place.errors?.required && (place.dirty || place.touched)"
+                >place required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  place.errors?.maxLength && (place.dirty || place.touched)
+                "
+                >place too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div>
+            <!-- date -->
+            <cadmus-historical-date-editor
+              [date]="date?.value"
+              (dateChange)="onDateChange($event)"
+            ></cadmus-historical-date-editor>
+          </div>
+          <div>
+            <!-- genres -->
+            <cadmus-multi-entry-selector
+              [numbering]="true"
+              [entries]="taleGenreEntries"
+              [selectedIds]="initialGenres"
+              (selectionChange)="onMultiSelectionChange($event)"
+            ></cadmus-multi-entry-selector>
+          </div>
+        </mat-tab>
+
+        <!-- AUTHOR -->
+        <mat-tab label="author">
+          <!-- narrator -->
+          <div>
+            <mat-form-field>
+              <input matInput [formControl]="narrator" placeholder="narrator" />
+              <mat-error
+                *ngIf="
+                  narrator.errors?.maxLength &&
+                  (narrator.dirty || narrator.touched)
+                "
+                >narrator too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <!-- author -->
+          <div>
+            <mat-checkbox [formControl]="hasAuthor">author</mat-checkbox>
+          </div>
+          <cadmus-prosopa-cited-person
+            *ngIf="hasAuthor?.value"
+            [langEntries]="taleLangEntries"
+            [nameTypeEntries]="namePartTypeEntries"
+            [person]="initialAuthor"
+            (personChange)="onAuthorChange($event)"
+          ></cadmus-prosopa-cited-person>
+        </mat-tab>
+
+        <mat-tab label="dedicatee">
+          <div>
+            <mat-checkbox [formControl]="hasDedicatee">dedicatee</mat-checkbox>
+          </div>
+          <cadmus-prosopa-cited-person
+            *ngIf="hasDedicatee?.value"
+            [langEntries]="taleLangEntries"
+            [nameTypeEntries]="namePartTypeEntries"
+            [person]="initialDedicatee"
+            (personChange)="onDedicateeChange($event)"
+          ></cadmus-prosopa-cited-person>
+        </mat-tab>
+
+        <!-- TEXT -->
+        <mat-tab label="text">
+          <!-- rubric -->
+          <div>
+            <mat-form-field class="long-text">
+              <input matInput [formControl]="rubric" placeholder="rubric" />
+              <mat-error
+                *ngIf="
+                  rubric.errors?.maxLength && (rubric.dirty || rubric.touched)
+                "
+                >rubric too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <!-- incipit -->
+          <div>
+            <mat-form-field class="long-text">
+              <textarea
+                rows="2"
+                matInput
+                [formControl]="incipit"
+                placeholder="incipit"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  incipit.errors?.maxLength &&
+                  (incipit.dirty || incipit.touched)
+                "
+                >incipit too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <!-- explicit -->
+          <div>
+            <mat-form-field class="long-text">
+              <textarea
+                rows="2"
+                matInput
+                [formControl]="explicit"
+                placeholder="explicit"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  explicit.errors?.maxLength &&
+                  (explicit.dirty || explicit.touched)
+                "
+                >explicit too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>
