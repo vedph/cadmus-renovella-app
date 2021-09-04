@@ -223,7 +223,7 @@ export class TaleInfoPartComponent
       part.ordinal = 0;
     } else {
       part.containerId = this.containerId.value?.trim();
-      part.ordinal = this.ordinal.value || 0;
+      part.ordinal = +this.ordinal.value || 0;
     }
     part.title = this.title.value?.trim();
     part.language = this.language.value?.trim();

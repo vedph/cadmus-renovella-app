@@ -8,7 +8,7 @@ Quick Docker image build:
 
 1. `npm run build-lib`
 2. `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-renovella-app:1.0.7 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-renovella-app:1.0.8 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
 
 ## Development server
 
