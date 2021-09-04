@@ -218,7 +218,7 @@ export class TaleInfoPartComponent
       };
     }
 
-    if (this.isCollection) {
+    if (this.isCollection.value) {
       part.collectionId = this.collectionId.value?.trim();
       part.ordinal = this.ordinal.value || 0;
     } else {
@@ -252,7 +252,7 @@ export class TaleInfoPartComponent
   }
 
   public onContainerEntryChange(entry: DataPinInfo | null): void {
-    this.containerId.setValue(entry);
+    this.containerId.setValue(entry?.value);
     this.form.markAsDirty();
   }
 
