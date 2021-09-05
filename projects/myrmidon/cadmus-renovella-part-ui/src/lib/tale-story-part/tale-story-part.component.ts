@@ -123,6 +123,7 @@ export class TaleStoryPartComponent
       }
     }
     this.date.setValue(model.date);
+    this.places.clear();
     if (model.places) {
       for (let p of model.places) {
         this.addPlace(p);
