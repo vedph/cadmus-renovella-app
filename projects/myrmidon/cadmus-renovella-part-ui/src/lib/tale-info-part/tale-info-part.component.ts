@@ -133,6 +133,9 @@ export class TaleInfoPartComponent
   }
 
   public ngOnInit(): void {
+    this.isCollection.valueChanges.subscribe(c => {
+      this.form.updateValueAndValidity();
+    });
     this.initEditor();
   }
 
