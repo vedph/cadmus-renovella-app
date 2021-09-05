@@ -15,7 +15,8 @@
             <mat-checkbox [formControl]="isCollection">collection</mat-checkbox>
             &nbsp;
             <!-- collectionId -->
-            <mat-form-field *ngIf="isCollection?.value">
+            <!-- <mat-form-field *ngIf="isCollection?.value"> -->
+            <mat-form-field>
               <input
                 matInput
                 [formControl]="collectionId"
@@ -38,6 +39,7 @@
             </mat-form-field>
           </div>
           <div *ngIf="!isCollection?.value">
+          <!-- <div> -->
             <!-- containerId -->
             <cadmus-lookup-pin
               lookupKey="collection"

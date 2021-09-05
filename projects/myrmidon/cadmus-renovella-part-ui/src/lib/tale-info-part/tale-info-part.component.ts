@@ -95,19 +95,27 @@ export class TaleInfoPartComponent
     this.explicit = formBuilder.control(null, Validators.maxLength(1000));
 
     this.isCollection = formBuilder.control(false);
+    // this.collectionId = formBuilder.control(null, [
+    //   Validators.maxLength(50),
+    //   CadmusValidators.conditionalValidator(() => {
+    //     // collection ID is required when isCollection is true
+    //     return this.isCollection.value;
+    //   }, Validators.required),
+    // ]);
+    // this.containerId = formBuilder.control(null, [
+    //   Validators.maxLength(50),
+    //   CadmusValidators.conditionalValidator(() => {
+    //     // container ID is required when isCollection is false
+    //     return !this.isCollection.value;
+    //   }, Validators.required),
+    // ]);
     this.collectionId = formBuilder.control(null, [
       Validators.maxLength(50),
-      CadmusValidators.conditionalValidator(() => {
-        // collection ID is required when isCollection is true
-        return this.isCollection.value;
-      }, Validators.required),
+      Validators.required,
     ]);
     this.containerId = formBuilder.control(null, [
       Validators.maxLength(50),
-      CadmusValidators.conditionalValidator(() => {
-        // container ID is required when isCollection is false
-        return !this.isCollection.value;
-      }, Validators.required),
+      Validators.required,
     ]);
     this.ordinal = formBuilder.control(0, Validators.min(0));
 
@@ -133,7 +141,14 @@ export class TaleInfoPartComponent
   }
 
   public ngOnInit(): void {
-    this.isCollection.valueChanges.subscribe(c => {
+    this.isCollection.valueChanges.subscribe((coll: boolean | undefined) => {
+      if (coll) {
+        this.collectionId.enable();
+        this.containerId.disable();
+      } else {
+        this.collectionId.disable();
+        this.containerId.enable();
+      }
       this.form.updateValueAndValidity();
     });
     this.initEditor();
@@ -160,7 +175,7 @@ export class TaleInfoPartComponent
     this.hasAuthor.setValue(model.author ? true : false);
     this.author.setValue(model.author);
     this.initialAuthor = model.author;
-    this.hasDedicatee.setValue(model.dedicatee? true : false);
+    this.hasDedicatee.setValue(model.dedicatee ? true : false);
     this.dedicatee.setValue(model.dedicatee);
     this.initialDedicatee = model.dedicatee;
     this.narrator.setValue(model.narrator);
