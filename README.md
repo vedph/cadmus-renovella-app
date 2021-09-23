@@ -8,7 +8,18 @@ Quick Docker image build:
 
 1. `npm run build-lib`
 2. `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-renovella-app:1.0.10 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+3. `docker build . -t vedph2020/cadmus-renovella-app:1.0.11 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+
+## Production
+
+1. build the image as above.
+2. after building the app, change `env.js` in the `dist` folder for this variable:
+
+```js
+window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
+```
+
+3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:1.0.11-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## Development server
 
