@@ -1,5 +1,5 @@
 import { HistoricalDateModel, Part } from '@myrmidon/cadmus-core';
-import { CitedPerson } from '@myrmidon/cadmus-prosopa-cited-person';
+import { CitedPerson } from './cited-persons-part';
 
 /**
  * The tale info part model.
@@ -143,18 +143,15 @@ export const TALE_INFO_PART_SCHEMA = {
             anyOf: [
               {
                 type: 'object',
-                required: ['author', 'work'],
+                required: ['citation', 'work'],
                 properties: {
                   tag: {
                     type: 'string',
                   },
-                  author: {
+                  type: {
                     type: 'string',
                   },
-                  work: {
-                    type: 'string',
-                  },
-                  location: {
+                  citation: {
                     type: 'string',
                   },
                   note: {
@@ -300,18 +297,15 @@ export const TALE_INFO_PART_SCHEMA = {
             anyOf: [
               {
                 type: 'object',
-                required: ['author', 'work'],
+                required: ['citation'],
                 properties: {
                   tag: {
                     type: 'string',
                   },
-                  author: {
+                  type: {
                     type: 'string',
                   },
-                  work: {
-                    type: 'string',
-                  },
-                  location: {
+                  citation: {
                     type: 'string',
                   },
                   note: {

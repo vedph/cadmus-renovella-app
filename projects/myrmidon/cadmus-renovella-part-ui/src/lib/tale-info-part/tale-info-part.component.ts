@@ -12,7 +12,7 @@ import {
 } from '@myrmidon/cadmus-core';
 
 import { TaleInfoPart, TALE_INFO_PART_TYPEID } from '../tale-info-part';
-import { CitedPerson } from '@myrmidon/cadmus-prosopa-cited-person';
+import { CitedPerson } from '../cited-persons-part';
 
 /**
  * TaleInfo editor component.

@@ -171,26 +171,26 @@
           <div>
             <mat-checkbox [formControl]="hasAuthor">author</mat-checkbox>
           </div>
-          <cadmus-prosopa-cited-person
+          <renovella-cited-person
             *ngIf="hasAuthor?.value"
             [langEntries]="taleLangEntries"
             [nameTypeEntries]="namePartTypeEntries"
             [person]="initialAuthor"
             (personChange)="onAuthorChange($event)"
-          ></cadmus-prosopa-cited-person>
+          ></renovella-cited-person>
         </mat-tab>
 
         <mat-tab label="dedicatee">
           <div>
             <mat-checkbox [formControl]="hasDedicatee">dedicatee</mat-checkbox>
           </div>
-          <cadmus-prosopa-cited-person
+          <renovella-cited-person
             *ngIf="hasDedicatee?.value"
             [langEntries]="taleLangEntries"
             [nameTypeEntries]="namePartTypeEntries"
             [person]="initialDedicatee"
             (personChange)="onDedicateeChange($event)"
-          ></cadmus-prosopa-cited-person>
+          ></renovella-cited-person>
         </mat-tab>
 
         <!-- TEXT -->

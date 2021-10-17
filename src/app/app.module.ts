@@ -34,6 +34,7 @@ import {
 import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
+
 import { CadmusRenovellaPartPgModule } from '@myrmidon/cadmus-renovella-part-pg';
 import { CadmusRenovellaPartUiModule } from '@myrmidon/cadmus-renovella-part-ui';
 import { CadmusPartRefsPgModule } from '@myrmidon/cadmus-part-refs-pg';
