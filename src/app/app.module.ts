@@ -39,6 +39,7 @@ import { CadmusRenovellaPartPgModule } from '@myrmidon/cadmus-renovella-part-pg'
 import { CadmusRenovellaPartUiModule } from '@myrmidon/cadmus-renovella-part-ui';
 import { CadmusPartRefsPgModule } from '@myrmidon/cadmus-part-refs-pg';
 import { CadmusPartRefsUiModule } from '@myrmidon/cadmus-part-refs-ui';
+import { CadmusThesaurusUiModule } from '@myrmidon/cadmus-thesaurus-ui';
 
 @NgModule({
   declarations: [
@@ -175,6 +176,7 @@ import { CadmusPartRefsUiModule } from '@myrmidon/cadmus-part-refs-ui';
     CadmusPartRefsPgModule,
     CadmusPartRefsUiModule,
     CadmusUiModule,
+    CadmusThesaurusUiModule
   ],
   providers: [
     EnvServiceProvider,
