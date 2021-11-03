@@ -62,7 +62,7 @@ export class TaleStoryPartComponent
     // form
     this.summary = _formBuilder.control(null, [
       Validators.required,
-      Validators.maxLength(2000),
+      Validators.maxLength(5000),
     ]);
     this.prologue = _formBuilder.control(null, Validators.maxLength(1000));
     this.epilogue = _formBuilder.control(null, Validators.maxLength(1000));
