@@ -5,11 +5,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -19,21 +21,21 @@ import { CadmusRefsDecoratedIdsModule } from '@myrmidon/cadmus-refs-decorated-id
 import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
 import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
 import { CadmusRefsProperNameModule } from '@myrmidon/cadmus-refs-proper-name';
+import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { NgToolsModule } from '@myrmidon/ng-tools';
 
 import { CitedPersonComponent } from './cited-person/cited-person.component';
 import { TaleInfoPartComponent } from './tale-info-part/tale-info-part.component';
 import { TaleStoryPartComponent } from './tale-story-part/tale-story-part.component';
-import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.component';
 
 @NgModule({
   declarations: [
     CitedPersonComponent,
     TaleInfoPartComponent,
     TaleStoryPartComponent,
+    PoeticTextsPartComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +70,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CitedPersonComponent,
     TaleInfoPartComponent,
     TaleStoryPartComponent,
+    PoeticTextsPartComponent
   ],
 })
 export class CadmusRenovellaPartUiModule {}

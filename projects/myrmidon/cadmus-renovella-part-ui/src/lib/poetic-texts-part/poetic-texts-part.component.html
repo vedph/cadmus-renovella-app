@@ -1,0 +1,150 @@
+<form [formGroup]="form!" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Poetic Texts Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="texts">
+        <div>
+          <button
+            type="button"
+            mat-icon-button
+            color="primary"
+            (click)="addText()"
+          >
+            <mat-icon>add_circle</mat-icon>
+            add text
+          </button>
+        </div>
+        <div
+          *ngFor="
+            let item of texts.controls;
+            let i = index;
+            let first = first;
+            let last = last
+          "
+        >
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <!-- child actions -->
+            {{ i + 1 }}.
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Remove this text"
+              color="warn"
+              (click)="removeText(i)"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <button
+              [disabled]="first"
+              mat-icon-button
+              type="button"
+              matTooltip="Move text up"
+              (click)="moveTextUp(i)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              [disabled]="last"
+              mat-icon-button
+              type="button"
+              matTooltip="Move text down"
+              (click)="moveTextDown(i)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+
+            <!-- child controls -->
+            <!-- incipit -->
+            <mat-form-field>
+              <input matInput formControlName="incipit" placeholder="incipit" />
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].incipit.errors?.required &&
+                  ($any(item)['controls'].incipit.dirty ||
+                    $any(item)['controls'].incipit.touched)
+                "
+                >incipit required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  $any(item)['controls'].incipit.errors?.maxLength &&
+                  ($any(item)['controls'].incipit.dirty ||
+                    $any(item)['controls'].incipit.touched)
+                "
+                >incipit too long</mat-error
+              >
+            </mat-form-field>
+            <div style="margin-left: 80px;">
+              <!-- metre (bound) -->
+              <mat-form-field>
+                <mat-select
+                  *ngIf="metreEntries?.length"
+                  formControlName="metre"
+                  placeholder="metre"
+                >
+                  <mat-option *ngFor="let e of metreEntries" [value]="e.id">{{
+                    e.value
+                  }}</mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].metre.errors?.required &&
+                    ($any(item)['controls'].metre.dirty ||
+                      $any(item)['controls'].metre.touched)
+                  "
+                  >metre required</mat-error
+                >
+              </mat-form-field>
+              <!-- metre (free) -->
+              <mat-form-field *ngIf="!metreEntries?.length">
+                <input matInput formControlName="metre" placeholder="metre" />
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].metre.errors?.required &&
+                    ($any(item)['controls'].metre.dirty ||
+                      $any(item)['controls'].metre.touched)
+                  "
+                  >metre required</mat-error
+                >
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].metre.errors?.maxLength &&
+                    ($any(item)['controls'].metre.dirty ||
+                      $any(item)['controls'].metre.touched)
+                  "
+                  >metre too long</mat-error
+                >
+              </mat-form-field>
+              <!-- note -->
+              &nbsp;
+              <mat-form-field>
+                <input matInput formControlName="note" placeholder="note" />
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].note.errors?.maxLength &&
+                    ($any(item)['controls'].note.dirty ||
+                      $any(item)['controls'].note.touched)
+                  "
+                  >note too long</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>
