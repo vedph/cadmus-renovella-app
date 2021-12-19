@@ -1,51 +1,96 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-
-// flex
+// material
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 import { FlexLayoutModule } from '@angular/flex-layout';
-// ngx monaco
-import { MonacoEditorModule } from 'ngx-monaco-editor';
-// ngx markdown
-import { MarkdownModule } from 'ngx-markdown';
-// Akita
+
+// akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+// ngx-monaco
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+// ngx-markdown
+import { MarkdownModule } from 'ngx-markdown';
+// moment
+import { MomentModule } from 'ngx-moment';
 
-import {
-  CadmusCoreModule,
-  PendingChangesGuard,
-} from '@myrmidon/cadmus-core';
-import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-import { CadmusPartGeneralUiModule } from '@myrmidon/cadmus-part-general-ui';
-import { HomeComponent } from './home/home.component';
-import { CadmusMaterialModule } from '@myrmidon/cadmus-material';
-import {
-  AuthInterceptor,
-  AdminGuardService,
-  AuthGuardService,
-  EditorGuardService,
-} from '@myrmidon/cadmus-api';
-import { PART_EDITOR_KEYS } from './part-editor-keys';
-import { ITEM_BROWSER_KEYS } from './item-browser-keys';
-import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
-
+// myrmidon
 import { EnvServiceProvider, NgToolsModule } from '@myrmidon/ng-tools';
-import { CadmusRenovellaPartPgModule } from '@myrmidon/cadmus-renovella-part-pg';
-import { CadmusRenovellaPartUiModule } from '@myrmidon/cadmus-renovella-part-ui';
-import { CadmusPartRefsPgModule } from '@myrmidon/cadmus-part-refs-pg';
-import { CadmusPartRefsUiModule } from '@myrmidon/cadmus-part-refs-ui';
-import { CadmusThesaurusUiModule } from '@myrmidon/cadmus-thesaurus-ui';
 import { NgMatToolsModule } from '@myrmidon/ng-mat-tools';
+import {
+  AuthJwtInterceptor,
+  AuthJwtLoginModule,
+} from '@myrmidon/auth-jwt-login';
+import { AuthJwtAdminModule } from '@myrmidon/auth-jwt-admin';
+
+// cadmus bricks
+import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
+import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
+import { CadmusRefsExternalIdsModule } from '@myrmidon/cadmus-refs-external-ids';
+import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
+
+// cadmus libs
+import { CadmusApiModule } from '@myrmidon/cadmus-api';
+import { CadmusCoreModule } from '@myrmidon/cadmus-core';
+import { CadmusProfileCoreModule } from '@myrmidon/cadmus-profile-core';
+import { CadmusStateModule } from '@myrmidon/cadmus-state';
+import { CadmusUiModule } from '@myrmidon/cadmus-ui';
+import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+
+// locals
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { ManageUsersPageComponent } from './manage-users-page/manage-users-page.component';
+import { RegisterUserPageComponent } from './register-user-page/register-user-page.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PART_EDITOR_KEYS } from './part-editor-keys';
+import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
+import { ITEM_BROWSER_KEYS } from './item-browser-keys';
+import { CadmusRenovellaPartPgModule } from 'projects/myrmidon/cadmus-renovella-part-pg/src/public-api';
+import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-part-ui/src/public-api';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    LoginPageComponent,
+    ManageUsersPageComponent,
+    RegisterUserPageComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,133 +98,66 @@ import { NgMatToolsModule } from '@myrmidon/ng-mat-tools';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(
-      [
-        { path: '', redirectTo: 'home', pathMatch: 'full' },
-        { path: 'home', component: HomeComponent },
-        {
-          path: 'login',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-login').then(
-              (module) => module.CadmusLoginModule
-            ),
-        },
-        {
-          path: 'items',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-item-list').then(
-              (module) => module.CadmusItemListModule
-            ),
-          canActivate: [AuthGuardService],
-        },
-        {
-          path: 'items/:id',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-item-editor').then(
-              (module) => module.CadmusItemEditorModule
-            ),
-          canActivate: [AuthGuardService],
-          canDeactivate: [PendingChangesGuard],
-        },
-        {
-          path: 'items/:iid/general',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-part-general-pg').then(
-              (module) => module.CadmusPartGeneralPgModule
-            ),
-          canActivate: [AuthGuardService],
-        },
-        {
-          path: 'items/:iid/renovella',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-renovella-part-pg').then(
-              (module) => module.CadmusRenovellaPartPgModule
-            ),
-          canActivate: [AuthGuardService],
-        },
-        {
-          path: 'items/:iid/refs',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-part-refs-pg').then(
-              (module) => module.CadmusPartRefsPgModule
-            ),
-          canActivate: [AuthGuardService],
-        },
-        {
-          path: 'thesauri',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-thesaurus-list').then(
-              (module) => module.CadmusThesaurusListModule
-            ),
-          canActivate: [EditorGuardService],
-        },
-        {
-          path: 'thesauri/:id',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-thesaurus-editor').then(
-              (module) => module.CadmusThesaurusEditorModule
-            ),
-          canActivate: [EditorGuardService],
-        },
-        {
-          path: 'admin',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-admin').then(
-              (module) => module.CadmusAdminModule
-            ),
-          canActivate: [AdminGuardService],
-        },
-        {
-          path: 'user',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-user').then(
-              (module) => module.CadmusUserModule
-            ),
-          canActivate: [AuthGuardService],
-        },
-        {
-          path: 'reset-password',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-reset-password').then(
-              (module) => module.CadmusResetPasswordModule
-            ),
-        },
-        {
-          path: 'search',
-          loadChildren: () =>
-            import('@myrmidon/cadmus-item-search').then(
-              (module) => module.CadmusItemSearchModule
-            ),
-          canActivate: [AuthGuardService],
-        },
-        { path: '**', component: HomeComponent },
-      ],
-      {
-        initialNavigation: 'enabled',
-        useHash: true,
-        relativeLinkResolution: 'legacy',
-      }
-    ),
-    // flex
+    AppRoutingModule,
+    // material
+    DragDropModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatToolbarModule,
+    MatTreeModule,
     FlexLayoutModule,
-    // Monaco
+    // akita
+    AkitaNgDevtools.forRoot(),
+    // monaco
     MonacoEditorModule.forRoot(),
     // markdown
     MarkdownModule.forRoot(),
-    // Akita
-    AkitaNgDevtools.forRoot(),
-    // Cadmus
+    // moment
+    MomentModule,
+    // myrmidon
     NgToolsModule,
     NgMatToolsModule,
+    AuthJwtLoginModule,
+    AuthJwtAdminModule,
+    // cadmus bricks
+    CadmusRefsDocReferencesModule,
+    CadmusRefsHistoricalDateModule,
+    CadmusRefsExternalIdsModule,
+    CadmusUiFlagsPickerModule,
+    // cadmus
+    CadmusApiModule,
     CadmusCoreModule,
-    CadmusMaterialModule,
-    CadmusPartGeneralUiModule,
+    CadmusProfileCoreModule,
+    CadmusStateModule,
+    CadmusUiModule,
+    CadmusUiPgModule,
     CadmusRenovellaPartPgModule,
     CadmusRenovellaPartUiModule,
-    CadmusPartRefsPgModule,
-    CadmusPartRefsUiModule,
-    CadmusUiModule,
-    CadmusThesaurusUiModule
   ],
   providers: [
     EnvServiceProvider,
@@ -205,7 +183,7 @@ import { NgMatToolsModule } from '@myrmidon/ng-mat-tools';
     // https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: AuthJwtInterceptor,
       multi: true,
     },
   ],

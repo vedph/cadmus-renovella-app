@@ -9,13 +9,11 @@ import {
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
-import {
-  ThesaurusEntry,
-  CadmusValidators,
-  HistoricalDateModel,
-} from '@myrmidon/cadmus-core';
+import { ThesaurusEntry, CadmusValidators } from '@myrmidon/cadmus-core';
+import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 
 import {
   StoryCharacter,
@@ -23,7 +21,6 @@ import {
   TaleStoryPart,
   TALE_STORY_PART_TYPEID,
 } from '../tale-story-part';
-import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Tale story editor component.
@@ -55,7 +52,7 @@ export class TaleStoryPartComponent
   // story-ages
   public storyAgeEntries: ThesaurusEntry[] | undefined;
 
-  constructor(authService: AuthService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
     super(authService);
     this._charSubs = [];
     this._placeSubs = [];

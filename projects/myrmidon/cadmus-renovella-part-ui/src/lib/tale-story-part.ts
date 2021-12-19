@@ -1,4 +1,5 @@
-import { HistoricalDateModel, Part } from '@myrmidon/cadmus-core';
+import { Part } from "@myrmidon/cadmus-core";
+import { HistoricalDateModel } from "@myrmidon/cadmus-refs-historical-date";
 
 /**
  * A character in a story.

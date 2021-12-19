@@ -2,17 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { AuthService } from '@myrmidon/cadmus-api';
 import {
   ThesaurusEntry,
   CadmusValidators,
   DataPinInfo,
-  HistoricalDateModel,
 } from '@myrmidon/cadmus-core';
+
+import { deepCopy } from '@myrmidon/ng-tools';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 
 import { TaleInfoPart, TALE_INFO_PART_TYPEID } from '../tale-info-part';
 import { CitedPerson } from '../cited-persons-part';
-import { deepCopy } from '@myrmidon/ng-tools';
+import { Flag } from '@myrmidon/cadmus-ui-flags-picker';
 
 /**
  * TaleInfo editor component.
@@ -60,9 +62,12 @@ export class TaleInfoPartComponent
   // name-part-types
   public namePartTypeEntries: ThesaurusEntry[] | undefined;
 
-  constructor(authService: AuthService, formBuilder: FormBuilder) {
+  public availGenreFlags: Flag[];
+
+  constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
     super(authService);
     this.initialGenres = [];
+    this.availGenreFlags = [];
     // form
     this.title = formBuilder.control(null, [
       Validators.required,
@@ -193,8 +198,15 @@ export class TaleInfoPartComponent
     let key = 'tale-genres';
     if (this.thesauri && this.thesauri[key]) {
       this.taleGenreEntries = this.thesauri[key].entries;
+      this.availGenreFlags = this.taleGenreEntries!.map((e) => {
+        return {
+          id: e.id,
+          label: e.value,
+        };
+      });
     } else {
       this.taleGenreEntries = undefined;
+      this.availGenreFlags = [];
     }
 
     key = 'name-part-type-entries';
@@ -266,7 +278,7 @@ export class TaleInfoPartComponent
     this.date.setValue(date);
   }
 
-  public onMultiSelectionChange(selectedIds: string[]): void {
+  public onFlagsChange(selectedIds: string[]): void {
     this.genres.setValue(selectedIds);
   }
 
