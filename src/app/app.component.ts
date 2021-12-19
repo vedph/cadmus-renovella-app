@@ -29,12 +29,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this._authService.currentUserValue;
+    this.user = this._authService.currentUserValue || undefined;
     this.logged = this.user !== null;
 
-    this._authService.currentUser$.subscribe((user: User) => {
+    this._authService.currentUser$.subscribe((user: User | null) => {
       this.logged = this._authService.isAuthenticated(true);
-      this.user = user;
+      this.user = user || undefined;
       // load the general app state just once
       if (user) {
         this._appService.load();
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
 
     this._appQuery
       .selectItemBrowserThesaurus()
-      .subscribe((thesaurus: Thesaurus) => {
+      .subscribe((thesaurus: Thesaurus | undefined) => {
         this.itemBrowsers = thesaurus ? thesaurus.entries : null;
       });
   }

@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreConfig, Store } from '@datorama/akita';
 
-import {
-  EditPartState,
-  EditPartStoreApi,
-  editPartInitialState,
-} from '@myrmidon/cadmus-state';
+import { EditPartState, EditPartStoreApi } from '@myrmidon/cadmus-state';
 
 import { TALE_STORY_PART_TYPEID } from '@myrmidon/cadmus-renovella-part-ui';
 
@@ -16,7 +12,7 @@ export class EditTaleStoryPartStore
   implements EditPartStoreApi
 {
   constructor() {
-    super(editPartInitialState);
+    super({});
   }
 
   public setDirty(value: boolean): void {

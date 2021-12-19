@@ -13,7 +13,6 @@ import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
 import {
   ThesaurusEntry,
-  deepCopy,
   CadmusValidators,
   HistoricalDateModel,
 } from '@myrmidon/cadmus-core';
@@ -24,6 +23,7 @@ import {
   TaleStoryPart,
   TALE_STORY_PART_TYPEID,
 } from '../tale-story-part';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * Tale story editor component.
@@ -110,7 +110,7 @@ export class TaleStoryPartComponent
     this.unsubscribeChars();
     this.unsubscribePlaces();
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       return;
     }
     this.summary.setValue(model.summary);
@@ -130,7 +130,7 @@ export class TaleStoryPartComponent
       }
     }
 
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: TaleStoryPart): void {
@@ -164,7 +164,7 @@ export class TaleStoryPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId!,
         id: '',
         typeId: TALE_STORY_PART_TYPEID,
         roleId: this.roleId,
@@ -189,7 +189,7 @@ export class TaleStoryPartComponent
 
   public onDateChange(date: HistoricalDateModel): void {
     this.date.setValue(date);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   //#region Characters
@@ -215,7 +215,7 @@ export class TaleStoryPartComponent
     const g = this.getCharacterGroup(character);
     this._charSubs.push(
       g.valueChanges.pipe(debounceTime(300)).subscribe((_) => {
-        this.form.markAsDirty();
+        this.form?.markAsDirty();
       })
     );
     this.characters.push(g);
@@ -297,7 +297,7 @@ export class TaleStoryPartComponent
     const g = this.getPlaceGroup(place);
     this._placeSubs.push(
       g.valueChanges.pipe(debounceTime(300)).subscribe((_) => {
-        this.form.markAsDirty();
+        this.form?.markAsDirty();
       })
     );
     this.places.push(g);

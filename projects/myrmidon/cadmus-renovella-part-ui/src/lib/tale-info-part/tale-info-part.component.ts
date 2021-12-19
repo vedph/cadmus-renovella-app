@@ -5,7 +5,6 @@ import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { AuthService } from '@myrmidon/cadmus-api';
 import {
   ThesaurusEntry,
-  deepCopy,
   CadmusValidators,
   DataPinInfo,
   HistoricalDateModel,
@@ -13,6 +12,7 @@ import {
 
 import { TaleInfoPart, TALE_INFO_PART_TYPEID } from '../tale-info-part';
 import { CitedPerson } from '../cited-persons-part';
+import { deepCopy } from '@myrmidon/ng-tools';
 
 /**
  * TaleInfo editor component.
@@ -149,14 +149,14 @@ export class TaleInfoPartComponent
         this.collectionId.disable();
         this.containerId.enable();
       }
-      this.form.updateValueAndValidity();
+      this.form?.updateValueAndValidity();
     });
     this.initEditor();
   }
 
   private updateForm(model: TaleInfoPart): void {
     if (!model) {
-      this.form.reset();
+      this.form?.reset();
       this.initialGenres = [];
       this.initialContainerId = undefined;
       return;
@@ -182,7 +182,7 @@ export class TaleInfoPartComponent
     this.rubric.setValue(model.rubric);
     this.incipit.setValue(model.incipit);
     this.explicit.setValue(model.explicit);
-    this.form.markAsPristine();
+    this.form?.markAsPristine();
   }
 
   protected onModelSet(model: TaleInfoPart): void {
@@ -216,7 +216,7 @@ export class TaleInfoPartComponent
     let part = this.model;
     if (!part) {
       part = {
-        itemId: this.itemId,
+        itemId: this.itemId!,
         id: '',
         typeId: TALE_INFO_PART_TYPEID,
         roleId: this.roleId,
@@ -272,7 +272,7 @@ export class TaleInfoPartComponent
 
   public onContainerEntryChange(entry: DataPinInfo | null): void {
     this.containerId.setValue(entry?.value);
-    this.form.markAsDirty();
+    this.form?.markAsDirty();
   }
 
   public onAuthorChange(person: CitedPerson): void {

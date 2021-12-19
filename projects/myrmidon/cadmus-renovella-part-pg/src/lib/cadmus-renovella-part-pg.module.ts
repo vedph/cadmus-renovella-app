@@ -12,6 +12,7 @@ import {
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+import { NgToolsModule } from '@myrmidon/ng-tools';
 
 import { TaleInfoPartFeatureComponent } from './tale-info-part-feature/tale-info-part-feature.component';
 import { TaleStoryPartFeatureComponent } from './tale-story-part-feature/tale-story-part-feature.component';
@@ -40,6 +41,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     ReactiveFormsModule,
     RouterModuleForChild,
     // cadmus
+    NgToolsModule,
     CadmusCoreModule,
     CadmusMaterialModule,
     CadmusStateModule,

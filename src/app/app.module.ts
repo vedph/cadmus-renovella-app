@@ -19,7 +19,6 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import {
   CadmusCoreModule,
   PendingChangesGuard,
-  EnvServiceProvider,
 } from '@myrmidon/cadmus-core';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusPartGeneralUiModule } from '@myrmidon/cadmus-part-general-ui';
@@ -35,11 +34,13 @@ import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 
+import { EnvServiceProvider, NgToolsModule } from '@myrmidon/ng-tools';
 import { CadmusRenovellaPartPgModule } from '@myrmidon/cadmus-renovella-part-pg';
 import { CadmusRenovellaPartUiModule } from '@myrmidon/cadmus-renovella-part-ui';
 import { CadmusPartRefsPgModule } from '@myrmidon/cadmus-part-refs-pg';
 import { CadmusPartRefsUiModule } from '@myrmidon/cadmus-part-refs-ui';
 import { CadmusThesaurusUiModule } from '@myrmidon/cadmus-thesaurus-ui';
+import { NgMatToolsModule } from '@myrmidon/ng-mat-tools';
 
 @NgModule({
   declarations: [
@@ -168,6 +169,8 @@ import { CadmusThesaurusUiModule } from '@myrmidon/cadmus-thesaurus-ui';
     // Akita
     AkitaNgDevtools.forRoot(),
     // Cadmus
+    NgToolsModule,
+    NgMatToolsModule,
     CadmusCoreModule,
     CadmusMaterialModule,
     CadmusPartGeneralUiModule,

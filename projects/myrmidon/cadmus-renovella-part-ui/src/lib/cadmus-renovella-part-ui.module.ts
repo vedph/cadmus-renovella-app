@@ -8,6 +8,7 @@ import { CadmusRefsDecoratedIdsModule } from '@myrmidon/cadmus-refs-decorated-id
 import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
 import { CadmusRefsProperNameModule } from '@myrmidon/cadmus-refs-proper-name';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
+import { NgToolsModule } from '@myrmidon/ng-tools';
 
 import { CitedPersonComponent } from './cited-person/cited-person.component';
 import { TaleInfoPartComponent } from './tale-info-part/tale-info-part.component';
@@ -24,6 +25,7 @@ import { TaleStoryPartComponent } from './tale-story-part/tale-story-part.compon
     FormsModule,
     ReactiveFormsModule,
     // Cadmus
+    NgToolsModule,
     CadmusCoreModule,
     CadmusUiModule,
     CadmusMaterialModule,
