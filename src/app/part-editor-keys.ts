@@ -8,6 +8,7 @@ import {
 import { PartEditorKeys } from '@myrmidon/cadmus-core';
 import '@myrmidon/cadmus-renovella-part-ui';
 import {
+  POETIC_TEXTS_PART_TYPEID,
   TALE_INFO_PART_TYPEID,
   TALE_STORY_PART_TYPEID,
 } from '@myrmidon/cadmus-renovella-part-ui';
@@ -46,9 +47,12 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   [TALE_STORY_PART_TYPEID]: {
     part: RENOVELLA,
   },
+  [POETIC_TEXTS_PART_TYPEID]: {
+    part: RENOVELLA,
+  },
   [EXTERNAL_IDS_PART_TYPEID]: {
-    part: REFS
-  }
+    part: REFS,
+  },
   // layer parts
   // [TOKEN_TEXT_LAYER_PART_TYPEID]: {
   //   part: GENERAL,
