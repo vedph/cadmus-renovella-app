@@ -19,10 +19,10 @@ Quick Docker image build:
 window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 ```
 
-3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:1.0.11-prod`. The production version is labeled like this one, with `-prod` suffix.
+3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:1.2.0-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## History
 
+- 2022-02-14: upgraded to Angular 13.2.2 and generated production image `1.2.0-prod`.
 - 2021-11-11: upgraded to Angular 13.
-
 - 2021-10-17: replaced `DocReference` and `PersonName` (now `ProperName`) with models from bricks. `CitedPerson` is now a submodel of this project so that it does no more depends on Itinera. This is a breaking change. See the [core](https://github.com/vedph/cadmus-renovella) repository for more.
