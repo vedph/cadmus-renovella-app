@@ -6,9 +6,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Quick Docker image build:
 
-1. `npm run build-lib`
-2. `ng build --configuration production`
-3. `docker build . -t vedph2020/cadmus-renovella-app:1.2.0 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+1. update version number in `env.js`.
+2. `npm run build-lib`
+3. `ng build --configuration production`
+4. `docker build . -t vedph2020/cadmus-renovella-app:1.2.1 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
 
 ## Production
 
@@ -19,9 +20,16 @@ Quick Docker image build:
 window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 ```
 
-3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:1.2.0-prod`. The production version is labeled like this one, with `-prod` suffix.
+3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:1.2.1-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## History
+
+### 1.2.1
+
+- 2022-02-16: updated packages (misaligned external IDs).
+- 2022-02-16: updated `@myrmidon/cadmus-part-refs-ui` and `@myrmidon/cadmus-part-refs-pg`.
+
+### 1.2.0
 
 - 2022-02-14: upgraded to Angular 13.2.2 and generated production image `1.2.0-prod`.
 - 2021-11-11: upgraded to Angular 13.
