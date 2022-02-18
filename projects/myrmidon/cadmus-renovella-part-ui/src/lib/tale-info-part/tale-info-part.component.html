@@ -195,6 +195,23 @@
 
         <!-- TEXT -->
         <mat-tab label="text">
+          <!-- structure -->
+          <div>
+            <mat-form-field class="long-text">
+              <input
+                matInput
+                [formControl]="structure"
+                placeholder="structure"
+              />
+              <mat-error
+                *ngIf="
+                  structure.errors?.maxLength &&
+                  (structure.dirty || structure.touched)
+                "
+                >structure too long</mat-error
+              >
+            </mat-form-field>
+          </div>
           <!-- rubric -->
           <div>
             <mat-form-field class="long-text">

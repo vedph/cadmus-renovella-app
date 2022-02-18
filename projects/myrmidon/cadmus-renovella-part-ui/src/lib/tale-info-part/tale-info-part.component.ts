@@ -42,6 +42,7 @@ export class TaleInfoPartComponent
   public author: FormControl;
   public hasDedicatee: FormControl;
   public dedicatee: FormControl;
+  public structure: FormControl;
   public narrator: FormControl;
   public place: FormControl;
   public date: FormControl;
@@ -89,6 +90,7 @@ export class TaleInfoPartComponent
 
     this.hasAuthor = formBuilder.control(false);
     this.author = formBuilder.control(null);
+    this.structure = formBuilder.control(null, Validators.maxLength(1000));
 
     this.hasDedicatee = formBuilder.control(false);
     this.dedicatee = formBuilder.control(null);
@@ -136,6 +138,7 @@ export class TaleInfoPartComponent
       genres: this.genres,
       hasAuthor: this.hasAuthor,
       author: this.author,
+      structure: this.structure,
       hasDedicatee: this.hasDedicatee,
       dedicatee: this.dedicatee,
       narrator: this.narrator,
@@ -180,6 +183,7 @@ export class TaleInfoPartComponent
     this.hasAuthor.setValue(model.author ? true : false);
     this.author.setValue(model.author);
     this.initialAuthor = model.author;
+    this.structure.setValue(model.structure);
     this.hasDedicatee.setValue(model.dedicatee ? true : false);
     this.dedicatee.setValue(model.dedicatee);
     this.initialDedicatee = model.dedicatee;
@@ -261,6 +265,7 @@ export class TaleInfoPartComponent
     if (this.hasAuthor.value) {
       part.author = this.author.value;
     }
+    part.structure = this.structure.value?.trim();
     if (this.hasDedicatee.value) {
       part.dedicatee = this.dedicatee.value;
     }

@@ -11,6 +11,7 @@ export interface TaleInfoPart extends Part {
   ordinal?: number;
   title: string;
   author?: CitedPerson;
+  structure?: string;
   dedicatee?: CitedPerson;
   place: string;
   date: HistoricalDateModel;
@@ -246,6 +247,9 @@ export const TALE_INFO_PART_SCHEMA = {
           },
         ],
       },
+    },
+    structure: {
+      type: 'string'
     },
     dedicatee: {
       type: 'object',
