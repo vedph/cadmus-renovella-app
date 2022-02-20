@@ -28,6 +28,7 @@ export interface TaleStoryPart extends Part {
   prologue?: string;
   epilogue?: string;
   characters: StoryCharacter[];
+  age?: string;
   date?: HistoricalDateModel;
   places: StoryPlace[];
 }
@@ -57,7 +58,6 @@ export const TaleStory_PART_SCHEMA = {
     'userId',
     'summary',
     'characters',
-    'date',
     'places',
   ],
   properties: {
@@ -124,6 +124,9 @@ export const TaleStory_PART_SCHEMA = {
           },
         ],
       },
+    },
+    age: {
+      type: 'string'
     },
     date: {
       type: 'object',

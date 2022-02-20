@@ -41,6 +41,8 @@ export class TaleStoryPartComponent
   public summary: FormControl;
   public prologue: FormControl;
   public epilogue: FormControl;
+  public age: FormControl;
+  public hasDate: FormControl;
   public date: FormControl;
   public places: FormArray;
   public characters: FormArray;
@@ -67,6 +69,8 @@ export class TaleStoryPartComponent
       [],
       CadmusValidators.strictMinLengthValidator(1)
     );
+    this.age = _formBuilder.control(null);
+    this.hasDate = _formBuilder.control(false);
     this.date = _formBuilder.control(null, Validators.required);
     this.places = _formBuilder.array(
       [],
@@ -77,6 +81,8 @@ export class TaleStoryPartComponent
       prologue: this.prologue,
       epilogue: this.epilogue,
       characters: this.characters,
+      age: this.age,
+      hasDate: this.hasDate,
       date: this.date,
       places: this.places,
     });
@@ -119,6 +125,8 @@ export class TaleStoryPartComponent
         this.addCharacter(c);
       }
     }
+    this.age.setValue(model.age);
+    this.hasDate.setValue(model.date ? true : false);
     this.date.setValue(model.date);
     this.places.clear();
     if (model.places) {
@@ -178,7 +186,8 @@ export class TaleStoryPartComponent
     part.prologue = this.prologue.value?.trim();
     part.epilogue = this.epilogue.value?.trim();
     part.characters = this.getCharacters();
-    part.date = this.date.value;
+    part.age = this.age.value?.trim();
+    part.date = this.hasDate.value ? this.date.value : undefined;
     part.places = this.getPlaces();
 
     return part;

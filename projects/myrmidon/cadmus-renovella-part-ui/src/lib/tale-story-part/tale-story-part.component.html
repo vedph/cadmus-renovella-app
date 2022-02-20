@@ -10,13 +10,46 @@
       <mat-tab-group>
         <!-- GENERAL -->
         <mat-tab label="general">
+          <div>
+            <!-- age (bound) -->
+            <mat-form-field *ngIf="storyAgeEntries?.length">
+              <mat-select [formControl]="age" placeholder="age">
+                <mat-option *ngFor="let e of storyAgeEntries" [value]="e.id">{{
+                  e.value
+                }}</mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="$any(age).errors?.required && (age.dirty || age.touched)"
+                >age required</mat-error
+              >
+            </mat-form-field>
+            <!-- age (free) -->
+            <mat-form-field *ngIf="!storyAgeEntries?.length">
+              <input matInput [formControl]="age" placeholder="age" />
+              <mat-error
+                *ngIf="$any(age).errors?.required && (age.dirty || age.touched)"
+                >age required</mat-error
+              >
+              <mat-error
+                *ngIf="
+                  $any(age).errors?.maxLength && (age.dirty || age.touched)
+                "
+                >age too long</mat-error
+              >
+            </mat-form-field>
+          </div>
+
           <!-- date -->
           <div>
+            <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
             <cadmus-refs-historical-date
+              *ngIf="hasDate?.value"
               [date]="date?.value"
               (dateChange)="onDateChange($event)"
             ></cadmus-refs-historical-date>
           </div>
+
+          <!-- places -->
           <div>
             <h3>places</h3>
             <div formArrayName="places">

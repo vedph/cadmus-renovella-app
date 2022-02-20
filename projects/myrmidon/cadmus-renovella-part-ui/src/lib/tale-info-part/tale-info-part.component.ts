@@ -90,7 +90,7 @@ export class TaleInfoPartComponent
 
     this.hasAuthor = formBuilder.control(false);
     this.author = formBuilder.control(null);
-    this.structure = formBuilder.control(null, Validators.maxLength(1000));
+    this.structure = formBuilder.control(null, Validators.maxLength(3000));
 
     this.hasDedicatee = formBuilder.control(false);
     this.dedicatee = formBuilder.control(null);
