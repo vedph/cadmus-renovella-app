@@ -82,7 +82,7 @@
             </mat-form-field>
             <div style="margin-left: 80px;">
               <!-- metre (bound) -->
-              <mat-form-field>
+              <mat-form-field *ngIf="metreEntries?.length">
                 <mat-select
                   *ngIf="metreEntries?.length"
                   formControlName="metre"
