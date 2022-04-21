@@ -113,7 +113,7 @@ export class CitedPersonComponent implements OnInit {
     } else {
       this.language.setValue(model.name?.language);
       this.tag.setValue(model.name?.tag);
-      this.rank.setValue(model.rank);
+      this.rank.setValue(model.rank || 0);
       this.parts.clear();
       for (const p of model.name?.pieces || []) {
         this.addPart(p);
@@ -143,7 +143,7 @@ export class CitedPersonComponent implements OnInit {
   private getPerson(): CitedPerson {
     return {
       name: this.getName(),
-      rank: this.rank.value,
+      rank: +(this.rank.value || 0),
       ids: this.ids.value?.length ? this.ids.value : undefined,
       sources: this.sources.value?.length ? this.sources.value : undefined,
     };
@@ -201,7 +201,8 @@ export class CitedPersonComponent implements OnInit {
 
   public onSourcesChange(sources: DocReference[]): void {
     this.sources.setValue(sources);
-    this.form.markAsDirty();
+    this.sources.updateValueAndValidity();
+    this.sources.markAsDirty();
   }
 
   public cancel(): void {

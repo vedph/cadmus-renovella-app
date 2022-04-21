@@ -102,20 +102,6 @@ export class TaleInfoPartComponent
     this.explicit = formBuilder.control(null, Validators.maxLength(1000));
 
     this.isCollection = formBuilder.control(false);
-    // this.collectionId = formBuilder.control(null, [
-    //   Validators.maxLength(50),
-    //   CadmusValidators.conditionalValidator(() => {
-    //     // collection ID is required when isCollection is true
-    //     return this.isCollection.value;
-    //   }, Validators.required),
-    // ]);
-    // this.containerId = formBuilder.control(null, [
-    //   Validators.maxLength(50),
-    //   CadmusValidators.conditionalValidator(() => {
-    //     // container ID is required when isCollection is false
-    //     return !this.isCollection.value;
-    //   }, Validators.required),
-    // ]);
     this.collectionId = formBuilder.control(null, [
       Validators.maxLength(50),
       Validators.required,
@@ -281,22 +267,31 @@ export class TaleInfoPartComponent
 
   public onDateChange(date: HistoricalDateModel): void {
     this.date.setValue(date);
+    this.date.updateValueAndValidity();
+    this.date.markAsDirty();
   }
 
   public onFlagsChange(selectedIds: string[]): void {
     this.genres.setValue(selectedIds);
+    this.genres.updateValueAndValidity();
+    this.genres.markAsDirty();
   }
 
   public onContainerEntryChange(entry: DataPinInfo | null): void {
     this.containerId.setValue(entry?.value);
-    this.form?.markAsDirty();
+    this.containerId.updateValueAndValidity();
+    this.containerId.markAsDirty();
   }
 
   public onAuthorChange(person: CitedPerson): void {
     this.author.setValue(person);
+    this.author.updateValueAndValidity();
+    this.author.markAsDirty();
   }
 
   public onDedicateeChange(person: CitedPerson): void {
     this.dedicatee.setValue(person);
+    this.dedicatee.updateValueAndValidity();
+    this.dedicatee.markAsDirty();
   }
 }

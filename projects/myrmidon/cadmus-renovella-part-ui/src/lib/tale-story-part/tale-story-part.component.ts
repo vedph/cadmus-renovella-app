@@ -195,7 +195,8 @@ export class TaleStoryPartComponent
 
   public onDateChange(date: HistoricalDateModel): void {
     this.date.setValue(date);
-    this.form?.markAsDirty();
+    this.date.updateValueAndValidity();
+    this.date.markAsDirty();
   }
 
   //#region Characters
@@ -225,8 +226,8 @@ export class TaleStoryPartComponent
       })
     );
     this.characters.push(g);
-    this.characters.markAsDirty();
     this.characters.updateValueAndValidity();
+    this.characters.markAsDirty();
   }
 
   private swapArrElems(a: any[], i: number, j: number): void {
@@ -243,8 +244,8 @@ export class TaleStoryPartComponent
     this._charSubs.splice(index, 1);
 
     this.characters.removeAt(index);
-    this.characters.markAsDirty();
     this.characters.updateValueAndValidity();
+    this.characters.markAsDirty();
   }
 
   public moveCharacterUp(index: number): void {
