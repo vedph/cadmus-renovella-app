@@ -9,7 +9,7 @@ Quick Docker image build:
 1. update version number in `env.js`.
 2. `npm run build-lib`
 3. `ng build --configuration production`
-4. `docker build . -t vedph2020/cadmus-renovella-app:1.2.3 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+4. `docker build . -t vedph2020/cadmus-renovella-app:1.2.4 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
 
 ## Production
 
@@ -23,6 +23,12 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:1.2.3-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## History
+
+### 1.2.4
+
+- 2022-05-01:
+  - upgraded Angular (13.3.5).
+  - genres in tale info part changed validation to not required.
 
 ### 1.2.3
 

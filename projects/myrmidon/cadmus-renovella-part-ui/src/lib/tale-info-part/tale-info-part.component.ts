@@ -83,10 +83,7 @@ export class TaleInfoPartComponent
       Validators.maxLength(100),
     ]);
     this.date = formBuilder.control(null, Validators.required);
-    this.genres = formBuilder.control(
-      [],
-      [Validators.required, CadmusValidators.strictMinLengthValidator(1)]
-    );
+    this.genres = formBuilder.control([]);
 
     this.hasAuthor = formBuilder.control(false);
     this.author = formBuilder.control(null);
