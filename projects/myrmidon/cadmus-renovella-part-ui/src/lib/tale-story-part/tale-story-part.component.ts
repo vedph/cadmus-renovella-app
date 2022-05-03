@@ -71,7 +71,13 @@ export class TaleStoryPartComponent
     );
     this.age = _formBuilder.control(null);
     this.hasDate = _formBuilder.control(false);
-    this.date = _formBuilder.control(null, Validators.required);
+    this.date = _formBuilder.control(
+      null,
+      CadmusValidators.conditionalValidator(
+        () => this.hasDate.value,
+        Validators.required
+      )
+    );
     this.places = _formBuilder.array(
       [],
       CadmusValidators.strictMinLengthValidator(1)
