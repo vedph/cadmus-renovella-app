@@ -187,11 +187,11 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
       useClass: AuthJwtInterceptor,
       multi: true,
     },
-    {
-      provide: LOCALE_ID,
-      deps: [WindowRefService],
-      useFactory: languageFactory,
-    },
+    // {
+    //   provide: LOCALE_ID,
+    //   deps: [WindowRefService],
+    //   useFactory: languageFactory,
+    // },
   ],
   bootstrap: [AppComponent],
 })
