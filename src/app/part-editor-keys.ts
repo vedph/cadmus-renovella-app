@@ -11,6 +11,7 @@ import {
   POETIC_TEXTS_PART_TYPEID,
   TALE_INFO_PART_TYPEID,
   TALE_STORY_PART_TYPEID,
+  AVAILABLE_WITNESSES_PART_TYPEID
 } from '@myrmidon/cadmus-renovella-part-ui';
 import { EXTERNAL_IDS_PART_TYPEID } from '@myrmidon/cadmus-part-refs-ui';
 
@@ -45,6 +46,9 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
     part: RENOVELLA,
   },
   [TALE_STORY_PART_TYPEID]: {
+    part: RENOVELLA,
+  },
+  [AVAILABLE_WITNESSES_PART_TYPEID]: {
     part: RENOVELLA,
   },
   [POETIC_TEXTS_PART_TYPEID]: {

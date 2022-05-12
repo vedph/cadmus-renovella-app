@@ -2,6 +2,9 @@
  * Public API Surface of cadmus-renovella-part-ui
  */
 
+export * from './lib/available-witnesses-part';
+export * from './lib/available-witnesses-part/available-witnesses-part.component';
+
 export * from './lib/cited-persons-part';
 export * from './lib/cited-person/cited-person.component';
 

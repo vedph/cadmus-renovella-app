@@ -25,6 +25,7 @@ import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { NgToolsModule } from '@myrmidon/ng-tools';
 
+import { AvailableWitnessesPartComponent } from './available-witnesses-part/available-witnesses-part.component';
 import { CitedPersonComponent } from './cited-person/cited-person.component';
 import { TaleInfoPartComponent } from './tale-info-part/tale-info-part.component';
 import { TaleStoryPartComponent } from './tale-story-part/tale-story-part.component';
@@ -32,6 +33,7 @@ import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.
 
 @NgModule({
   declarations: [
+    AvailableWitnessesPartComponent,
     CitedPersonComponent,
     TaleInfoPartComponent,
     TaleStoryPartComponent,
@@ -67,6 +69,7 @@ import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.
     CadmusUiFlagsPickerModule
   ],
   exports: [
+    AvailableWitnessesPartComponent,
     CitedPersonComponent,
     TaleInfoPartComponent,
     TaleStoryPartComponent,

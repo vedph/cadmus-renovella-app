@@ -24,17 +24,25 @@ import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
 import { NgToolsModule } from '@myrmidon/ng-tools';
 import {
   CadmusRenovellaPartUiModule,
+  AVAILABLE_WITNESSES_PART_TYPEID,
   POETIC_TEXTS_PART_TYPEID,
   TALE_INFO_PART_TYPEID,
   TALE_STORY_PART_TYPEID,
 } from '@myrmidon/cadmus-renovella-part-ui';
 
+import { AvailableWitnessesPartFeatureComponent } from './available-witnesses-part-feature/available-witnesses-part-feature.component';
 import { TaleInfoPartFeatureComponent } from './tale-info-part-feature/tale-info-part-feature.component';
 import { TaleStoryPartFeatureComponent } from './tale-story-part-feature/tale-story-part-feature.component';
 import { PoeticTextsPartFeatureComponent } from './poetic-texts-part-feature/poetic-texts-part-feature.component';
 
 // https://github.com/ng-packagr/ng-packagr/issues/778
 export const RouterModuleForChild = RouterModule.forChild([
+  {
+    path: `${AVAILABLE_WITNESSES_PART_TYPEID}/:pid`,
+    pathMatch: 'full',
+    component: AvailableWitnessesPartFeatureComponent,
+    canDeactivate: [PendingChangesGuard],
+  },
   {
     path: `${TALE_INFO_PART_TYPEID}/:pid`,
     pathMatch: 'full',
@@ -57,6 +65,7 @@ export const RouterModuleForChild = RouterModule.forChild([
 
 @NgModule({
   declarations: [
+    AvailableWitnessesPartFeatureComponent,
     TaleInfoPartFeatureComponent,
     TaleStoryPartFeatureComponent,
     PoeticTextsPartFeatureComponent,
@@ -89,6 +98,7 @@ export const RouterModuleForChild = RouterModule.forChild([
     CadmusRenovellaPartUiModule,
   ],
   exports: [
+    AvailableWitnessesPartFeatureComponent,
     TaleInfoPartFeatureComponent,
     TaleStoryPartFeatureComponent,
     PoeticTextsPartFeatureComponent,

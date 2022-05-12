@@ -1,0 +1,161 @@
+<form [formGroup]="form!" (submit)="save()">
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>picture_in_picture</mat-icon>
+      </div>
+      <mat-card-title>Available Witnesses Part</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        <button
+          type="button"
+          mat-icon-button
+          *ngIf="witEntries?.length"
+          matTooltip="Add all the witnesses"
+          (click)="addAllWitnesses()"
+        >
+          <mat-icon color="primary">done_all</mat-icon>
+        </button>
+        <button
+          type="button"
+          mat-icon-button
+          matTooltip="Add a new witness"
+          color="primary"
+          (click)="addWitness()"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <div formArrayName="witnesses">
+        <div
+          *ngFor="
+            let item of witnesses.controls;
+            let i = index;
+            let first = first;
+            let last = last
+          "
+        >
+          <!-- child form -->
+          <div [formGroupName]="i">
+            <div class="form-row">
+              <!-- child actions -->
+              <div>
+                {{ i + 1 }}.
+                <button
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Remove this witness"
+                  color="warn"
+                  (click)="removeWitness(i)"
+                >
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <button
+                  [disabled]="first"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move witness up"
+                  (click)="moveWitnessUp(i)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  [disabled]="last"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move witness down"
+                  (click)="moveWitnessDown(i)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+              </div>
+
+              <!-- child controls -->
+              <!-- id (bound) -->
+              <mat-form-field *ngIf="witEntries?.length">
+                <mat-select formControlName="id" placeholder="ID">
+                  <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
+                    e.value
+                  }}</mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].id.errors?.required &&
+                    ($any(item)['controls'].id.dirty ||
+                      $any(item)['controls'].id.touched)
+                  "
+                  >ID required</mat-error
+                >
+              </mat-form-field>
+
+              <!-- id (free) -->
+              <mat-form-field *ngIf="!witEntries?.length">
+                <input matInput formControlName="id" placeholder="id" />
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].id.errors?.required &&
+                    ($any(item)['controls'].id.dirty ||
+                      $any(item)['controls'].id.touched)
+                  "
+                  >ID required</mat-error
+                >
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].id.errors?.maxLength &&
+                    ($any(item)['controls'].id.dirty ||
+                      $any(item)['controls'].id.touched)
+                  "
+                  >ID too long</mat-error
+                >
+              </mat-form-field>
+
+              <!-- partial -->
+              <mat-checkbox formControlName="partial">partial</mat-checkbox>
+              <!-- note -->
+              <div style="flex: 1 0 auto">
+                <mat-form-field class="long-text">
+                  <input matInput formControlName="note" placeholder="note" />
+                  <mat-error
+                    *ngIf="
+                      $any(item)['controls'].note.errors?.maxLength &&
+                      ($any(item)['controls'].note.dirty ||
+                        $any(item)['controls'].note.touched)
+                    "
+                    >note too long</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+            <div>
+              <mat-form-field>
+                <textarea
+                  class="long-text"
+                  rows="2"
+                  matInput
+                  formControlName="IDs (1 per line)"
+                  placeholder="externalIds"
+                ></textarea>
+                <mat-error
+                  *ngIf="
+                    $any(item)['controls'].externalIds.errors?.maxLength &&
+                    ($any(item)['controls'].externalIds.dirty ||
+                      $any(item)['controls'].externalIds.touched)
+                  "
+                  >too long</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <cadmus-close-save-buttons
+        [form]="form"
+        [noSave]="userLevel < 2"
+        (closeRequest)="close()"
+      ></cadmus-close-save-buttons>
+    </mat-card-actions>
+  </mat-card>
+</form>
