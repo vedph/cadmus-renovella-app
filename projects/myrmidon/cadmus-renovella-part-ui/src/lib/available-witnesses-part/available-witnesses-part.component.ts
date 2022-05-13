@@ -42,7 +42,7 @@ export class AvailableWitnessesPartComponent
     // form
     this.witnesses = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      // CadmusValidators.strictMinLengthValidator(1)
     );
     this.form = _formBuilder.group({
       witnesses: this.witnesses,

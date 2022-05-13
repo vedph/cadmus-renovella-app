@@ -24,7 +24,7 @@
           color="primary"
           (click)="addWitness()"
         >
-          <mat-icon>add_circle</mat-icon>
+          <mat-icon>add_circle</mat-icon> add witness
         </button>
       </div>
       <div formArrayName="witnesses">
@@ -127,14 +127,13 @@
                 </mat-form-field>
               </div>
             </div>
-            <div>
-              <mat-form-field>
+            <div class="form-row">
+              <mat-form-field style="flex: 1 0 auto; margin-left: 150px">
                 <textarea
-                  class="long-text"
                   rows="2"
                   matInput
-                  formControlName="IDs (1 per line)"
-                  placeholder="externalIds"
+                  formControlName="externalIds"
+                  placeholder="IDs (1 per line)"
                 ></textarea>
                 <mat-error
                   *ngIf="
