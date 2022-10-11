@@ -112,6 +112,15 @@ const routes: Routes = [
       ),
     canActivate: [AuthJwtGuardService],
   },
+  // cadmus - preview
+  {
+    path: 'preview',
+    loadChildren: () =>
+      import('@myrmidon/cadmus-preview-pg').then(
+        (module) => module.CadmusPreviewPgModule
+      ),
+    canActivate: [AuthJwtGuardService],
+  },
   // fallback
   { path: '**', component: HomeComponent },
 ];
@@ -119,7 +128,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      initialNavigation: 'enabled',
+      initialNavigation: 'enabledBlocking',
       useHash: true,
     }),
   ],

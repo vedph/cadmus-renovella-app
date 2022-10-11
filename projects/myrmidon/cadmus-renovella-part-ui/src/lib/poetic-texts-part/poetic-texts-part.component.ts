@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 
@@ -32,10 +32,10 @@ export class PoeticTextsPartComponent
   // poetic-text-metres
   public metreEntries: ThesaurusEntry[] | undefined;
 
-  public texts: FormArray;
-  public form: FormGroup;
+  public texts: UntypedFormArray;
+  public form: UntypedFormGroup;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
     super(authService);
     // form
     this.texts = _formBuilder.array(
@@ -97,7 +97,7 @@ export class PoeticTextsPartComponent
     return part;
   }
 
-  private getTextGroup(item?: PoeticText): FormGroup {
+  private getTextGroup(item?: PoeticText): UntypedFormGroup {
     return this._formBuilder.group({
       incipit: this._formBuilder.control(item?.incipit, [
         Validators.required,
@@ -114,7 +114,7 @@ export class PoeticTextsPartComponent
   private getTexts(): PoeticText[] {
     const texts: PoeticText[] = [];
     for (let i = 0; i < this.texts.length; i++) {
-      const g = this.texts.at(i) as FormGroup;
+      const g = this.texts.at(i) as UntypedFormGroup;
       texts.push({
         incipit: g.controls.incipit.value?.trim(),
         metre: g.controls.metre.value?.trim(),

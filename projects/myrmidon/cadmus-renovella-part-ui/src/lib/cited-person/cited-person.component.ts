@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { ThesaurusEntry, CadmusValidators } from '@myrmidon/cadmus-core';
@@ -53,18 +53,18 @@ export class CitedPersonComponent implements OnInit {
 
   public sources$: BehaviorSubject<DocReference[]>;
 
-  public language: FormControl;
-  public tag: FormControl;
-  public rank: FormControl;
-  public parts: FormArray;
-  public sources: FormControl;
-  public ids: FormControl;
-  public form: FormGroup;
+  public language: UntypedFormControl;
+  public tag: UntypedFormControl;
+  public rank: UntypedFormControl;
+  public parts: UntypedFormArray;
+  public sources: UntypedFormControl;
+  public ids: UntypedFormControl;
+  public form: UntypedFormGroup;
 
   public initialSources: DocReference[];
   public initialIds: DecoratedId[];
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: UntypedFormBuilder) {
     this.sources$ = new BehaviorSubject<DocReference[]>([]);
     this.initialSources = [];
     this.initialIds = [];
@@ -126,7 +126,7 @@ export class CitedPersonComponent implements OnInit {
     const pieces: ProperNamePiece[] = [];
 
     for (let i = 0; i < this.parts.length; i++) {
-      const g = this.parts.controls[i] as FormGroup;
+      const g = this.parts.controls[i] as UntypedFormGroup;
       pieces.push({
         type: g.controls.type.value,
         value: g.controls.value.value?.trim(),
@@ -150,7 +150,7 @@ export class CitedPersonComponent implements OnInit {
   }
 
   // #region Pieces
-  private getPartGroup(piece?: ProperNamePiece): FormGroup {
+  private getPartGroup(piece?: ProperNamePiece): UntypedFormGroup {
     return this._formBuilder.group({
       type: this._formBuilder.control(piece?.type, [
         Validators.required,

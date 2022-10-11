@@ -71,6 +71,9 @@ import { CadmusProfileCoreModule } from '@myrmidon/cadmus-profile-core';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
+import { CadmusTextBlockViewModule } from '@myrmidon/cadmus-text-block-view';
+import { CadmusPreviewUiModule } from '@myrmidon/cadmus-preview-ui';
+import { CadmusPreviewPgModule } from '@myrmidon/cadmus-preview-pg';
 
 // locals
 import { AppRoutingModule } from './app-routing.module';
@@ -159,6 +162,9 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     CadmusUiPgModule,
     CadmusRenovellaPartPgModule,
     CadmusRenovellaPartUiModule,
+    CadmusTextBlockViewModule,
+    CadmusPreviewUiModule,
+    CadmusPreviewPgModule,
   ],
   providers: [
     EnvServiceProvider,

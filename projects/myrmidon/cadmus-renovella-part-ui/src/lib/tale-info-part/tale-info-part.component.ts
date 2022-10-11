@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
@@ -30,26 +30,26 @@ export class TaleInfoPartComponent
   extends ModelEditorComponentBase<TaleInfoPart>
   implements OnInit
 {
-  public isCollection: FormControl;
-  public collectionId: FormControl;
-  public containerId: FormControl;
-  public ordinal: FormControl;
-  public title: FormControl;
-  public language: FormControl;
-  public genres: FormControl;
+  public isCollection: UntypedFormControl;
+  public collectionId: UntypedFormControl;
+  public containerId: UntypedFormControl;
+  public ordinal: UntypedFormControl;
+  public title: UntypedFormControl;
+  public language: UntypedFormControl;
+  public genres: UntypedFormControl;
 
-  public hasAuthor: FormControl;
-  public author: FormControl;
-  public hasDedicatee: FormControl;
-  public dedicatee: FormControl;
-  public structure: FormControl;
-  public narrator: FormControl;
-  public place: FormControl;
-  public date: FormControl;
+  public hasAuthor: UntypedFormControl;
+  public author: UntypedFormControl;
+  public hasDedicatee: UntypedFormControl;
+  public dedicatee: UntypedFormControl;
+  public structure: UntypedFormControl;
+  public narrator: UntypedFormControl;
+  public place: UntypedFormControl;
+  public date: UntypedFormControl;
 
-  public rubric: FormControl;
-  public incipit: FormControl;
-  public explicit: FormControl;
+  public rubric: UntypedFormControl;
+  public incipit: UntypedFormControl;
+  public explicit: UntypedFormControl;
 
   public initialGenres: string[];
   public initialContainerId: string | undefined;
@@ -65,7 +65,7 @@ export class TaleInfoPartComponent
 
   public availGenreFlags: Flag[];
 
-  constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, formBuilder: UntypedFormBuilder) {
     super(authService);
     this.initialGenres = [];
     this.availGenreFlags = [];

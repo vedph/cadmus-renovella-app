@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  FormControl,
-  FormBuilder,
+  UntypedFormControl,
+  UntypedFormBuilder,
   Validators,
-  FormArray,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -38,14 +38,14 @@ export class TaleStoryPartComponent
   private _charSubs: Subscription[];
   private _placeSubs: Subscription[];
 
-  public summary: FormControl;
-  public prologue: FormControl;
-  public epilogue: FormControl;
-  public age: FormControl;
-  public hasDate: FormControl;
-  public date: FormControl;
-  public places: FormArray;
-  public characters: FormArray;
+  public summary: UntypedFormControl;
+  public prologue: UntypedFormControl;
+  public epilogue: UntypedFormControl;
+  public age: UntypedFormControl;
+  public hasDate: UntypedFormControl;
+  public date: UntypedFormControl;
+  public places: UntypedFormArray;
+  public characters: UntypedFormArray;
 
   // story-roles
   public storyRoleEntries: ThesaurusEntry[] | undefined;
@@ -54,7 +54,7 @@ export class TaleStoryPartComponent
   // story-ages
   public storyAgeEntries: ThesaurusEntry[] | undefined;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
     super(authService);
     this._charSubs = [];
     this._placeSubs = [];
@@ -206,7 +206,7 @@ export class TaleStoryPartComponent
   }
 
   //#region Characters
-  private getCharacterGroup(character?: StoryCharacter): FormGroup {
+  private getCharacterGroup(character?: StoryCharacter): UntypedFormGroup {
     return this._formBuilder.group({
       name: this._formBuilder.control(
         character?.name,
@@ -279,7 +279,7 @@ export class TaleStoryPartComponent
   private getCharacters(): StoryCharacter[] {
     const entries: StoryCharacter[] = [];
     for (let i = 0; i < this.characters.length; i++) {
-      const g = this.characters.at(i) as FormGroup;
+      const g = this.characters.at(i) as UntypedFormGroup;
       entries.push({
         name: g.controls.name.value?.trim(),
         sex: g.controls.sex.value?.trim(),
@@ -292,7 +292,7 @@ export class TaleStoryPartComponent
   //#endregion
 
   //#region Places
-  private getPlaceGroup(item?: StoryPlace): FormGroup {
+  private getPlaceGroup(item?: StoryPlace): UntypedFormGroup {
     return this._formBuilder.group({
       type: this._formBuilder.control(item?.type, [
         Validators.required,
@@ -351,7 +351,7 @@ export class TaleStoryPartComponent
   private getPlaces(): StoryPlace[] {
     const entries: StoryPlace[] = [];
     for (let i = 0; i < this.places.length; i++) {
-      const g = this.places.at(i) as FormGroup;
+      const g = this.places.at(i) as UntypedFormGroup;
       entries.push({
         type: g.controls.type.value?.trim(),
         name: g.controls.name.value?.trim(),
