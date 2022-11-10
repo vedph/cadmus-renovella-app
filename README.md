@@ -24,6 +24,7 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+- 2022-11-10: updated Angular and packages.
 - 2022-10-11:
   - updated packages.
   - added preview.
