@@ -4,18 +4,19 @@ import {
   Validators,
   UntypedFormArray,
   UntypedFormGroup,
-  FormControl,
+  FormBuilder,
+  FormGroup,
 } from '@angular/forms';
 
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { AuthJwtService } from '@myrmidon/auth-jwt-login';
+
 import {
   AvailableWitness,
   AvailableWitnessesPart,
   AVAILABLE_WITNESSES_PART_TYPEID,
 } from '../available-witnesses-part';
-import { deepCopy } from '@myrmidon/ng-tools';
-import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 /**
  * AvailableWitnessesPart editor component.
@@ -37,64 +38,64 @@ export class AvailableWitnessesPartComponent
 
   public witnesses: UntypedFormArray;
 
-  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
-    super(authService);
+  constructor(
+    authService: AuthJwtService,
+    private _formBuilder: UntypedFormBuilder
+  ) {
+    super(authService, _formBuilder);
     // form
-    this.witnesses = _formBuilder.array(
-      [],
-      // CadmusValidators.strictMinLengthValidator(1)
-    );
-    this.form = _formBuilder.group({
+    this.witnesses = _formBuilder.array([]);
+  }
+
+  public ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       witnesses: this.witnesses,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
-  }
-
-  private updateForm(model: AvailableWitnessesPart): void {
-    if (!model) {
-      this.form?.reset();
-      return;
-    }
-    this.witnesses.clear();
-    if (model.witnesses?.length) {
-      for (let w of model.witnesses) {
-        this.witnesses.controls.push(this.getWitnessGroup(w));
-      }
-    }
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: AvailableWitnessesPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     const key = 'apparatus-witnesses';
-    if (this.thesauri && this.thesauri[key]) {
-      this.witEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.witEntries = thesauri[key].entries;
     } else {
       this.witEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): AvailableWitnessesPart {
-    let part = deepCopy(this.model);
+  private updateForm(part?: AvailableWitnessesPart | null): void {
     if (!part) {
-      part = {
-        itemId: this.itemId,
-        id: '',
-        typeId: AVAILABLE_WITNESSES_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        witnesses: [],
-      };
+      this.form?.reset();
+      return;
     }
+    this.witnesses.clear();
+    if (part.witnesses?.length) {
+      for (let w of part.witnesses) {
+        this.witnesses.controls.push(this.getWitnessGroup(w));
+      }
+    }
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(
+    data?: EditedObject<AvailableWitnessesPart>
+  ): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): AvailableWitnessesPart {
+    let part = this.getEditedPart(
+      AVAILABLE_WITNESSES_PART_TYPEID
+    ) as AvailableWitnessesPart;
     part.witnesses = this.getWitnesses();
     return part;
   }

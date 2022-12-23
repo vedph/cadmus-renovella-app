@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-
-import { EditAvailableWitnessesPartService } from './edit-available-witnesses-part.service';
-import { EditAvailableWitnessesPartQuery } from './edit-available-witnesses-part.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'renovella-available-witnesses-part-feature',
@@ -17,28 +12,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AvailableWitnessesPartFeatureComponent
   extends EditPartFeatureBase
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditAvailableWitnessesPartQuery,
-    editPartService: EditAvailableWitnessesPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  public ngOnInit(): void {
-    this.initEditor(['apparatus-witnesses']);
+  protected override getReqThesauriIds(): string[] {
+    return ['apparatus-witnesses'];
   }
 }

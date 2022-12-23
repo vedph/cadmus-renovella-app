@@ -24,6 +24,10 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+- 2022-12-23:
+  - updated Angular to 15 and replaced Akita with ELF.
+  - updated parts.
+  - updated Monaco editor.
 - 2022-11-10: updated Angular and packages.
 - 2022-10-11:
   - updated packages.

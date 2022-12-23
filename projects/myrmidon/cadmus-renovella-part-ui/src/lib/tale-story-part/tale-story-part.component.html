@@ -1,5 +1,5 @@
-<form [formGroup]="form!" (submit)="save()">
-  <mat-card>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>picture_in_picture</mat-icon>
@@ -13,7 +13,8 @@
           <div>
             <!-- age (bound) -->
             <mat-form-field *ngIf="storyAgeEntries?.length">
-              <mat-select [formControl]="age" placeholder="age">
+              <mat-label>age</mat-label>
+              <mat-select [formControl]="age">
                 <mat-option *ngFor="let e of storyAgeEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -25,7 +26,8 @@
             </mat-form-field>
             <!-- age (free) -->
             <mat-form-field *ngIf="!storyAgeEntries?.length">
-              <input matInput [formControl]="age" placeholder="age" />
+              <mat-label>age</mat-label>
+              <input matInput [formControl]="age" />
               <mat-error
                 *ngIf="$any(age).errors?.required && (age.dirty || age.touched)"
                 >age required</mat-error
@@ -110,7 +112,8 @@
                     *ngIf="storyPlaceTypeEntries?.length"
                     style="width: 8em"
                   >
-                    <mat-select formControlName="type" placeholder="type">
+                    <mat-label>type</mat-label>
+                    <mat-select formControlName="type">
                       <mat-option
                         *ngFor="let e of storyPlaceTypeEntries"
                         [value]="e.id"
@@ -131,7 +134,8 @@
                     *ngIf="!storyPlaceTypeEntries?.length"
                     style="width: 8em"
                   >
-                    <input matInput formControlName="type" placeholder="type" />
+                    <mat-label>type</mat-label>
+                    <input matInput formControlName="type" />
                     <mat-error
                       *ngIf="
                         $any(item)['controls'].type.errors?.required &&
@@ -153,7 +157,8 @@
                   <!-- name -->
                   &nbsp;
                   <mat-form-field>
-                    <input matInput formControlName="name" placeholder="name" />
+                    <mat-label>name</mat-label>
+                    <input matInput formControlName="name" />
                     <mat-error
                       *ngIf="
                         $any(item)['controls'].name.errors?.maxLength &&
@@ -167,11 +172,8 @@
                   <!-- location -->
                   &nbsp;
                   <mat-form-field>
-                    <input
-                      matInput
-                      formControlName="location"
-                      placeholder="location"
-                    />
+                    <mat-label>location</mat-label>
+                    <input matInput formControlName="location" />
                     <mat-error
                       *ngIf="
                         $any(item)['controls'].location.errors?.maxLength &&
@@ -188,12 +190,8 @@
           <!-- summary -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="3"
-                matInput
-                [formControl]="summary"
-                placeholder="summary"
-              ></textarea>
+              <mat-label>summary</mat-label>
+              <textarea rows="3" matInput [formControl]="summary"></textarea>
               <mat-error
                 *ngIf="
                   summary.errors?.required && (summary.dirty || summary.touched)
@@ -212,12 +210,8 @@
           <!-- prologue -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="2"
-                matInput
-                [formControl]="prologue"
-                placeholder="prologue"
-              ></textarea>
+              <mat-label>prologue</mat-label>
+              <textarea rows="2" matInput [formControl]="prologue"></textarea>
               <mat-error
                 *ngIf="
                   prologue.errors?.maxLength &&
@@ -230,12 +224,8 @@
           <!-- epilogue -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="2"
-                matInput
-                [formControl]="epilogue"
-                placeholder="epilogue"
-              ></textarea>
+              <mat-label>epilogue</mat-label>
+              <textarea rows="2" matInput [formControl]="epilogue"></textarea>
               <mat-error
                 *ngIf="
                   epilogue.errors?.maxLength &&
@@ -306,7 +296,8 @@
                   *ngIf="storyRoleEntries?.length"
                   style="width: 8em"
                 >
-                  <mat-select formControlName="role" placeholder="role">
+                  <mat-label>role</mat-label>
+                  <mat-select formControlName="role">
                     <mat-option
                       *ngFor="let e of storyRoleEntries"
                       [value]="e.id"
@@ -327,7 +318,8 @@
                   *ngIf="!storyRoleEntries?.length"
                   style="width: 8em"
                 >
-                  <input matInput formControlName="role" placeholder="role" />
+                  <mat-label>role</mat-label>
+                  <input matInput formControlName="role" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].role.errors?.required &&
@@ -353,7 +345,8 @@
                 <!-- name -->
                 &nbsp;
                 <mat-form-field>
-                  <input matInput formControlName="name" placeholder="name" />
+                  <mat-label>name</mat-label>
+                  <input matInput formControlName="name" />
                   <mat-error
                     *ngIf="
                       $any(item)['controls'].name.errors?.required &&
@@ -375,7 +368,8 @@
                 <!-- sex -->
                 &nbsp;
                 <mat-form-field style="width: 2.5em">
-                  <mat-select formControlName="sex" placeholder="sex">
+                  <mat-label>sex</mat-label>
+                  <mat-select formControlName="sex">
                     <mat-option [value]="null">-</mat-option>
                     <mat-option value="M">M</mat-option>
                     <mat-option value="F">F</mat-option>

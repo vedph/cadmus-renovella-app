@@ -14,7 +14,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CadmusCoreModule } from '@myrmidon/cadmus-core';
 import { CadmusRefsDecoratedIdsModule } from '@myrmidon/cadmus-refs-decorated-ids';
@@ -56,7 +55,6 @@ import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.
     MatSlideToggleModule,
     MatTabsModule,
     MatTooltipModule,
-    FlexLayoutModule,
     // cadmus
     NgToolsModule,
     CadmusCoreModule,
@@ -66,14 +64,14 @@ import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.
     CadmusRefsDocReferencesModule,
     CadmusRefsProperNameModule,
     CadmusRefsDecoratedIdsModule,
-    CadmusUiFlagsPickerModule
+    CadmusUiFlagsPickerModule,
   ],
   exports: [
     AvailableWitnessesPartComponent,
     CitedPersonComponent,
     TaleInfoPartComponent,
     TaleStoryPartComponent,
-    PoeticTextsPartComponent
+    PoeticTextsPartComponent,
   ],
 })
 export class CadmusRenovellaPartUiModule {}

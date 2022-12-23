@@ -104,14 +104,6 @@ const routes: Routes = [
       ),
     canActivate: [AuthJwtGuardService],
   },
-  {
-    path: 'items/:iid/refs',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-part-refs-pg').then(
-        (module) => module.CadmusPartRefsPgModule
-      ),
-    canActivate: [AuthJwtGuardService],
-  },
   // cadmus - preview
   {
     path: 'preview',

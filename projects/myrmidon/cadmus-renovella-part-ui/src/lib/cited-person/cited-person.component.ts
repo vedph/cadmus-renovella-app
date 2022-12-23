@@ -6,10 +6,11 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ThesaurusEntry, CadmusValidators } from '@myrmidon/cadmus-core';
+import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { DecoratedId } from '@myrmidon/cadmus-refs-decorated-ids';
 import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { ProperName, ProperNamePiece } from '@myrmidon/cadmus-refs-proper-name';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { BehaviorSubject } from 'rxjs';
 import { CitedPerson } from '../cited-persons-part';
 
@@ -82,7 +83,7 @@ export class CitedPersonComponent implements OnInit {
     this.rank = _formBuilder.control(0);
     this.parts = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      NgToolsValidators.strictMinLengthValidator(1)
     );
     this.sources = _formBuilder.control([]);
     this.ids = _formBuilder.control([]);

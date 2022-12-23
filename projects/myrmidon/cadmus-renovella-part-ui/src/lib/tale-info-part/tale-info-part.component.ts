@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormBuilder, Validators } from '@angular/forms';
-
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
-  ThesaurusEntry,
-  CadmusValidators,
-  DataPinInfo,
-} from '@myrmidon/cadmus-core';
+  UntypedFormControl,
+  UntypedFormBuilder as FormBuilder,
+  Validators,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
+
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesaurusEntry, DataPinInfo, ThesauriSet } from '@myrmidon/cadmus-core';
 
 import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
@@ -65,8 +67,8 @@ export class TaleInfoPartComponent
 
   public availGenreFlags: Flag[];
 
-  constructor(authService: AuthJwtService, formBuilder: UntypedFormBuilder) {
-    super(authService);
+  constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
+    super(authService, formBuilder);
     this.initialGenres = [];
     this.availGenreFlags = [];
     // form
@@ -108,8 +110,10 @@ export class TaleInfoPartComponent
       Validators.required,
     ]);
     this.ordinal = formBuilder.control(0, Validators.min(0));
+  }
 
-    this.form = formBuilder.group({
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       isCollection: this.isCollection,
       collectionId: this.collectionId,
       containerId: this.containerId,
@@ -132,6 +136,7 @@ export class TaleInfoPartComponent
   }
 
   public ngOnInit(): void {
+    super.ngOnInit();
     this.isCollection.valueChanges.subscribe((coll: boolean | undefined) => {
       if (coll) {
         this.collectionId.enable();
@@ -140,51 +145,14 @@ export class TaleInfoPartComponent
         this.collectionId.disable();
         this.containerId.enable();
       }
-      this.form?.updateValueAndValidity();
+      this.form.updateValueAndValidity();
     });
-    this.initEditor();
   }
 
-  private updateForm(model: TaleInfoPart): void {
-    if (!model) {
-      this.form?.reset();
-      this.initialGenres = [];
-      this.initialContainerId = undefined;
-      return;
-    }
-    this.isCollection.setValue(model.collectionId ? true : false);
-    this.collectionId.setValue(model.collectionId);
-    this.containerId.setValue(model.containerId);
-    this.initialContainerId = model.containerId;
-    this.ordinal.setValue(model.ordinal);
-    this.title.setValue(model.title);
-    this.language.setValue(model.language);
-    this.place.setValue(model.place);
-    this.date.setValue(model.date);
-    this.genres.setValue(model.genres);
-    this.initialGenres = model.genres || [];
-    this.hasAuthor.setValue(model.author ? true : false);
-    this.author.setValue(model.author);
-    this.initialAuthor = model.author;
-    this.structure.setValue(model.structure);
-    this.hasDedicatee.setValue(model.dedicatee ? true : false);
-    this.dedicatee.setValue(model.dedicatee);
-    this.initialDedicatee = model.dedicatee;
-    this.narrator.setValue(model.narrator);
-    this.rubric.setValue(model.rubric);
-    this.incipit.setValue(model.incipit);
-    this.explicit.setValue(model.explicit);
-    this.form?.markAsPristine();
-  }
-
-  protected onModelSet(model: TaleInfoPart): void {
-    this.updateForm(deepCopy(model));
-  }
-
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'tale-genres';
-    if (this.thesauri && this.thesauri[key]) {
-      this.taleGenreEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.taleGenreEntries = thesauri[key].entries;
       this.availGenreFlags = this.taleGenreEntries!.map((e) => {
         return {
           id: e.id,
@@ -197,43 +165,64 @@ export class TaleInfoPartComponent
     }
 
     key = 'name-part-type-entries';
-    if (this.thesauri && this.thesauri[key]) {
-      this.namePartTypeEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.namePartTypeEntries = thesauri[key].entries;
     } else {
       this.namePartTypeEntries = undefined;
     }
 
     key = 'tale-languages';
-    if (this.thesauri && this.thesauri[key]) {
-      this.taleLangEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.taleLangEntries = thesauri[key].entries;
     } else {
       this.taleLangEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): TaleInfoPart {
-    let part = this.model;
+  private updateForm(part?: TaleInfoPart | null): void {
     if (!part) {
-      part = {
-        itemId: this.itemId!,
-        id: '',
-        typeId: TALE_INFO_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        title: '',
-        place: '',
-        date: {
-          a: {
-            value: 0,
-          },
-        },
-        language: '',
-        genres: [],
-      };
+      this.form.reset();
+      this.initialGenres = [];
+      this.initialContainerId = undefined;
+      return;
     }
+    this.isCollection.setValue(part.collectionId ? true : false);
+    this.collectionId.setValue(part.collectionId);
+    this.containerId.setValue(part.containerId);
+    this.initialContainerId = part.containerId;
+    this.ordinal.setValue(part.ordinal);
+    this.title.setValue(part.title);
+    this.language.setValue(part.language);
+    this.place.setValue(part.place);
+    this.date.setValue(part.date);
+    this.genres.setValue(part.genres);
+    this.initialGenres = part.genres || [];
+    this.hasAuthor.setValue(part.author ? true : false);
+    this.author.setValue(part.author);
+    this.initialAuthor = part.author;
+    this.structure.setValue(part.structure);
+    this.hasDedicatee.setValue(part.dedicatee ? true : false);
+    this.dedicatee.setValue(part.dedicatee);
+    this.initialDedicatee = part.dedicatee;
+    this.narrator.setValue(part.narrator);
+    this.rubric.setValue(part.rubric);
+    this.incipit.setValue(part.incipit);
+    this.explicit.setValue(part.explicit);
+    this.form.markAsPristine();
+  }
+
+  protected override onDataSet(data?: EditedObject<TaleInfoPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
+  }
+
+  protected getValue(): TaleInfoPart {
+    let part = this.getEditedPart(TALE_INFO_PART_TYPEID) as TaleInfoPart;
 
     if (this.isCollection.value) {
       part.collectionId = this.collectionId.value?.trim();

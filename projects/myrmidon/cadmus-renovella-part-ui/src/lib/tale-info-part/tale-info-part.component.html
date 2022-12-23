@@ -1,5 +1,5 @@
-<form [formGroup]="form!" (submit)="save()">
-  <mat-card>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>picture_in_picture</mat-icon>
@@ -16,11 +16,8 @@
             &nbsp;
             <!-- collectionId -->
             <mat-form-field>
-              <input
-                matInput
-                [formControl]="collectionId"
-                placeholder="collection ID"
-              />
+              <mat-label>collection ID</mat-label>
+              <input matInput [formControl]="collectionId" />
               <mat-error
                 *ngIf="
                   collectionId.errors?.required &&
@@ -48,7 +45,8 @@
             <!-- ordinal -->
             &nbsp;
             <mat-form-field>
-              <input matInput [formControl]="ordinal" placeholder="ordinal" />
+              <mat-label>ordinal</mat-label>
+              <input matInput [formControl]="ordinal" />
               <mat-error
                 *ngIf="
                   ordinal.errors?.required && (ordinal.dirty || ordinal.touched)
@@ -68,7 +66,8 @@
           <div>
             <!-- title -->
             <mat-form-field>
-              <input matInput [formControl]="title" placeholder="title" />
+              <mat-label>title</mat-label>
+              <input matInput [formControl]="title" />
               <mat-error
                 *ngIf="title.errors?.required && (title.dirty || title.touched)"
                 >title required</mat-error
@@ -83,7 +82,8 @@
             &nbsp;
             <!-- language (bound) -->
             <mat-form-field *ngIf="taleLangEntries?.length" style="width: 8em">
-              <mat-select [formControl]="language" placeholder="language">
+              <mat-label>language</mat-label>
+              <mat-select [formControl]="language">
                 <mat-option *ngFor="let e of taleLangEntries" [value]="e.id">{{
                   e.value
                 }}</mat-option>
@@ -99,7 +99,8 @@
 
             <!-- language (free) -->
             <mat-form-field *ngIf="!taleLangEntries?.length" style="width: 8em">
-              <input matInput [formControl]="language" placeholder="language" />
+              <mat-label>language</mat-label>
+              <input matInput [formControl]="language" />
               <mat-error
                 *ngIf="
                   language.errors?.required &&
@@ -119,7 +120,8 @@
           <div>
             <!-- place -->
             <mat-form-field>
-              <input matInput [formControl]="place" placeholder="place" />
+              <mat-label>place</mat-label>
+              <input matInput [formControl]="place" />
               <mat-error
                 *ngIf="place.errors?.required && (place.dirty || place.touched)"
                 >place required</mat-error
@@ -155,7 +157,8 @@
           <!-- narrator -->
           <div>
             <mat-form-field>
-              <input matInput [formControl]="narrator" placeholder="narrator" />
+              <mat-label>narrator</mat-label>
+              <input matInput [formControl]="narrator" />
               <mat-error
                 *ngIf="
                   narrator.errors?.maxLength &&
@@ -196,11 +199,8 @@
           <!-- structure -->
           <div>
             <mat-form-field class="long-text">
-              <input
-                matInput
-                [formControl]="structure"
-                placeholder="structure"
-              />
+              <mat-label>structure</mat-label>
+              <input matInput [formControl]="structure" />
               <mat-error
                 *ngIf="
                   structure.errors?.maxLength &&
@@ -213,7 +213,8 @@
           <!-- rubric -->
           <div>
             <mat-form-field class="long-text">
-              <input matInput [formControl]="rubric" placeholder="rubric" />
+              <mat-label>rubric</mat-label>
+              <input matInput [formControl]="rubric" />
               <mat-error
                 *ngIf="
                   rubric.errors?.maxLength && (rubric.dirty || rubric.touched)
@@ -226,12 +227,8 @@
           <!-- incipit -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="2"
-                matInput
-                [formControl]="incipit"
-                placeholder="incipit"
-              ></textarea>
+              <mat-label>incipit</mat-label>
+              <textarea rows="2" matInput [formControl]="incipit"></textarea>
               <mat-error
                 *ngIf="
                   incipit.errors?.maxLength &&
@@ -245,12 +242,8 @@
           <!-- explicit -->
           <div>
             <mat-form-field class="long-text">
-              <textarea
-                rows="2"
-                matInput
-                [formControl]="explicit"
-                placeholder="explicit"
-              ></textarea>
+              <mat-label>explicit</mat-label>
+              <textarea rows="2" matInput [formControl]="explicit"></textarea>
               <mat-error
                 *ngIf="
                   explicit.errors?.maxLength &&

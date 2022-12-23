@@ -4,6 +4,7 @@ import {
   NOTE_PART_TYPEID,
   BIBLIOGRAPHY_PART_TYPEID,
   DOC_REFERENCES_PART_TYPEID,
+  EXTERNAL_IDS_PART_TYPEID,
 } from '@myrmidon/cadmus-part-general-ui';
 import { PartEditorKeys } from '@myrmidon/cadmus-core';
 import '@myrmidon/cadmus-renovella-part-ui';
@@ -11,13 +12,11 @@ import {
   POETIC_TEXTS_PART_TYPEID,
   TALE_INFO_PART_TYPEID,
   TALE_STORY_PART_TYPEID,
-  AVAILABLE_WITNESSES_PART_TYPEID
+  AVAILABLE_WITNESSES_PART_TYPEID,
 } from '@myrmidon/cadmus-renovella-part-ui';
-import { EXTERNAL_IDS_PART_TYPEID } from '@myrmidon/cadmus-part-refs-ui';
 
 const GENERAL = 'general';
 const RENOVELLA = 'renovella';
-const REFS = 'refs';
 // const TOKEN_TEXT_LAYER_PART_TYPEID = 'it.vedph.token-text-layer';
 
 /**
@@ -42,6 +41,9 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   [DOC_REFERENCES_PART_TYPEID]: {
     part: GENERAL,
   },
+  [EXTERNAL_IDS_PART_TYPEID]: {
+    part: GENERAL,
+  },
   [TALE_INFO_PART_TYPEID]: {
     part: RENOVELLA,
   },
@@ -53,9 +55,6 @@ export const PART_EDITOR_KEYS: PartEditorKeys = {
   },
   [POETIC_TEXTS_PART_TYPEID]: {
     part: RENOVELLA,
-  },
-  [EXTERNAL_IDS_PART_TYPEID]: {
-    part: REFS,
   },
   // layer parts
   // [TOKEN_TEXT_LAYER_PART_TYPEID]: {

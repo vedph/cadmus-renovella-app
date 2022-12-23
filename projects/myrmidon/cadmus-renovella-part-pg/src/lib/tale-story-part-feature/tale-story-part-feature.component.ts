@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-
-import { EditTaleStoryPartService } from './edit-tale-story-part.service';
-import { EditTaleStoryPartQuery } from './edit-tale-story-part.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'renovella-tale-story-part-feature',
@@ -23,23 +18,21 @@ export class TaleStoryPartFeatureComponent
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditTaleStoryPartQuery,
-    editPartService: EditTaleStoryPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  public ngOnInit(): void {
-    this.initEditor(['story-roles', 'story-place-types', 'story-ages']);
+  protected override getReqThesauriIds(): string[] {
+    return ['story-roles', 'story-place-types', 'story-ages'];
   }
 }

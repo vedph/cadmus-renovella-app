@@ -15,7 +15,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
@@ -88,7 +87,6 @@ export const RouterModuleForChild = RouterModule.forChild([
     MatSnackBarModule,
     MatTabsModule,
     MatTooltipModule,
-    FlexLayoutModule,
     // cadmus
     NgToolsModule,
     CadmusCoreModule,

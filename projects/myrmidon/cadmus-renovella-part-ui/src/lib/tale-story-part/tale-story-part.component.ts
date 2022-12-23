@@ -5,14 +5,16 @@ import {
   Validators,
   UntypedFormArray,
   UntypedFormGroup,
+  FormBuilder,
+  FormGroup,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { deepCopy } from '@myrmidon/ng-tools';
+import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry, CadmusValidators } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 
 import {
@@ -54,8 +56,8 @@ export class TaleStoryPartComponent
   // story-ages
   public storyAgeEntries: ThesaurusEntry[] | undefined;
 
-  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
-    super(authService);
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+    super(authService, _formBuilder);
     this._charSubs = [];
     this._placeSubs = [];
     // form
@@ -67,22 +69,29 @@ export class TaleStoryPartComponent
     this.epilogue = _formBuilder.control(null, Validators.maxLength(1000));
     this.characters = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      NgToolsValidators.strictMinLengthValidator(1)
     );
     this.age = _formBuilder.control(null);
     this.hasDate = _formBuilder.control(false);
     this.date = _formBuilder.control(
       null,
-      CadmusValidators.conditionalValidator(
+      NgToolsValidators.conditionalValidator(
         () => this.hasDate.value,
         Validators.required
       )
     );
     this.places = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      NgToolsValidators.strictMinLengthValidator(1)
     );
-    this.form = _formBuilder.group({
+  }
+
+  public ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       summary: this.summary,
       prologue: this.prologue,
       epilogue: this.epilogue,
@@ -92,10 +101,6 @@ export class TaleStoryPartComponent
       date: this.date,
       places: this.places,
     });
-  }
-
-  public ngOnInit(): void {
-    this.initEditor();
   }
 
   private unsubscribeChars(): void {
@@ -115,79 +120,70 @@ export class TaleStoryPartComponent
     this.unsubscribePlaces();
   }
 
-  private updateForm(model: TaleStoryPart): void {
+  private updateForm(part?: TaleStoryPart | null): void {
     this.unsubscribeChars();
     this.unsubscribePlaces();
-    if (!model) {
-      this.form?.reset();
+    if (!part) {
+      this.form.reset();
       return;
     }
-    this.summary.setValue(model.summary);
-    this.prologue.setValue(model.prologue);
-    this.epilogue.setValue(model.epilogue);
+    this.summary.setValue(part.summary);
+    this.prologue.setValue(part.prologue);
+    this.epilogue.setValue(part.epilogue);
     this.characters.clear();
-    if (model.characters) {
-      for (let c of model.characters) {
+    if (part.characters) {
+      for (let c of part.characters) {
         this.addCharacter(c);
       }
     }
-    this.age.setValue(model.age);
-    this.hasDate.setValue(model.date ? true : false);
-    this.date.setValue(model.date);
+    this.age.setValue(part.age);
+    this.hasDate.setValue(part.date ? true : false);
+    this.date.setValue(part.date);
     this.places.clear();
-    if (model.places) {
-      for (let p of model.places) {
+    if (part.places) {
+      for (let p of part.places) {
         this.addPlace(p);
       }
     }
 
-    this.form?.markAsPristine();
+    this.form.markAsPristine();
   }
 
-  protected onModelSet(model: TaleStoryPart): void {
-    this.updateForm(deepCopy(model));
+  protected override onDataSet(data?: EditedObject<TaleStoryPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
   }
 
-  protected onThesauriSet(): void {
+  private updateThesauri(thesauri: ThesauriSet): void {
     let key = 'story-roles';
-    if (this.thesauri && this.thesauri[key]) {
-      this.storyRoleEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.storyRoleEntries = thesauri[key].entries;
     } else {
       this.storyRoleEntries = undefined;
     }
 
     key = 'story-place-types';
-    if (this.thesauri && this.thesauri[key]) {
-      this.storyPlaceTypeEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.storyPlaceTypeEntries = thesauri[key].entries;
     } else {
       this.storyPlaceTypeEntries = undefined;
     }
 
     key = 'story-ages';
-    if (this.thesauri && this.thesauri[key]) {
-      this.storyAgeEntries = this.thesauri[key].entries;
+    if (this.hasThesaurus(key)) {
+      this.storyAgeEntries = thesauri[key].entries;
     } else {
       this.storyAgeEntries = undefined;
     }
   }
 
-  protected getModelFromForm(): TaleStoryPart {
-    let part = this.model;
-    if (!part) {
-      part = {
-        itemId: this.itemId!,
-        id: '',
-        typeId: TALE_STORY_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        summary: '',
-        characters: [],
-        places: [],
-      };
-    }
+  protected getValue(): TaleStoryPart {
+    let part = this.getEditedPart(TALE_STORY_PART_TYPEID) as TaleStoryPart;
     part.summary = this.summary.value?.trim();
     part.prologue = this.prologue.value?.trim();
     part.epilogue = this.epilogue.value?.trim();

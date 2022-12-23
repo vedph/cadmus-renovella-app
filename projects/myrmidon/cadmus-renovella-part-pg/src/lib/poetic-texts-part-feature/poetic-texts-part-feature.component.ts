@@ -1,16 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 
-import { ThesauriSet } from '@myrmidon/cadmus-core';
-import {
-  EditItemQuery,
-  EditItemService,
-  EditPartFeatureBase,
-} from '@myrmidon/cadmus-state';
-import { EditPoeticTextsPartQuery } from './edit-poetic-texts-part.query';
-import { EditPoeticTextsPartService } from './edit-poetic-texts-part.service';
+import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
 
 @Component({
   selector: 'renovella-poetic-texts-part-feature',
@@ -25,23 +18,21 @@ export class PoeticTextsPartFeatureComponent
     router: Router,
     route: ActivatedRoute,
     snackbar: MatSnackBar,
-    editPartQuery: EditPoeticTextsPartQuery,
-    editPartService: EditPoeticTextsPartService,
-    editItemQuery: EditItemQuery,
-    editItemService: EditItemService
+    itemService: ItemService,
+    thesaurusService: ThesaurusService,
+    editorService: PartEditorService
   ) {
     super(
       router,
       route,
       snackbar,
-      editPartQuery,
-      editPartService,
-      editItemQuery,
-      editItemService
+      itemService,
+      thesaurusService,
+      editorService
     );
   }
 
-  public ngOnInit(): void {
-    this.initEditor(['poetic-text-metres']);
+  protected override getReqThesauriIds(): string[] {
+    return ['poetic-text-metres'];
   }
 }

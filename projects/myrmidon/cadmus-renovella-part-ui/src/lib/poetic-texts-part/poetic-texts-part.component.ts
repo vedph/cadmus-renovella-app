@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  FormBuilder,
+  FormGroup,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 
-import { deepCopy } from '@myrmidon/ng-tools';
+import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { CadmusValidators, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 
 import {
   PoeticText,
@@ -33,66 +35,64 @@ export class PoeticTextsPartComponent
   public metreEntries: ThesaurusEntry[] | undefined;
 
   public texts: UntypedFormArray;
-  public form: UntypedFormGroup;
 
-  constructor(authService: AuthJwtService, private _formBuilder: UntypedFormBuilder) {
-    super(authService);
+  constructor(
+    authService: AuthJwtService,
+    private _formBuilder: UntypedFormBuilder
+  ) {
+    super(authService, _formBuilder);
     // form
     this.texts = _formBuilder.array(
       [],
-      CadmusValidators.strictMinLengthValidator(1)
+      NgToolsValidators.strictMinLengthValidator(1)
     );
-    this.form = _formBuilder.group({
+  }
+
+  public ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
+    return formBuilder.group({
       texts: this.texts,
     });
   }
 
-  public ngOnInit(): void {
-    this.initEditor();
+  private updateThesauri(thesauri: ThesauriSet): void {
+    const key = 'poetic-text-metres';
+    if (this.hasThesaurus(key)) {
+      this.metreEntries = thesauri[key].entries;
+    } else {
+      this.metreEntries = undefined;
+    }
   }
 
-  private updateForm(model: PoeticTextsPart): void {
-    if (!model) {
+  private updateForm(part?: PoeticTextsPart | null): void {
+    if (!part) {
       this.form.reset();
       return;
     }
     this.texts.clear();
-    if (model.texts) {
-      for (let text of model.texts) {
+    if (part.texts) {
+      for (let text of part.texts) {
         this.texts.controls.push(this.getTextGroup(text));
       }
     }
     this.form.markAsPristine();
   }
 
-  protected onModelSet(model: PoeticTextsPart): void {
-    this.updateForm(deepCopy(model));
+  protected override onDataSet(data?: EditedObject<PoeticTextsPart>): void {
+    // thesauri
+    if (data?.thesauri) {
+      this.updateThesauri(data.thesauri);
+    }
+
+    // form
+    this.updateForm(data?.value);
   }
 
-  protected onThesauriSet(): void {
-    const key = 'poetic-text-metres';
-    if (this.thesauri && this.thesauri[key]) {
-      this.metreEntries = this.thesauri[key].entries;
-    } else {
-      this.metreEntries = undefined;
-    }
-  }
-
-  protected getModelFromForm(): PoeticTextsPart {
-    let part = this.model;
-    if (!part) {
-      part = {
-        itemId: this.itemId!,
-        id: '',
-        typeId: POETIC_TEXTS_PART_TYPEID,
-        roleId: this.roleId,
-        timeCreated: new Date(),
-        creatorId: '',
-        timeModified: new Date(),
-        userId: '',
-        texts: [],
-      };
-    }
+  protected getValue(): PoeticTextsPart {
+    let part = this.getEditedPart(POETIC_TEXTS_PART_TYPEID) as PoeticTextsPart;
     part.texts = this.getTexts();
     return part;
   }

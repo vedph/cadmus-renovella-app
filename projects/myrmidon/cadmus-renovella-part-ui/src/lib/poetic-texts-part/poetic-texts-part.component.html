@@ -1,5 +1,5 @@
-<form [formGroup]="form!" (submit)="save()">
-  <mat-card>
+<form [formGroup]="form" (submit)="save()">
+  <mat-card appearance="outlined">
     <mat-card-header>
       <div mat-card-avatar>
         <mat-icon>picture_in_picture</mat-icon>
@@ -62,7 +62,8 @@
             <!-- child controls -->
             <!-- incipit -->
             <mat-form-field class="long-text">
-              <input matInput formControlName="incipit" placeholder="incipit" />
+              <mat-label>incipit</mat-label>
+              <input matInput formControlName="incipit" />
               <mat-error
                 *ngIf="
                   $any(item)['controls'].incipit.errors?.required &&
@@ -80,13 +81,13 @@
                 >incipit too long</mat-error
               >
             </mat-form-field>
-            <div style="margin-left: 80px;">
+            <div style="margin-left: 80px">
               <!-- metre (bound) -->
               <mat-form-field *ngIf="metreEntries?.length">
+                <mat-label>metre</mat-label>
                 <mat-select
                   *ngIf="metreEntries?.length"
                   formControlName="metre"
-                  placeholder="metre"
                 >
                   <mat-option *ngFor="let e of metreEntries" [value]="e.id">{{
                     e.value
@@ -103,7 +104,8 @@
               </mat-form-field>
               <!-- metre (free) -->
               <mat-form-field *ngIf="!metreEntries?.length">
-                <input matInput formControlName="metre" placeholder="metre" />
+                <mat-label>metre</mat-label>
+                <input matInput formControlName="metre" />
                 <mat-error
                   *ngIf="
                     $any(item)['controls'].metre.errors?.required &&
@@ -124,7 +126,8 @@
               <!-- note -->
               &nbsp;
               <mat-form-field>
-                <input matInput formControlName="note" placeholder="note" />
+                <mat-label>note</mat-label>
+                <input matInput formControlName="note" />
                 <mat-error
                   *ngIf="
                     $any(item)['controls'].note.errors?.maxLength &&
