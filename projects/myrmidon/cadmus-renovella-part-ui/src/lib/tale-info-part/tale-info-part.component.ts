@@ -1,22 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   UntypedFormControl,
   UntypedFormBuilder as FormBuilder,
   Validators,
   FormGroup,
   UntypedFormGroup,
+  FormControl,
 } from '@angular/forms';
 
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
-import { ThesaurusEntry, DataPinInfo, ThesauriSet } from '@myrmidon/cadmus-core';
+import {
+  ThesaurusEntry,
+  DataPinInfo,
+  ThesauriSet,
+} from '@myrmidon/cadmus-core';
 
-import { deepCopy } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 
 import { TaleInfoPart, TALE_INFO_PART_TYPEID } from '../tale-info-part';
 import { CitedPerson } from '../cited-persons-part';
-import { Flag } from '@myrmidon/cadmus-ui-flags-picker';
+import { Flag, FlagsPickerAdapter } from '@myrmidon/cadmus-ui-flags-picker';
+import { Observable } from 'rxjs';
+
+function entryToFlag(entry: ThesaurusEntry): Flag {
+  return {
+    id: entry.id,
+    label: entry.value,
+  };
+}
 
 /**
  * TaleInfo editor component.
@@ -32,28 +44,30 @@ export class TaleInfoPartComponent
   extends ModelEditorComponentBase<TaleInfoPart>
   implements OnInit
 {
-  public isCollection: UntypedFormControl;
-  public collectionId: UntypedFormControl;
-  public containerId: UntypedFormControl;
-  public ordinal: UntypedFormControl;
-  public title: UntypedFormControl;
-  public language: UntypedFormControl;
-  public genres: UntypedFormControl;
+  private readonly _flagAdapter: FlagsPickerAdapter;
+  private _taleGenreEntries: ThesaurusEntry[];
 
-  public hasAuthor: UntypedFormControl;
-  public author: UntypedFormControl;
-  public hasDedicatee: UntypedFormControl;
-  public dedicatee: UntypedFormControl;
-  public structure: UntypedFormControl;
-  public narrator: UntypedFormControl;
-  public place: UntypedFormControl;
-  public date: UntypedFormControl;
+  public isCollection: FormControl<boolean>;
+  public collectionId: FormControl<string | null>;
+  public containerId: FormControl<string | null>;
+  public ordinal: FormControl<number>;
+  public title: FormControl<string>;
+  public language: FormControl<string>;
+  public genres: FormControl<Flag[]>;
 
-  public rubric: UntypedFormControl;
-  public incipit: UntypedFormControl;
-  public explicit: UntypedFormControl;
+  public hasAuthor: FormControl<boolean>;
+  public author: FormControl<CitedPerson | null>;
+  public hasDedicatee: FormControl<boolean>;
+  public dedicatee: FormControl<CitedPerson | null>;
+  public structure: FormControl<string | null>;
+  public narrator: FormControl<string | null>;
+  public place: FormControl<string | null>;
+  public date: FormControl<HistoricalDateModel>;
 
-  public initialGenres: string[];
+  public rubric: FormControl<string | null>;
+  public incipit: FormControl<string | null>;
+  public explicit: FormControl<string | null>;
+
   public initialContainerId: string | undefined;
   public initialAuthor: CitedPerson | undefined;
   public initialDedicatee: CitedPerson | undefined;
@@ -61,16 +75,33 @@ export class TaleInfoPartComponent
   // tale-languages
   public taleLangEntries: ThesaurusEntry[] | undefined;
   // tale-genres
-  public taleGenreEntries: ThesaurusEntry[] | undefined;
+  @Input()
+  public get taleGenreEntries(): ThesaurusEntry[] | undefined {
+    return this._taleGenreEntries;
+  }
+  public set taleGenreEntries(value: ThesaurusEntry[] | undefined) {
+    if (this._taleGenreEntries === value) {
+      return;
+    }
+    this._taleGenreEntries = value || [];
+    this._flagAdapter.setSlotFlags(
+      'genres',
+      this._taleGenreEntries.map(entryToFlag)
+    );
+  }
+
   // name-part-types
   public namePartTypeEntries: ThesaurusEntry[] | undefined;
 
-  public availGenreFlags: Flag[];
+  // flags
+  public genreFlags$: Observable<Flag[]>;
 
   constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
     super(authService, formBuilder);
-    this.initialGenres = [];
-    this.availGenreFlags = [];
+    this._taleGenreEntries = [];
+    // flags
+    this._flagAdapter = new FlagsPickerAdapter();
+    this.genreFlags$ = this._flagAdapter.selectFlags('genres');
     // form
     this.title = formBuilder.control(null, [
       Validators.required,
@@ -84,7 +115,10 @@ export class TaleInfoPartComponent
       Validators.required,
       Validators.maxLength(100),
     ]);
-    this.date = formBuilder.control(null, Validators.required);
+    this.date = formBuilder.control(
+      {},
+      { validators: Validators.required, nonNullable: true }
+    );
     this.genres = formBuilder.control([]);
 
     this.hasAuthor = formBuilder.control(false);
@@ -153,15 +187,8 @@ export class TaleInfoPartComponent
     let key = 'tale-genres';
     if (this.hasThesaurus(key)) {
       this.taleGenreEntries = thesauri[key].entries;
-      this.availGenreFlags = this.taleGenreEntries!.map((e) => {
-        return {
-          id: e.id,
-          label: e.value,
-        };
-      });
     } else {
       this.taleGenreEntries = undefined;
-      this.availGenreFlags = [];
     }
 
     key = 'name-part-type-entries';
@@ -182,7 +209,6 @@ export class TaleInfoPartComponent
   private updateForm(part?: TaleInfoPart | null): void {
     if (!part) {
       this.form.reset();
-      this.initialGenres = [];
       this.initialContainerId = undefined;
       return;
     }
@@ -195,8 +221,9 @@ export class TaleInfoPartComponent
     this.language.setValue(part.language);
     this.place.setValue(part.place);
     this.date.setValue(part.date);
-    this.genres.setValue(part.genres);
-    this.initialGenres = part.genres || [];
+    this.genres.setValue(
+      this._flagAdapter.setSlotChecks('genres', part.genres)
+    );
     this.hasAuthor.setValue(part.author ? true : false);
     this.author.setValue(part.author);
     this.initialAuthor = part.author;
@@ -233,16 +260,16 @@ export class TaleInfoPartComponent
     }
     part.title = this.title.value?.trim();
     part.language = this.language.value?.trim();
-    part.genres = this.genres.value || [];
+    part.genres = this._flagAdapter.getOptionalCheckedFlagIds('genres') || [];
     if (this.hasAuthor.value) {
-      part.author = this.author.value;
+      part.author = this.author.value || undefined;
     }
     part.structure = this.structure.value?.trim();
     if (this.hasDedicatee.value) {
-      part.dedicatee = this.dedicatee.value;
+      part.dedicatee = this.dedicatee.value || undefined;
     }
     part.narrator = this.narrator.value?.trim();
-    part.place = this.place.value?.trim();
+    part.place = this.place.value?.trim() || '';
     part.date = this.date.value;
     part.rubric = this.rubric.value?.trim();
     part.incipit = this.incipit.value?.trim();
