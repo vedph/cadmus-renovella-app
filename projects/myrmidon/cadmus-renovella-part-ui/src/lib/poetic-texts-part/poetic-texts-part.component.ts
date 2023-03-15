@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  UntypedFormArray,
-  UntypedFormBuilder,
   UntypedFormGroup,
+  FormArray,
   Validators,
 } from '@angular/forms';
 
-import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -34,12 +33,9 @@ export class PoeticTextsPartComponent
   // poetic-text-metres
   public metreEntries: ThesaurusEntry[] | undefined;
 
-  public texts: UntypedFormArray;
+  public texts: FormArray;
 
-  constructor(
-    authService: AuthJwtService,
-    private _formBuilder: UntypedFormBuilder
-  ) {
+  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
     super(authService, _formBuilder);
     // form
     this.texts = _formBuilder.array(
@@ -97,7 +93,7 @@ export class PoeticTextsPartComponent
     return part;
   }
 
-  private getTextGroup(item?: PoeticText): UntypedFormGroup {
+  private getTextGroup(item?: PoeticText): FormGroup {
     return this._formBuilder.group({
       incipit: this._formBuilder.control(item?.incipit, [
         Validators.required,
@@ -114,7 +110,7 @@ export class PoeticTextsPartComponent
   private getTexts(): PoeticText[] {
     const texts: PoeticText[] = [];
     for (let i = 0; i < this.texts.length; i++) {
-      const g = this.texts.at(i) as UntypedFormGroup;
+      const g = this.texts.at(i) as FormGroup;
       texts.push({
         incipit: g.controls.incipit.value?.trim(),
         metre: g.controls.metre.value?.trim(),

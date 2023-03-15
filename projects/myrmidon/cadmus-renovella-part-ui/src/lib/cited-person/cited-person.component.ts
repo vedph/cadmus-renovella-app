@@ -1,17 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormBuilder,
   Validators,
 } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { DecoratedId } from '@myrmidon/cadmus-refs-decorated-ids';
 import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
 import { ProperName, ProperNamePiece } from '@myrmidon/cadmus-refs-proper-name';
 import { NgToolsValidators } from '@myrmidon/ng-tools';
-import { BehaviorSubject } from 'rxjs';
+
 import { CitedPerson } from '../cited-persons-part';
 
 @Component({
@@ -23,12 +25,15 @@ export class CitedPersonComponent implements OnInit {
   private _person: CitedPerson | undefined;
 
   @Input()
-  public get person(): CitedPerson | undefined {
+  public get person(): CitedPerson | undefined | null {
     return this._person;
   }
-  public set person(value: CitedPerson | undefined) {
-    this._person = value;
-    this.updateForm(value);
+  public set person(value: CitedPerson | undefined | null) {
+    if (this._person === value) {
+      return;
+    }
+    this._person = value || undefined;
+    this.updateForm(this._person);
   }
 
   // languages
@@ -54,21 +59,16 @@ export class CitedPersonComponent implements OnInit {
 
   public sources$: BehaviorSubject<DocReference[]>;
 
-  public language: UntypedFormControl;
-  public tag: UntypedFormControl;
-  public rank: UntypedFormControl;
-  public parts: UntypedFormArray;
-  public sources: UntypedFormControl;
-  public ids: UntypedFormControl;
-  public form: UntypedFormGroup;
+  public language: FormControl<string | null>;
+  public tag: FormControl<string | null>;
+  public rank: FormControl<number>;
+  public parts: FormArray;
+  public sources: FormControl<DocReference[]>;
+  public ids: FormControl<DecoratedId[]>;
+  public form: FormGroup;
 
-  public initialSources: DocReference[];
-  public initialIds: DecoratedId[];
-
-  constructor(private _formBuilder: UntypedFormBuilder) {
+  constructor(private _formBuilder: FormBuilder) {
     this.sources$ = new BehaviorSubject<DocReference[]>([]);
-    this.initialSources = [];
-    this.initialIds = [];
 
     // events
     this.personChange = new EventEmitter<CitedPerson>();
@@ -80,13 +80,13 @@ export class CitedPersonComponent implements OnInit {
       Validators.maxLength(50),
     ]);
     this.tag = _formBuilder.control(null, Validators.maxLength(50));
-    this.rank = _formBuilder.control(0);
+    this.rank = _formBuilder.control(0, { nonNullable: true });
     this.parts = _formBuilder.array(
       [],
       NgToolsValidators.strictMinLengthValidator(1)
     );
-    this.sources = _formBuilder.control([]);
-    this.ids = _formBuilder.control([]);
+    this.sources = _formBuilder.control([], { nonNullable: true });
+    this.ids = _formBuilder.control([], { nonNullable: true });
 
     // this is the parent form for both name and ids
     this.form = _formBuilder.group({
@@ -106,14 +106,13 @@ export class CitedPersonComponent implements OnInit {
   }
 
   private updateForm(model: CitedPerson | undefined): void {
-    this.initialIds = model?.ids || [];
-    this.initialSources = model?.sources || [];
-
     if (!model) {
       this.form.reset();
     } else {
       this.language.setValue(model.name?.language);
-      this.tag.setValue(model.name?.tag);
+      this.sources.setValue(model.sources || []);
+      this.ids.setValue(model.ids || []);
+      this.tag.setValue(model.name?.tag || null);
       this.rank.setValue(model.rank || 0);
       this.parts.clear();
       for (const p of model.name?.pieces || []) {
@@ -127,7 +126,7 @@ export class CitedPersonComponent implements OnInit {
     const pieces: ProperNamePiece[] = [];
 
     for (let i = 0; i < this.parts.length; i++) {
-      const g = this.parts.controls[i] as UntypedFormGroup;
+      const g = this.parts.controls[i] as FormGroup;
       pieces.push({
         type: g.controls.type.value,
         value: g.controls.value.value?.trim(),
@@ -135,8 +134,8 @@ export class CitedPersonComponent implements OnInit {
     }
 
     return {
-      language: this.language.value,
-      tag: this.tag.value,
+      language: this.language.value || '',
+      tag: this.tag.value || undefined,
       pieces,
     };
   }
@@ -151,7 +150,7 @@ export class CitedPersonComponent implements OnInit {
   }
 
   // #region Pieces
-  private getPartGroup(piece?: ProperNamePiece): UntypedFormGroup {
+  private getPartGroup(piece?: ProperNamePiece): FormGroup {
     return this._formBuilder.group({
       type: this._formBuilder.control(piece?.type, [
         Validators.required,
@@ -214,7 +213,7 @@ export class CitedPersonComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const model = this.getPerson();
-    this.personChange.emit(model);
+    this._person = this.getPerson();
+    this.personChange.emit(this._person);
   }
 }

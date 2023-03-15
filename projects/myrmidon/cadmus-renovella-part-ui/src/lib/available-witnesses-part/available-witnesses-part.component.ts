@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {
   UntypedFormBuilder,
   Validators,
-  UntypedFormArray,
-  UntypedFormGroup,
   FormBuilder,
   FormGroup,
+  FormArray,
+  UntypedFormGroup,
 } from '@angular/forms';
 
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
@@ -36,7 +36,7 @@ export class AvailableWitnessesPartComponent
    */
   public witEntries: ThesaurusEntry[] | undefined;
 
-  public witnesses: UntypedFormArray;
+  public witnesses: FormArray;
 
   constructor(
     authService: AuthJwtService,
@@ -100,7 +100,7 @@ export class AvailableWitnessesPartComponent
     return part;
   }
 
-  private getWitnessGroup(witness?: AvailableWitness): UntypedFormGroup {
+  private getWitnessGroup(witness?: AvailableWitness): FormGroup {
     const g = this._formBuilder.group({
       id: this._formBuilder.control(witness?.id, [
         Validators.required,
@@ -167,7 +167,7 @@ export class AvailableWitnessesPartComponent
   private getWitnesses(): AvailableWitness[] {
     const witnesses: AvailableWitness[] = [];
     for (let i = 0; i < this.witnesses.length; i++) {
-      const g = this.witnesses.at(i) as UntypedFormGroup;
+      const g = this.witnesses.at(i) as FormGroup;
       witnesses.push({
         id: g.controls.id.value?.trim(),
         isPartial: g.controls.partial.value ? true : undefined,

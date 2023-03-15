@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
-  UntypedFormControl,
-  UntypedFormBuilder as FormBuilder,
+  FormBuilder,
   Validators,
   FormGroup,
   UntypedFormGroup,
   FormControl,
 } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import {
@@ -21,7 +21,6 @@ import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
 import { TaleInfoPart, TALE_INFO_PART_TYPEID } from '../tale-info-part';
 import { CitedPerson } from '../cited-persons-part';
 import { Flag, FlagsPickerAdapter } from '@myrmidon/cadmus-ui-flags-picker';
-import { Observable } from 'rxjs';
 
 function entryToFlag(entry: ThesaurusEntry): Flag {
   return {
@@ -103,29 +102,29 @@ export class TaleInfoPartComponent
     this._flagAdapter = new FlagsPickerAdapter();
     this.genreFlags$ = this._flagAdapter.selectFlags('genres');
     // form
-    this.title = formBuilder.control(null, [
-      Validators.required,
-      Validators.maxLength(200),
-    ]);
-    this.language = formBuilder.control(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]);
+    this.title = formBuilder.control('', {
+      validators: [Validators.required, Validators.maxLength(200)],
+      nonNullable: true,
+    });
+    this.language = formBuilder.control('', {
+      validators: [Validators.required, Validators.maxLength(50)],
+      nonNullable: true,
+    });
     this.place = formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(100),
     ]);
     this.date = formBuilder.control(
-      {},
+      { a: { value: 0 } },
       { validators: Validators.required, nonNullable: true }
     );
-    this.genres = formBuilder.control([]);
+    this.genres = formBuilder.control([], { nonNullable: true });
 
-    this.hasAuthor = formBuilder.control(false);
+    this.hasAuthor = formBuilder.control(false, { nonNullable: true });
     this.author = formBuilder.control(null);
     this.structure = formBuilder.control(null, Validators.maxLength(3000));
 
-    this.hasDedicatee = formBuilder.control(false);
+    this.hasDedicatee = formBuilder.control(false, { nonNullable: true });
     this.dedicatee = formBuilder.control(null);
 
     this.narrator = formBuilder.control(null, Validators.maxLength(50));
@@ -134,7 +133,7 @@ export class TaleInfoPartComponent
     this.incipit = formBuilder.control(null, Validators.maxLength(1000));
     this.explicit = formBuilder.control(null, Validators.maxLength(1000));
 
-    this.isCollection = formBuilder.control(false);
+    this.isCollection = formBuilder.control(false, { nonNullable: true });
     this.collectionId = formBuilder.control(null, [
       Validators.maxLength(50),
       Validators.required,
@@ -143,7 +142,10 @@ export class TaleInfoPartComponent
       Validators.maxLength(50),
       Validators.required,
     ]);
-    this.ordinal = formBuilder.control(0, Validators.min(0));
+    this.ordinal = formBuilder.control(0, {
+      validators: Validators.min(0),
+      nonNullable: true,
+    });
   }
 
   protected buildForm(formBuilder: FormBuilder): FormGroup | UntypedFormGroup {
@@ -213,10 +215,10 @@ export class TaleInfoPartComponent
       return;
     }
     this.isCollection.setValue(part.collectionId ? true : false);
-    this.collectionId.setValue(part.collectionId);
-    this.containerId.setValue(part.containerId);
+    this.collectionId.setValue(part.collectionId || null);
+    this.containerId.setValue(part.containerId || null);
     this.initialContainerId = part.containerId;
-    this.ordinal.setValue(part.ordinal);
+    this.ordinal.setValue(part.ordinal || 0);
     this.title.setValue(part.title);
     this.language.setValue(part.language);
     this.place.setValue(part.place);
@@ -225,16 +227,16 @@ export class TaleInfoPartComponent
       this._flagAdapter.setSlotChecks('genres', part.genres)
     );
     this.hasAuthor.setValue(part.author ? true : false);
-    this.author.setValue(part.author);
+    this.author.setValue(part.author || null);
     this.initialAuthor = part.author;
-    this.structure.setValue(part.structure);
+    this.structure.setValue(part.structure || null);
     this.hasDedicatee.setValue(part.dedicatee ? true : false);
-    this.dedicatee.setValue(part.dedicatee);
+    this.dedicatee.setValue(part.dedicatee || null);
     this.initialDedicatee = part.dedicatee;
-    this.narrator.setValue(part.narrator);
-    this.rubric.setValue(part.rubric);
-    this.incipit.setValue(part.incipit);
-    this.explicit.setValue(part.explicit);
+    this.narrator.setValue(part.narrator || null);
+    this.rubric.setValue(part.rubric || null);
+    this.incipit.setValue(part.incipit || null);
+    this.explicit.setValue(part.explicit || null);
     this.form.markAsPristine();
   }
 
@@ -284,14 +286,14 @@ export class TaleInfoPartComponent
     this.date.markAsDirty();
   }
 
-  public onFlagsChange(selectedIds: string[]): void {
-    this.genres.setValue(selectedIds);
+  public onFlagsChange(flags: Flag[]): void {
+    this.genres.setValue(flags);
     this.genres.updateValueAndValidity();
     this.genres.markAsDirty();
   }
 
   public onContainerEntryChange(entry: DataPinInfo | null): void {
-    this.containerId.setValue(entry?.value);
+    this.containerId.setValue(entry?.value || null);
     this.containerId.updateValueAndValidity();
     this.containerId.markAsDirty();
   }
