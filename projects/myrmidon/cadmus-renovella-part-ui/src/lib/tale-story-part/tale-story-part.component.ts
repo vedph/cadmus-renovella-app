@@ -1,17 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  UntypedFormControl,
-  UntypedFormBuilder,
+  FormControl,
   Validators,
-  UntypedFormArray,
-  UntypedFormGroup,
+  FormArray,
   FormBuilder,
   FormGroup,
+  UntypedFormGroup,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { deepCopy, NgToolsValidators } from '@myrmidon/ng-tools';
+import { NgToolsValidators } from '@myrmidon/ng-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
@@ -40,14 +39,14 @@ export class TaleStoryPartComponent
   private _charSubs: Subscription[];
   private _placeSubs: Subscription[];
 
-  public summary: UntypedFormControl;
-  public prologue: UntypedFormControl;
-  public epilogue: UntypedFormControl;
-  public age: UntypedFormControl;
-  public hasDate: UntypedFormControl;
-  public date: UntypedFormControl;
-  public places: UntypedFormArray;
-  public characters: UntypedFormArray;
+  public summary: FormControl<string>;
+  public prologue: FormControl<string | null>;
+  public epilogue: FormControl<string | null>;
+  public age: FormControl<string | null>;
+  public hasDate: FormControl<boolean>;
+  public date: FormControl<HistoricalDateModel | null>;
+  public places: FormArray;
+  public characters: FormArray;
 
   // story-roles
   public storyRoleEntries: ThesaurusEntry[] | undefined;
@@ -61,10 +60,10 @@ export class TaleStoryPartComponent
     this._charSubs = [];
     this._placeSubs = [];
     // form
-    this.summary = _formBuilder.control(null, [
-      Validators.required,
-      Validators.maxLength(5000),
-    ]);
+    this.summary = _formBuilder.control('', {
+      validators: [Validators.required, Validators.maxLength(5000)],
+      nonNullable: true,
+    });
     this.prologue = _formBuilder.control(null, Validators.maxLength(1000));
     this.epilogue = _formBuilder.control(null, Validators.maxLength(1000));
     this.characters = _formBuilder.array(
@@ -72,7 +71,7 @@ export class TaleStoryPartComponent
       NgToolsValidators.strictMinLengthValidator(1)
     );
     this.age = _formBuilder.control(null);
-    this.hasDate = _formBuilder.control(false);
+    this.hasDate = _formBuilder.control(false, { nonNullable: true });
     this.date = _formBuilder.control(
       null,
       NgToolsValidators.conditionalValidator(
@@ -128,17 +127,17 @@ export class TaleStoryPartComponent
       return;
     }
     this.summary.setValue(part.summary);
-    this.prologue.setValue(part.prologue);
-    this.epilogue.setValue(part.epilogue);
+    this.prologue.setValue(part.prologue || null);
+    this.epilogue.setValue(part.epilogue || null);
     this.characters.clear();
     if (part.characters) {
       for (let c of part.characters) {
         this.addCharacter(c);
       }
     }
-    this.age.setValue(part.age);
+    this.age.setValue(part.age || null);
     this.hasDate.setValue(part.date ? true : false);
-    this.date.setValue(part.date);
+    this.date.setValue(part.date || null);
     this.places.clear();
     if (part.places) {
       for (let p of part.places) {
@@ -189,7 +188,7 @@ export class TaleStoryPartComponent
     part.epilogue = this.epilogue.value?.trim();
     part.characters = this.getCharacters();
     part.age = this.age.value?.trim();
-    part.date = this.hasDate.value ? this.date.value : undefined;
+    part.date = this.hasDate.value ? this.date.value || undefined : undefined;
     part.places = this.getPlaces();
 
     return part;

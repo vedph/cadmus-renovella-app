@@ -31,7 +31,7 @@
     "@myrmidon/cadmus-item-search": "^2.0.2",
     "@myrmidon/cadmus-layer-demo": "^2.0.0",
     "@myrmidon/cadmus-part-general-pg": "^2.1.0",
-    "@myrmidon/cadmus-part-general-ui": "^2.0.7",
+    "@myrmidon/cadmus-part-general-ui": "^2.1.0",
     "@myrmidon/cadmus-preview-pg": "^2.0.0",
     "@myrmidon/cadmus-preview-ui": "^2.0.2",
     "@myrmidon/cadmus-profile-core": "^2.0.0",

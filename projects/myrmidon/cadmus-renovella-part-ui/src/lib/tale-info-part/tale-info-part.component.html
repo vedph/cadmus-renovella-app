@@ -145,9 +145,8 @@
             <!-- genres -->
             <cadmus-ui-flags-picker
               [numbering]="true"
-              [flags]="availGenreFlags"
-              [selectedIds]="initialGenres"
-              (selectedIdsChange)="onFlagsChange($event)"
+              [flags]="genreFlags$ | async"
+              (flagsChange)="onFlagsChange($event)"
             ></cadmus-ui-flags-picker>
           </div>
         </mat-tab>

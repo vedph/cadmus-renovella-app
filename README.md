@@ -6,10 +6,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Quick Docker image build:
 
-1. update version number in `env.js`.
-2. `npm run build-lib`
-3. `ng build --configuration production`
-4. `docker build . -t vedph2020/cadmus-renovella-app:1.2.7 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+1. update version number in `env.js` (and in Docker files);
+2. `npm run build-lib`;
+3. `ng build --configuration production`;
+4. `docker build . -t vedph2020/cadmus-renovella-app:2.0.0 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
 
 ## Production
 

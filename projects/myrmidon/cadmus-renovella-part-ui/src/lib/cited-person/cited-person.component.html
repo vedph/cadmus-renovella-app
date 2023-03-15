@@ -197,7 +197,7 @@
     </mat-expansion-panel-header>
     <cadmus-refs-decorated-ids
       [tagEntries]="idTagEntries"
-      [ids]="initialIds"
+      [ids]="ids.value"
       (idsChange)="onIdsChange($event)"
     ></cadmus-refs-decorated-ids>
   </mat-expansion-panel>
@@ -213,7 +213,7 @@
     <cadmus-refs-doc-references
       [tagEntries]="idTagEntries"
       [typeEntries]="idTypeEntries"
-      [references]="initialSources"
+      [references]="sources.value"
       (referencesChange)="onSourcesChange($event)"
     ></cadmus-refs-doc-references>
   </mat-expansion-panel>
