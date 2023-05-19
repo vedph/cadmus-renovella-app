@@ -6,6 +6,7 @@
     <a mat-button routerLink="/home">Cadmus Re.Novella</a>
 
     <button
+      type="button"
       mat-button
       [matMenuTriggerFor]="itemMenu"
       *ngIf="logged && itemBrowsers"
@@ -57,6 +58,7 @@
 
       <!-- admin menu -->
       <button
+        type="button"
         *ngIf="user && user.roles.includes('admin')"
         mat-button
         [matMenuTriggerFor]="adminMenu"
@@ -86,9 +88,14 @@
   <div layout="row" layout-align="center center">
     <p>
       Cadmus by
-      <a href="https://www.fusisoft.net" target="_blank">Daniele Fusi</a> at
-      <a href="https://www.unive.it/pag/39287" target="_blank">VeDPH</a> -
-      Re.Novella {{ version }}
+      <a rel="noopener" href="http://www.fusisoft.it" target="_blank"
+        >Daniele Fusi</a
+      >
+      at
+      <a rel="noopener" href="https://www.unive.it/pag/39287" target="_blank"
+        >VeDPH</a
+      >
+      - Re.Novella {{ version }}
     </p>
   </div>
 </footer>
