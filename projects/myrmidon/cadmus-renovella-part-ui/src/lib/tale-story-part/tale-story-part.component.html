@@ -58,12 +58,12 @@
               <div>
                 <button
                   type="button"
-                  mat-icon-button
+                  mat-flat-button
                   color="primary"
                   (click)="addPlace()"
                 >
                   <mat-icon>add_circle</mat-icon>
-                  add place
+                  place
                 </button>
               </div>
               <div
@@ -242,12 +242,12 @@
             <div>
               <button
                 type="button"
-                mat-icon-button
+                mat-flat-button
                 color="primary"
                 (click)="addCharacter()"
               >
                 <mat-icon>add_circle</mat-icon>
-                add character
+                character
               </button>
             </div>
             <div
@@ -367,7 +367,7 @@
 
                 <!-- sex -->
                 &nbsp;
-                <mat-form-field style="width: 2.5em">
+                <mat-form-field style="width: 5em">
                   <mat-label>sex</mat-label>
                   <mat-select formControlName="sex">
                     <mat-option [value]="null">-</mat-option>

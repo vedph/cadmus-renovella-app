@@ -24,6 +24,11 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+### 3.0.0
+
+- 2023-06-23:
+  - moved to PostgreSQL.
+  - updated Angular and packages.
 - 2023-05-19: updated Angular and packages.
 
 ### 2.0.0
