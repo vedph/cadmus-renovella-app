@@ -24,6 +24,7 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+- 2023-07-19: updated Docker script.
 - 2023-07-08: updated Angular and packages.
 
 ### 3.0.0
