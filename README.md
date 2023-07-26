@@ -9,7 +9,7 @@ Quick Docker image build:
 1. update version number in `env.js` (and in Docker files);
 2. `npm run build-lib`;
 3. `ng build --configuration production`;
-4. `docker build . -t vedph2020/cadmus-renovella-app:3.0.0 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+4. `docker build . -t vedph2020/cadmus-renovella-app:3.0.1 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
 
 ## Production
 
@@ -20,10 +20,13 @@ Quick Docker image build:
 window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 ```
 
-3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:3.0.0-prod`. The production version is labeled like this one, with `-prod` suffix.
+3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:3.0.1-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## History
 
+### 3.0.1
+
+- 2023-07-26: updated Angular.
 - 2023-07-19: updated Docker script.
 - 2023-07-08: updated Angular and packages.
 
