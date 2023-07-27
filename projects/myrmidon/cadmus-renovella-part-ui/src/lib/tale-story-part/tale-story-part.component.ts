@@ -129,7 +129,7 @@ export class TaleStoryPartComponent
     this.summary.setValue(part.summary);
     this.prologue.setValue(part.prologue || null);
     this.epilogue.setValue(part.epilogue || null);
-    this.characters.clear();
+    this.characters.clear({ emitEvent: false });
     if (part.characters) {
       for (let c of part.characters) {
         this.addCharacter(c);
@@ -138,7 +138,7 @@ export class TaleStoryPartComponent
     this.age.setValue(part.age || null);
     this.hasDate.setValue(part.date ? true : false);
     this.date.setValue(part.date || null);
-    this.places.clear();
+    this.places.clear({ emitEvent: false });
     if (part.places) {
       for (let p of part.places) {
         this.addPlace(p);
@@ -208,8 +208,7 @@ export class TaleStoryPartComponent
         Validators.maxLength(100)
       ),
       sex: this._formBuilder.control(
-        character?.sex,
-        Validators.pattern(/^[MF]$/)
+        character?.sex
       ),
       role: this._formBuilder.control(character?.role, [
         Validators.required,
