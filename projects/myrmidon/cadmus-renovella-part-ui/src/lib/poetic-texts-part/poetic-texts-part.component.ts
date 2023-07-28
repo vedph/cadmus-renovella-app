@@ -3,8 +3,7 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
-  FormArray,
-  Validators,
+  FormControl,
 } from '@angular/forms';
 
 import { NgToolsValidators } from '@myrmidon/ng-tools';
@@ -17,6 +16,7 @@ import {
   PoeticTextsPart,
   POETIC_TEXTS_PART_TYPEID,
 } from '../poetic-texts-part';
+import { DialogService } from '@myrmidon/ng-mat-tools';
 
 /**
  * Poetic texts info component. Thesauri: poetic-text-metres (optional).
@@ -30,18 +30,26 @@ export class PoeticTextsPartComponent
   extends ModelEditorComponentBase<PoeticTextsPart>
   implements OnInit
 {
+  public editedText?: PoeticText;
+  public editedIndex;
+
   // poetic-text-metres
   public metreEntries: ThesaurusEntry[] | undefined;
 
-  public texts: FormArray;
+  public texts: FormControl<PoeticText[]>;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
-    super(authService, _formBuilder);
+  constructor(
+    authService: AuthJwtService,
+    formBuilder: FormBuilder,
+    private _dialog: DialogService
+  ) {
+    super(authService, formBuilder);
+    this.editedIndex = -1;
     // form
-    this.texts = _formBuilder.array(
-      [],
-      NgToolsValidators.strictMinLengthValidator(1)
-    );
+    this.texts = formBuilder.control([], {
+      validators: NgToolsValidators.strictMinLengthValidator(1),
+      nonNullable: true,
+    });
   }
 
   public ngOnInit(): void {
@@ -68,12 +76,7 @@ export class PoeticTextsPartComponent
       this.form.reset();
       return;
     }
-    this.texts.clear();
-    if (part.texts) {
-      for (let text of part.texts) {
-        this.texts.controls.push(this.getTextGroup(text));
-      }
-    }
+    this.texts.setValue(part.texts);
     this.form.markAsPristine();
   }
 
@@ -89,64 +92,76 @@ export class PoeticTextsPartComponent
 
   protected getValue(): PoeticTextsPart {
     let part = this.getEditedPart(POETIC_TEXTS_PART_TYPEID) as PoeticTextsPart;
-    part.texts = this.getTexts();
+    part.texts = this.texts.value;
     return part;
   }
 
-  private getTextGroup(item?: PoeticText): FormGroup {
-    return this._formBuilder.group({
-      incipit: this._formBuilder.control(item?.incipit, [
-        Validators.required,
-        Validators.maxLength(500),
-      ]),
-      metre: this._formBuilder.control(item?.metre, [
-        Validators.required,
-        Validators.maxLength(50),
-      ]),
-      note: this._formBuilder.control(item?.note, Validators.maxLength(500)),
-    });
+  public addText(): void {
+    this.editText(
+      {
+        incipit: '',
+        metre: '',
+      },
+      -1
+    );
   }
 
-  private getTexts(): PoeticText[] {
-    const texts: PoeticText[] = [];
-    for (let i = 0; i < this.texts.length; i++) {
-      const g = this.texts.at(i) as FormGroup;
-      texts.push({
-        incipit: g.controls.incipit.value?.trim(),
-        metre: g.controls.metre.value?.trim(),
-        note: g.controls.note.value?.trim(),
-      });
+  public editText(text: PoeticText, index: number): void {
+    this.editedText = text;
+    this.editedIndex = index;
+  }
+
+  public closeText(): void {
+    this.editedText = undefined;
+    this.editedIndex = -1;
+  }
+
+  public onTextChange(text: PoeticText): void {
+    const texts = [...this.texts.value];
+    if (this.editedIndex === -1) {
+      texts.push(text);
+    } else {
+      texts.splice(this.editedIndex, 1, text);
     }
-    return texts;
-  }
-
-  public addText(item?: PoeticText): void {
-    this.texts.push(this.getTextGroup(item));
+    this.texts.setValue(texts);
     this.texts.markAsDirty();
+    this.closeText();
   }
 
   public removeText(index: number): void {
-    this.texts.removeAt(index);
-    this.texts.markAsDirty();
+    this._dialog
+      .confirm('Confirm Deletion', `Delete text #${index + 1}?`)
+      .subscribe((yes: boolean) => {
+        if (yes) {
+          const texts = [...this.texts.value];
+          texts.splice(index, 1);
+          this.texts.setValue(texts);
+          this.texts.markAsDirty();
+        }
+      });
   }
 
   public moveTextUp(index: number): void {
     if (index < 1) {
       return;
     }
-    const item = this.texts.controls[index];
-    this.texts.removeAt(index);
-    this.texts.insert(index - 1, item);
+    const texts = [...this.texts.value];
+    const item = this.texts.value[index];
+    texts.splice(index, 1);
+    texts.splice(index - 1, 0, item);
+    this.texts.setValue(texts);
     this.texts.markAsDirty();
   }
 
   public moveTextDown(index: number): void {
-    if (index + 1 >= this.texts.length) {
+    if (index + 1 >= this.texts.value.length) {
       return;
     }
-    const item = this.texts.controls[index];
-    this.texts.removeAt(index);
-    this.texts.insert(index + 1, item);
+    const texts = [...this.texts.value];
+    const item = this.texts.value[index];
+    texts.splice(index, 1);
+    texts.splice(index + 1, 0, item);
+    this.texts.setValue(texts);
     this.texts.markAsDirty();
   }
 }

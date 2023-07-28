@@ -56,7 +56,7 @@ services:
 
   # Cadmus Renovella app
   cadmus-renovella-app:
-    image: vedph2020/cadmus-renovella-app:3.0.2
+    image: vedph2020/cadmus-renovella-app:3.0.4
     container_name: cadmus-renovella-app
     ports:
       - 4200:80

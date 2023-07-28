@@ -1,0 +1,87 @@
+<form [formGroup]="form" (submit)="save()">
+  <!-- incipit -->
+  <div>
+    <mat-form-field class="long-text">
+      <mat-label>incipit</mat-label>
+      <textarea rows="3" matInput [formControl]="incipit"></textarea>
+      <mat-error
+        *ngIf="
+          $any(incipit).errors?.required && (incipit.dirty || incipit.touched)
+        "
+        >incipit required</mat-error
+      >
+      <mat-error
+        *ngIf="
+          $any(incipit).errors?.maxLength && (incipit.dirty || incipit.touched)
+        "
+        >incipit too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div>
+    <!-- metre (bound) -->
+    <mat-form-field *ngIf="metreEntries?.length">
+      <mat-label>metre</mat-label>
+      <mat-select [formControl]="metre">
+        <mat-option *ngFor="let e of metreEntries" [value]="e.id">{{
+          e.value
+        }}</mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="$any(metre).errors?.required && (metre.dirty || metre.touched)"
+        >metre required</mat-error
+      >
+    </mat-form-field>
+    <!-- metre (free) -->
+    <mat-form-field>
+      <mat-label>metre</mat-label>
+      <input matInput [formControl]="metre" />
+      <mat-error
+        *ngIf="$any(metre).errors?.required && (metre.dirty || metre.touched)"
+        >metre required</mat-error
+      >
+      <mat-error
+        *ngIf="$any(metre).errors?.maxLength && (metre.dirty || metre.touched)"
+        >metre too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <!-- note -->
+  <div>
+    <mat-form-field class="long-text">
+      <mat-label>note</mat-label>
+      <textarea rows="3" matInput [formControl]="note"></textarea>
+      <mat-error
+        *ngIf="$any(note).errors?.required && (note.dirty || note.touched)"
+        >note required</mat-error
+      >
+      <mat-error
+        *ngIf="$any(note).errors?.maxLength && (note.dirty || note.touched)"
+        >note too long</mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <button
+      type="button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Discard changes"
+      (click)="cancel()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      type="submit"
+      color="primary"
+      mat-icon-button
+      matTooltip="Accept changes"
+      [disabled]="form.invalid || form.pristine"
+    >
+      <mat-icon>check_circle</mat-icon>
+    </button>
+  </div>
+</form>

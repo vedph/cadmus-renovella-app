@@ -7,140 +7,83 @@
       <mat-card-title>Poetic Texts Part</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div formArrayName="texts">
-        <div>
-          <button
-            type="button"
-            mat-flat-button
-            color="primary"
-            (click)="addText()"
-          >
-            <mat-icon>add_circle</mat-icon>
-            text
-          </button>
-        </div>
-        <div
-          *ngFor="
-            let item of texts.controls;
-            let i = index;
-            let first = first;
-            let last = last
-          "
-        >
-          <!-- child form -->
-          <div [formGroupName]="i">
-            <!-- child actions -->
-            {{ i + 1 }}.
-            <button
-              mat-icon-button
-              type="button"
-              matTooltip="Remove this text"
-              color="warn"
-              (click)="removeText(i)"
-            >
-              <mat-icon>remove_circle</mat-icon>
-            </button>
-            <button
-              [disabled]="first"
-              mat-icon-button
-              type="button"
-              matTooltip="Move text up"
-              (click)="moveTextUp(i)"
-            >
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button
-              [disabled]="last"
-              mat-icon-button
-              type="button"
-              matTooltip="Move text down"
-              (click)="moveTextDown(i)"
-            >
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
+      <button type="button" mat-flat-button (click)="addText()">
+        <mat-icon>add</mat-icon>
+        <span>text</span>
+      </button>
 
-            <!-- child controls -->
-            <!-- incipit -->
-            <mat-form-field class="long-text">
-              <mat-label>incipit</mat-label>
-              <input matInput formControlName="incipit" />
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].incipit.errors?.required &&
-                  ($any(item)['controls'].incipit.dirty ||
-                    $any(item)['controls'].incipit.touched)
-                "
-                >incipit required</mat-error
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>#</th>
+            <th>incipit</th>
+            <th>metre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let t of texts.value;
+              let i = index;
+              let first = first;
+              let last = last
+            "
+          >
+            <td>
+              <button
+                type="button"
+                color="primary"
+                mat-icon-button
+                (click)="editText(t, i)"
               >
-              <mat-error
-                *ngIf="
-                  $any(item)['controls'].incipit.errors?.maxLength &&
-                  ($any(item)['controls'].incipit.dirty ||
-                    $any(item)['controls'].incipit.touched)
-                "
-                >incipit too long</mat-error
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                color="warn"
+                mat-icon-button
+                (click)="removeText(i)"
               >
-            </mat-form-field>
-            <div style="margin-left: 80px">
-              <!-- metre (bound) -->
-              <mat-form-field *ngIf="metreEntries?.length">
-                <mat-label>metre</mat-label>
-                <mat-select
-                  *ngIf="metreEntries?.length"
-                  formControlName="metre"
-                >
-                  <mat-option *ngFor="let e of metreEntries" [value]="e.id">{{
-                    e.value
-                  }}</mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].metre.errors?.required &&
-                    ($any(item)['controls'].metre.dirty ||
-                      $any(item)['controls'].metre.touched)
-                  "
-                  >metre required</mat-error
-                >
-              </mat-form-field>
-              <!-- metre (free) -->
-              <mat-form-field *ngIf="!metreEntries?.length">
-                <mat-label>metre</mat-label>
-                <input matInput formControlName="metre" />
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].metre.errors?.required &&
-                    ($any(item)['controls'].metre.dirty ||
-                      $any(item)['controls'].metre.touched)
-                  "
-                  >metre required</mat-error
-                >
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].metre.errors?.maxLength &&
-                    ($any(item)['controls'].metre.dirty ||
-                      $any(item)['controls'].metre.touched)
-                  "
-                  >metre too long</mat-error
-                >
-              </mat-form-field>
-              <!-- note -->
-              &nbsp;
-              <mat-form-field>
-                <mat-label>note</mat-label>
-                <input matInput formControlName="note" />
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].note.errors?.maxLength &&
-                    ($any(item)['controls'].note.dirty ||
-                      $any(item)['controls'].note.touched)
-                  "
-                  >note too long</mat-error
-                >
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button
+                [disabled]="first"
+                mat-icon-button
+                type="button"
+                matTooltip="Move text up"
+                (click)="moveTextUp(i)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                [disabled]="last"
+                mat-icon-button
+                type="button"
+                matTooltip="Move text down"
+                (click)="moveTextDown(i)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+            </td>
+            <td>{{ i + 1 }}</td>
+            <td>{{ t.incipit | ellipsis }}</td>
+            <td>{{ t.metre }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <mat-expansion-panel [expanded]="editedText" [disabled]="!editedText">
+        <mat-expansion-panel-header
+          >#{{ editedIndex + 1 }}</mat-expansion-panel-header
+        >
+        <renovella-poetic-text
+          [metreEntries]="metreEntries"
+          [text]="editedText"
+          (textChange)="onTextChange($event)"
+          (close)="closeText()"
+        ></renovella-poetic-text>
+      </mat-expansion-panel>
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons

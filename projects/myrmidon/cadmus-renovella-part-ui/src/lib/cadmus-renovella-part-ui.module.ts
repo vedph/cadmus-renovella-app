@@ -29,6 +29,7 @@ import { CitedPersonComponent } from './cited-person/cited-person.component';
 import { TaleInfoPartComponent } from './tale-info-part/tale-info-part.component';
 import { TaleStoryPartComponent } from './tale-story-part/tale-story-part.component';
 import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.component';
+import { PoeticTextComponent } from './poetic-text/poetic-text.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { PoeticTextsPartComponent } from './poetic-texts-part/poetic-texts-part.
     TaleInfoPartComponent,
     TaleStoryPartComponent,
     PoeticTextsPartComponent,
+    PoeticTextComponent,
   ],
   imports: [
     CommonModule,
