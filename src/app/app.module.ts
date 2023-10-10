@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -40,10 +40,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 // ngx-markdown
 import { MarkdownModule } from 'ngx-markdown';
-
-// ELF
-import { devTools } from '@ngneat/elf-devtools';
-import { Actions } from '@ngneat/effects-ng';
 
 // myrmidon
 import { NgxDirtyCheckModule } from '@myrmidon/ngx-dirty-check';
@@ -86,16 +82,6 @@ import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
 import { CadmusRenovellaPartPgModule } from 'projects/myrmidon/cadmus-renovella-part-pg/src/public-api';
 import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-part-ui/src/public-api';
-
-// https://ngneat.github.io/elf/docs/dev-tools/
-export function initElfDevTools(actions: Actions) {
-  return () => {
-    devTools({
-      name: 'Cadmus Re.Novella',
-      actionsDispatcher: actions,
-    });
-  };
-}
 
 @NgModule({
   declarations: [
@@ -199,13 +185,6 @@ export function initElfDevTools(actions: Actions) {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthJwtInterceptor,
       multi: true,
-    },
-    // ELF dev tools
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      useFactory: initElfDevTools,
-      deps: [Actions],
     },
   ],
   bootstrap: [AppComponent],

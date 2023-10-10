@@ -24,6 +24,8 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+- 2023-10-10: ⚠️ updated Angular and packages and removed ELF.
+
 ### 3.0.5
 
 - 2023-09-29: updated Angular and packages, opting in for thesaurus import.
