@@ -20,7 +20,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 ```
 
-3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:3.0.5-prod`. The production version is labeled like this one, with `-prod` suffix.
+3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:3.0.6-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## History
 
