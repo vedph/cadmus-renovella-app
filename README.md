@@ -24,6 +24,10 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+- 2023-11-10:
+  - ⚠️ upgraded to Angular 17.
+  - opted in to edit flags.
+
 ### 3.0.6
 
 - 2023-10-24: updated Angular.

@@ -1,5 +1,5 @@
 <header>
-  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="start center">
+  <mat-toolbar color="primary">
     <span id="logo"
       ><img src="./assets/img/logo-white-40.png" alt="Fusisoft"
     /></span>
@@ -28,14 +28,16 @@
 
     <a mat-button routerLink="/search" *ngIf="logged">Search</a>
 
-    <a
-      mat-button
-      routerLink="/thesauri"
-      *ngIf="
-        user && (user.roles.includes('admin') || user.roles.includes('editor'))
-      "
-      >Thesauri</a
-    >
+    <!-- profile menu -->
+    <ng-container *ngIf="user && user.roles.includes('admin')">
+      <button type="button" mat-button [matMenuTriggerFor]="profileMenu">
+        Profile
+      </button>
+      <mat-menu #profileMenu>
+        <a mat-menu-item routerLink="/flags"> Flags </a>
+        <a mat-menu-item routerLink="/thesauri"> Thesauri </a>
+      </mat-menu>
+    </ng-container>
 
     <span class="tb-fill-remaining-space"></span>
 
