@@ -265,10 +265,14 @@ export class TaleInfoPartComponent
     part.genres = this._flagAdapter.getOptionalCheckedFlagIds('genres') || [];
     if (this.hasAuthor.value) {
       part.author = this.author.value || undefined;
+    } else {
+      part.author = undefined;
     }
     part.structure = this.structure.value?.trim();
     if (this.hasDedicatee.value) {
       part.dedicatee = this.dedicatee.value || undefined;
+    } else {
+      part.dedicatee = undefined;
     }
     part.narrator = this.narrator.value?.trim();
     part.place = this.place.value?.trim() || '';

@@ -2,3 +2,12 @@
   width: 90%;
   max-width: 800px;
 }
+fieldset {
+  margin: 8px 0;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+legend {
+  color: silver;
+}

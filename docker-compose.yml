@@ -33,10 +33,11 @@ services:
 
   # Cadmus Renovella API
   cadmus-renovella-api:
-    image: vedph2020/cadmus-renovella-api:4.0.5
+    image: vedph2020/cadmus-renovella-api:5.0.0
+    container_name: cadmus-renovella-api
     ports:
       # https://stackoverflow.com/questions/48669548/why-does-aspnet-core-start-on-port-80-from-within-docker
-      - 40392:80
+      - 40392:8080
     depends_on:
       - cadmus-renovella-mongo
       - cadmus-renovella-pgsql
@@ -61,7 +62,7 @@ services:
 
   # Cadmus Renovella app
   cadmus-renovella-app:
-    image: vedph2020/cadmus-renovella-app:3.0.6
+    image: vedph2020/cadmus-renovella-app:4.0.0
     container_name: cadmus-renovella-app
     ports:
       - 4200:80

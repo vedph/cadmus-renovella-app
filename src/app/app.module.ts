@@ -37,7 +37,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
 // ngx-monaco
-import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+
 // ngx-markdown
 import { MarkdownModule } from 'ngx-markdown';
 

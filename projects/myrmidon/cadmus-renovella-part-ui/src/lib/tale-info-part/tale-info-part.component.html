@@ -171,26 +171,36 @@
           <div>
             <mat-checkbox [formControl]="hasAuthor">author</mat-checkbox>
           </div>
-          <renovella-cited-person
-            *ngIf="hasAuthor?.value"
-            [langEntries]="taleLangEntries"
-            [nameTypeEntries]="namePartTypeEntries"
-            [person]="initialAuthor"
-            (personChange)="onAuthorChange($event)"
-          ></renovella-cited-person>
+          @if (hasAuthor.value) {
+          <fieldset>
+            <legend>author</legend>
+            <renovella-cited-person
+              *ngIf="hasAuthor?.value"
+              [langEntries]="taleLangEntries"
+              [nameTypeEntries]="namePartTypeEntries"
+              [person]="initialAuthor"
+              (personChange)="onAuthorChange($event)"
+            ></renovella-cited-person>
+          </fieldset>
+          }
         </mat-tab>
 
         <mat-tab label="dedicatee">
           <div>
             <mat-checkbox [formControl]="hasDedicatee">dedicatee</mat-checkbox>
           </div>
-          <renovella-cited-person
-            *ngIf="hasDedicatee?.value"
-            [langEntries]="taleLangEntries"
-            [nameTypeEntries]="namePartTypeEntries"
-            [person]="initialDedicatee"
-            (personChange)="onDedicateeChange($event)"
-          ></renovella-cited-person>
+          @if (hasDedicatee.value) {
+          <fieldset>
+            <legend>dedicatee</legend>
+            <renovella-cited-person
+              *ngIf="hasDedicatee?.value"
+              [langEntries]="taleLangEntries"
+              [nameTypeEntries]="namePartTypeEntries"
+              [person]="initialDedicatee"
+              (personChange)="onDedicateeChange($event)"
+            ></renovella-cited-person>
+          </fieldset>
+          }
         </mat-tab>
 
         <!-- TEXT -->

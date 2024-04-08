@@ -9,7 +9,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 1. update version number in `env.js` (and in Docker files);
 2. `npm run build-lib`;
 3. `ng build --configuration production`;
-4. `docker build . -t vedph2020/cadmus-renovella-app:3.0.6 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
+4. `docker build . -t vedph2020/cadmus-renovella-app:4.0.0 -t vedph2020/cadmus-renovella-app:latest` (replace with the current version).
 
 ## Production
 
@@ -23,6 +23,14 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:3.0.6-prod`. The production version is labeled like this one, with `-prod` suffix.
 
 ## History
+
+### 4.0.0
+
+- 2024-04-08:
+  - upgraded Angular.
+  - removed `rangy`.
+  - replaced Monaco editor wrapper with v2.
+  - fixed bug with saving tale info part when unchecking dedicatee/author.
 
 - 2023-11-10:
   - ⚠️ upgraded to Angular 17.
