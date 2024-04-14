@@ -24,6 +24,8 @@ window.__env.apiUrl = "https://renovella.unisi.it:40393/api/";
 
 ## History
 
+- 2024-04-14: upgraded to [bricks V2](https://github.com/vedph/cadmus-bricks-shell-v2).
+
 ### 4.0.0
 
 - 2024-04-08:

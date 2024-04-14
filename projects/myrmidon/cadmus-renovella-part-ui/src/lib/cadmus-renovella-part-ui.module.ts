@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// material
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,14 +16,19 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { CadmusCoreModule } from '@myrmidon/cadmus-core';
-import { CadmusRefsDecoratedIdsModule } from '@myrmidon/cadmus-refs-decorated-ids';
-import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
-import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
-import { CadmusRefsProperNameModule } from '@myrmidon/cadmus-refs-proper-name';
-import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
-import { CadmusUiModule } from '@myrmidon/cadmus-ui';
+// myrmidon
 import { NgToolsModule } from '@myrmidon/ng-tools';
+
+// bricks
+import { DecoratedIdsComponent } from '@myrmidon/cadmus-refs-decorated-ids';
+import { DocReferencesComponent } from '@myrmidon/cadmus-refs-doc-references';
+import { HistoricalDateComponent } from '@myrmidon/cadmus-refs-historical-date';
+import { ProperNameComponent } from '@myrmidon/cadmus-refs-proper-name';
+import { FlagsPickerComponent } from '@myrmidon/cadmus-ui-flags-picker';
+
+// cadmus
+import { CadmusCoreModule } from '@myrmidon/cadmus-core';
+import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 
 import { AvailableWitnessesPartComponent } from './available-witnesses-part/available-witnesses-part.component';
 import { CitedPersonComponent } from './cited-person/cited-person.component';
@@ -57,16 +63,17 @@ import { PoeticTextComponent } from './poetic-text/poetic-text.component';
     MatSlideToggleModule,
     MatTabsModule,
     MatTooltipModule,
-    // cadmus
+    // myrmidon
     NgToolsModule,
+    // bricks
+    HistoricalDateComponent,
+    DocReferencesComponent,
+    ProperNameComponent,
+    DecoratedIdsComponent,
+    FlagsPickerComponent,
+    // cadmus
     CadmusCoreModule,
     CadmusUiModule,
-    CadmusUiModule,
-    CadmusRefsHistoricalDateModule,
-    CadmusRefsDocReferencesModule,
-    CadmusRefsProperNameModule,
-    CadmusRefsDecoratedIdsModule,
-    CadmusUiFlagsPickerModule,
   ],
   exports: [
     AvailableWitnessesPartComponent,

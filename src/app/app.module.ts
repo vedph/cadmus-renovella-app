@@ -36,11 +36,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-// ngx-monaco
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
-
-// ngx-markdown
-import { MarkdownModule } from 'ngx-markdown';
+// vendor
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
+import { NgeMarkdownModule } from '@cisstech/nge/markdown';
 
 // myrmidon
 import { NgxDirtyCheckModule } from '@myrmidon/ngx-dirty-check';
@@ -53,11 +51,12 @@ import {
 import { AuthJwtAdminModule } from '@myrmidon/auth-jwt-admin';
 
 // cadmus bricks
-import { CadmusRefsDocReferencesModule } from '@myrmidon/cadmus-refs-doc-references';
-import { CadmusRefsHistoricalDateModule } from '@myrmidon/cadmus-refs-historical-date';
-import { CadmusRefsExternalIdsModule } from '@myrmidon/cadmus-refs-external-ids';
-import { CadmusRefsLookupModule } from '@myrmidon/cadmus-refs-lookup';
-import { CadmusUiFlagsPickerModule } from '@myrmidon/cadmus-ui-flags-picker';
+import { DocReferencesComponent } from '@myrmidon/cadmus-refs-doc-references';
+import { HistoricalDateComponent } from '@myrmidon/cadmus-refs-historical-date';
+import { ExternalIdsComponent } from '@myrmidon/cadmus-refs-external-ids';
+import { RefLookupComponent } from '@myrmidon/cadmus-refs-lookup';
+import { TextBlockViewComponent } from '@myrmidon/cadmus-text-block-view';
+import { FlagsPickerComponent } from '@myrmidon/cadmus-ui-flags-picker';
 
 // cadmus libs
 import { CadmusApiModule } from '@myrmidon/cadmus-api';
@@ -66,7 +65,6 @@ import { CadmusProfileCoreModule } from '@myrmidon/cadmus-profile-core';
 import { CadmusStateModule } from '@myrmidon/cadmus-state';
 import { CadmusUiModule } from '@myrmidon/cadmus-ui';
 import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
-import { CadmusTextBlockViewModule } from '@myrmidon/cadmus-text-block-view';
 import { CadmusPreviewUiModule } from '@myrmidon/cadmus-preview-ui';
 import { CadmusPreviewPgModule } from '@myrmidon/cadmus-preview-pg';
 
@@ -131,10 +129,9 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     MatTooltipModule,
     MatToolbarModule,
     MatTreeModule,
-    // monaco
-    MonacoEditorModule.forRoot(),
-    // markdown
-    MarkdownModule.forRoot(),
+    // vendor
+    NgeMonacoModule.forRoot({}),
+    NgeMarkdownModule,
     // myrmidon
     NgToolsModule,
     NgMatToolsModule,
@@ -142,11 +139,12 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     AuthJwtAdminModule,
     NgxDirtyCheckModule,
     // cadmus bricks
-    CadmusRefsDocReferencesModule,
-    CadmusRefsHistoricalDateModule,
-    CadmusRefsExternalIdsModule,
-    CadmusUiFlagsPickerModule,
-    CadmusRefsLookupModule,
+    DocReferencesComponent,
+    HistoricalDateComponent,
+    ExternalIdsComponent,
+    FlagsPickerComponent,
+    RefLookupComponent,
+    TextBlockViewComponent,
     // cadmus
     CadmusApiModule,
     CadmusCoreModule,
@@ -156,7 +154,6 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     CadmusUiPgModule,
     CadmusRenovellaPartPgModule,
     CadmusRenovellaPartUiModule,
-    CadmusTextBlockViewModule,
     CadmusPreviewUiModule,
     CadmusPreviewPgModule,
   ],
