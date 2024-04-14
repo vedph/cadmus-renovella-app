@@ -1,5 +1,5 @@
 .banner {
-  height: 258px;
+  height: 550px;
   margin-bottom: 16px;
 }
 .banner-img {
@@ -9,5 +9,6 @@
   object-position: 0 0;
 }
 article {
+  margin: 16px;
   column-width: 600px;
 }
