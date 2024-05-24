@@ -2,7 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withJsonpSupport,
+} from '@angular/common/http';
 
 // material
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -41,12 +45,11 @@ import { NgeMonacoModule } from '@cisstech/nge/monaco';
 import { NgeMarkdownModule } from '@cisstech/nge/markdown';
 
 // myrmidon
-import { NgxDirtyCheckModule } from '@myrmidon/ngx-dirty-check';
 import { EnvServiceProvider, NgToolsModule } from '@myrmidon/ng-tools';
 import { NgMatToolsModule } from '@myrmidon/ng-mat-tools';
 import {
-  AuthJwtInterceptor,
   AuthJwtLoginModule,
+  authJwtInterceptor,
 } from '@myrmidon/auth-jwt-login';
 import { AuthJwtAdminModule } from '@myrmidon/auth-jwt-admin';
 
@@ -54,9 +57,22 @@ import { AuthJwtAdminModule } from '@myrmidon/auth-jwt-admin';
 import { DocReferencesComponent } from '@myrmidon/cadmus-refs-doc-references';
 import { HistoricalDateComponent } from '@myrmidon/cadmus-refs-historical-date';
 import { ExternalIdsComponent } from '@myrmidon/cadmus-refs-external-ids';
-import { RefLookupComponent } from '@myrmidon/cadmus-refs-lookup';
+import {
+  PROXY_INTERCEPTOR_OPTIONS,
+  RefLookupComponent,
+} from '@myrmidon/cadmus-refs-lookup';
 import { TextBlockViewComponent } from '@myrmidon/cadmus-text-block-view';
 import { FlagsPickerComponent } from '@myrmidon/cadmus-ui-flags-picker';
+import {
+  CADMUS_TEXT_ED_BINDINGS_TOKEN,
+  CADMUS_TEXT_ED_SERVICE_OPTIONS_TOKEN,
+} from '@myrmidon/cadmus-text-ed';
+import {
+  MdBoldCtePlugin,
+  MdItalicCtePlugin,
+  MdLinkCtePlugin,
+} from '@myrmidon/cadmus-text-ed-md';
+import { TxtEmojiCtePlugin } from '@myrmidon/cadmus-text-ed-txt';
 
 // cadmus libs
 import { CadmusApiModule } from '@myrmidon/cadmus-api';
@@ -69,6 +85,9 @@ import { CadmusPreviewUiModule } from '@myrmidon/cadmus-preview-ui';
 import { CadmusPreviewPgModule } from '@myrmidon/cadmus-preview-pg';
 
 // locals
+import { CadmusRenovellaPartPgModule } from 'projects/myrmidon/cadmus-renovella-part-pg/src/public-api';
+import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-part-ui/src/public-api';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -79,8 +98,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { PART_EDITOR_KEYS } from './part-editor-keys';
 import { INDEX_LOOKUP_DEFINITIONS } from './index-lookup-definitions';
 import { ITEM_BROWSER_KEYS } from './item-browser-keys';
-import { CadmusRenovellaPartPgModule } from 'projects/myrmidon/cadmus-renovella-part-pg/src/public-api';
-import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-part-ui/src/public-api';
+import { GEONAMES_USERNAME_TOKEN } from '@myrmidon/cadmus-refs-geonames-lookup';
 
 @NgModule({
   declarations: [
@@ -91,11 +109,11 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     RegisterUserPageComponent,
     ResetPasswordComponent,
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
     // material
@@ -137,7 +155,6 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     NgMatToolsModule,
     AuthJwtLoginModule,
     AuthJwtAdminModule,
-    NgxDirtyCheckModule,
     // cadmus bricks
     DocReferencesComponent,
     HistoricalDateComponent,
@@ -158,6 +175,10 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
     CadmusPreviewPgModule,
   ],
   providers: [
+    provideHttpClient(
+      withInterceptors([authJwtInterceptor]),
+      withJsonpSupport()
+    ),
     EnvServiceProvider,
     // parts and fragments type IDs to editor group keys mappings
     // https://github.com/nrwl/nx/issues/208#issuecomment-384102058
@@ -177,14 +198,67 @@ import { CadmusRenovellaPartUiModule } from 'projects/myrmidon/cadmus-renovella-
       provide: 'itemBrowserKeys',
       useValue: ITEM_BROWSER_KEYS,
     },
-    // HTTP interceptor
-    // https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
+    // text plugins
+    // provide each single plugin
+    MdBoldCtePlugin,
+    MdItalicCtePlugin,
+    TxtEmojiCtePlugin,
+    MdLinkCtePlugin,
+    // provide a factory so that plugins can be instantiated via DI
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthJwtInterceptor,
-      multi: true,
+      provide: CADMUS_TEXT_ED_SERVICE_OPTIONS_TOKEN,
+      useFactory: (
+        mdBoldCtePlugin: MdBoldCtePlugin,
+        mdItalicCtePlugin: MdItalicCtePlugin,
+        txtEmojiCtePlugin: TxtEmojiCtePlugin,
+        mdLinkCtePlugin: MdLinkCtePlugin
+      ) => {
+        return {
+          plugins: [
+            mdBoldCtePlugin,
+            mdItalicCtePlugin,
+            txtEmojiCtePlugin,
+            mdLinkCtePlugin,
+          ],
+        };
+      },
+      deps: [
+        MdBoldCtePlugin,
+        MdItalicCtePlugin,
+        TxtEmojiCtePlugin,
+        MdLinkCtePlugin,
+      ],
+    },
+    // monaco bindings for plugins
+    // 2080 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB;
+    // 2087 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI;
+    // 2083 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyE;
+    // 2090 = monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyL;
+    {
+      provide: CADMUS_TEXT_ED_BINDINGS_TOKEN,
+      useValue: {
+        2080: 'md.bold', // Ctrl+B
+        2087: 'md.italic', // Ctrl+I
+        2083: 'txt.emoji', // Ctrl+E
+        2090: 'md.link', // Ctrl+L
+      },
+    },
+    // lookup
+    {
+      provide: GEONAMES_USERNAME_TOKEN,
+      useValue: 'myrmex',
+    },
+    // proxy
+    {
+      provide: PROXY_INTERCEPTOR_OPTIONS,
+      useValue: {
+        proxyUrl: (window as any).__env?.apiUrl + 'proxy',
+        urls: [
+          'http://lookup.dbpedia.org/api/search',
+          'http://lookup.dbpedia.org/api/prefix',
+        ],
+      },
     },
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}
