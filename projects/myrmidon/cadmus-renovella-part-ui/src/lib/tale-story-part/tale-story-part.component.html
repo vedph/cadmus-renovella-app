@@ -60,6 +60,7 @@
                   type="button"
                   mat-flat-button
                   color="primary"
+                  class="mat-primary"
                   (click)="addPlace()"
                 >
                   <mat-icon>add_circle</mat-icon>
@@ -85,7 +86,7 @@
                     color="warn"
                     (click)="removePlace(i)"
                   >
-                    <mat-icon>remove_circle</mat-icon>
+                    <mat-icon class="mat-warn">remove_circle</mat-icon>
                   </button>
                   <button
                     [disabled]="first"
@@ -244,6 +245,7 @@
                 type="button"
                 mat-flat-button
                 color="primary"
+                class="mat-primary"
                 (click)="addCharacter()"
               >
                 <mat-icon>add_circle</mat-icon>
@@ -269,7 +271,7 @@
                   color="warn"
                   (click)="removeCharacter(i)"
                 >
-                  <mat-icon>remove_circle</mat-icon>
+                  <mat-icon class="mat-warn">remove_circle</mat-icon>
                 </button>
                 <button
                   [disabled]="first"

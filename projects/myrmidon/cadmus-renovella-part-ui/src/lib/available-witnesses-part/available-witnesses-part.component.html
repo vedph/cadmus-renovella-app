@@ -15,13 +15,14 @@
           matTooltip="Add all the witnesses"
           (click)="addAllWitnesses()"
         >
-          <mat-icon color="primary">done_all</mat-icon>
+          <mat-icon color="primary" class="mat-primary">done_all</mat-icon>
         </button>
         <button
           type="button"
           mat-flat-button
           matTooltip="Add a new witness"
           color="primary"
+          class="mat-primary"
           (click)="addWitness()"
         >
           <mat-icon>add_circle</mat-icon> witness
@@ -49,7 +50,7 @@
                   color="warn"
                   (click)="removeWitness(i)"
                 >
-                  <mat-icon>remove_circle</mat-icon>
+                  <mat-icon class="mat-warn">remove_circle</mat-icon>
                 </button>
                 <button
                   [disabled]="first"
