@@ -8,15 +8,16 @@
     </mat-card-header>
     <mat-card-content>
       <div>
+        @if (witEntries?.length) {
         <button
           type="button"
           mat-icon-button
-          *ngIf="witEntries?.length"
           matTooltip="Add all the witnesses"
           (click)="addAllWitnesses()"
         >
           <mat-icon color="primary" class="mat-primary">done_all</mat-icon>
         </button>
+        }
         <button
           type="button"
           mat-flat-button
@@ -29,14 +30,9 @@
         </button>
       </div>
       <div formArrayName="witnesses">
-        <div
-          *ngFor="
-            let item of witnesses.controls;
-            let i = index;
-            let first = first;
-            let last = last
-          "
-        >
+        @for ( item of witnesses.controls; track item; let i = $index; let first
+        = $first; let last = $last) {
+        <div>
           <!-- child form -->
           <div [formGroupName]="i">
             <div class="form-row">
@@ -71,48 +67,39 @@
                   <mat-icon>arrow_downward</mat-icon>
                 </button>
               </div>
-
               <!-- child controls -->
               <!-- id (bound) -->
-              <mat-form-field *ngIf="witEntries?.length">
+              @if (witEntries?.length) {
+              <mat-form-field>
                 <mat-label>ID</mat-label>
                 <mat-select formControlName="id">
-                  <mat-option *ngFor="let e of witEntries" [value]="e.id">{{
-                    e.value
-                  }}</mat-option>
+                  @for (e of witEntries; track e.id) {
+                  <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                  }
                 </mat-select>
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].id.errors?.required &&
-                    ($any(item)['controls'].id.dirty ||
-                      $any(item)['controls'].id.touched)
-                  "
-                  >ID required</mat-error
-                >
+                @if ( $any(item)['controls'].id.errors?.required &&
+                ($any(item)['controls'].id.dirty ||
+                $any(item)['controls'].id.touched) ) {
+                <mat-error>ID required</mat-error>
+                }
               </mat-form-field>
-
+              }
               <!-- id (free) -->
-              <mat-form-field *ngIf="!witEntries?.length">
+              @if (!witEntries?.length) {
+              <mat-form-field>
                 <mat-label>ID</mat-label>
                 <input matInput formControlName="id" />
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].id.errors?.required &&
-                    ($any(item)['controls'].id.dirty ||
-                      $any(item)['controls'].id.touched)
-                  "
-                  >ID required</mat-error
-                >
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].id.errors?.maxLength &&
-                    ($any(item)['controls'].id.dirty ||
-                      $any(item)['controls'].id.touched)
-                  "
-                  >ID too long</mat-error
-                >
+                @if ( $any(item)['controls'].id.errors?.required &&
+                ($any(item)['controls'].id.dirty ||
+                $any(item)['controls'].id.touched) ) {
+                <mat-error>ID required</mat-error>
+                } @if ( $any(item)['controls'].id.errors?.maxLength &&
+                ($any(item)['controls'].id.dirty ||
+                $any(item)['controls'].id.touched) ) {
+                <mat-error>ID too long</mat-error>
+                }
               </mat-form-field>
-
+              }
               <!-- partial -->
               <mat-checkbox formControlName="partial">partial</mat-checkbox>
               <!-- note -->
@@ -120,14 +107,11 @@
                 <mat-form-field class="long-text">
                   <mat-label>note</mat-label>
                   <input matInput formControlName="note" />
-                  <mat-error
-                    *ngIf="
-                      $any(item)['controls'].note.errors?.maxLength &&
-                      ($any(item)['controls'].note.dirty ||
-                        $any(item)['controls'].note.touched)
-                    "
-                    >note too long</mat-error
-                  >
+                  @if ( $any(item)['controls'].note.errors?.maxLength &&
+                  ($any(item)['controls'].note.dirty ||
+                  $any(item)['controls'].note.touched) ) {
+                  <mat-error>note too long</mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -140,18 +124,16 @@
                   formControlName="externalIds"
                 ></textarea>
                 <mat-hint>1 per line</mat-hint>
-                <mat-error
-                  *ngIf="
-                    $any(item)['controls'].externalIds.errors?.maxLength &&
-                    ($any(item)['controls'].externalIds.dirty ||
-                      $any(item)['controls'].externalIds.touched)
-                  "
-                  >too long</mat-error
-                >
+                @if ( $any(item)['controls'].externalIds.errors?.maxLength &&
+                ($any(item)['controls'].externalIds.dirty ||
+                $any(item)['controls'].externalIds.touched) ) {
+                <mat-error>too long</mat-error>
+                }
               </mat-form-field>
             </div>
           </div>
         </div>
+        }
       </div>
     </mat-card-content>
     <mat-card-actions>

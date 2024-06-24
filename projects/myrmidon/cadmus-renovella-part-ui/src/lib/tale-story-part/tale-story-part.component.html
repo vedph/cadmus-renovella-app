@@ -12,43 +12,43 @@
         <mat-tab label="general">
           <div>
             <!-- age (bound) -->
-            <mat-form-field *ngIf="storyAgeEntries?.length">
+            @if (storyAgeEntries?.length) {
+            <mat-form-field>
               <mat-label>age</mat-label>
               <mat-select [formControl]="age">
-                <mat-option *ngFor="let e of storyAgeEntries" [value]="e.id">{{
-                  e.value
-                }}</mat-option>
+                @for (e of storyAgeEntries; track e.id) {
+                <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                }
               </mat-select>
-              <mat-error
-                *ngIf="$any(age).errors?.required && (age.dirty || age.touched)"
-                >age required</mat-error
-              >
+              @if ($any(age).errors?.required && (age.dirty || age.touched)) {
+              <mat-error>age required</mat-error>
+              }
             </mat-form-field>
+            }
             <!-- age (free) -->
-            <mat-form-field *ngIf="!storyAgeEntries?.length">
+            @if (!storyAgeEntries?.length) {
+            <mat-form-field>
               <mat-label>age</mat-label>
               <input matInput [formControl]="age" />
-              <mat-error
-                *ngIf="$any(age).errors?.required && (age.dirty || age.touched)"
-                >age required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  $any(age).errors?.maxLength && (age.dirty || age.touched)
-                "
-                >age too long</mat-error
-              >
+              @if ($any(age).errors?.required && (age.dirty || age.touched)) {
+              <mat-error>age required</mat-error>
+              } @if ( $any(age).errors?.maxLength && (age.dirty || age.touched)
+              ) {
+              <mat-error>age too long</mat-error>
+              }
             </mat-form-field>
+            }
           </div>
 
           <!-- date -->
           <div>
             <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
+            @if (hasDate.value) {
             <cadmus-refs-historical-date
-              *ngIf="hasDate?.value"
               [date]="date.value"
               (dateChange)="onDateChange($event)"
             ></cadmus-refs-historical-date>
+            }
           </div>
 
           <!-- places -->
@@ -67,14 +67,9 @@
                   place
                 </button>
               </div>
-              <div
-                *ngFor="
-                  let item of places.controls;
-                  let i = index;
-                  let first = first;
-                  let last = last
-                "
-              >
+              @for ( item of places.controls; track item; let i = $index; let
+              first = $first; let last = $last) {
+              <div>
                 <!-- child form -->
                 <div [formGroupName]="i">
                   <!-- child actions -->
@@ -106,86 +101,64 @@
                   >
                     <mat-icon>arrow_downward</mat-icon>
                   </button>
-
                   <!-- child controls -->
                   <!-- type (bound) -->
-                  <mat-form-field
-                    *ngIf="storyPlaceTypeEntries?.length"
-                    style="width: 8em"
-                  >
+                  @if (storyPlaceTypeEntries?.length) {
+                  <mat-form-field style="width: 8em">
                     <mat-label>type</mat-label>
                     <mat-select formControlName="type">
-                      <mat-option
-                        *ngFor="let e of storyPlaceTypeEntries"
-                        [value]="e.id"
-                        >{{ e.value }}</mat-option
-                      >
+                      @for (e of storyPlaceTypeEntries; track e.id) {
+                      <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                      }
                     </mat-select>
-                    <mat-error
-                      *ngIf="
-                        $any(item)['controls'].type.errors?.required &&
-                        ($any(item)['controls'].type.dirty ||
-                          $any(item)['controls'].type.touched)
-                      "
-                      >type required</mat-error
-                    >
+                    @if ( $any(item)['controls'].type.errors?.required &&
+                    ($any(item)['controls'].type.dirty ||
+                    $any(item)['controls'].type.touched) ) {
+                    <mat-error>type required</mat-error>
+                    }
                   </mat-form-field>
+                  }
                   <!-- type (free) -->
-                  <mat-form-field
-                    *ngIf="!storyPlaceTypeEntries?.length"
-                    style="width: 8em"
-                  >
+                  @if (!storyPlaceTypeEntries?.length) {
+                  <mat-form-field style="width: 8em">
                     <mat-label>type</mat-label>
                     <input matInput formControlName="type" />
-                    <mat-error
-                      *ngIf="
-                        $any(item)['controls'].type.errors?.required &&
-                        ($any(item)['controls'].type.dirty ||
-                          $any(item)['controls'].type.touched)
-                      "
-                      >type required</mat-error
-                    >
-                    <mat-error
-                      *ngIf="
-                        $any(item)['controls'].type.errors?.maxLength &&
-                        ($any(item)['controls'].type.dirty ||
-                          $any(item)['controls'].type.touched)
-                      "
-                      >type too long</mat-error
-                    >
+                    @if ( $any(item)['controls'].type.errors?.required &&
+                    ($any(item)['controls'].type.dirty ||
+                    $any(item)['controls'].type.touched) ) {
+                    <mat-error>type required</mat-error>
+                    } @if ( $any(item)['controls'].type.errors?.maxLength &&
+                    ($any(item)['controls'].type.dirty ||
+                    $any(item)['controls'].type.touched) ) {
+                    <mat-error>type too long</mat-error>
+                    }
                   </mat-form-field>
-
+                  }
                   <!-- name -->
                   &nbsp;
                   <mat-form-field>
                     <mat-label>name</mat-label>
                     <input matInput formControlName="name" />
-                    <mat-error
-                      *ngIf="
-                        $any(item)['controls'].name.errors?.maxLength &&
-                        ($any(item)['controls'].name.dirty ||
-                          $any(item)['controls'].name.touched)
-                      "
-                      >name too long</mat-error
-                    >
+                    @if ( $any(item)['controls'].name.errors?.maxLength &&
+                    ($any(item)['controls'].name.dirty ||
+                    $any(item)['controls'].name.touched) ) {
+                    <mat-error>name too long</mat-error>
+                    }
                   </mat-form-field>
-
                   <!-- location -->
                   &nbsp;
                   <mat-form-field>
                     <mat-label>location</mat-label>
                     <input matInput formControlName="location" />
-                    <mat-error
-                      *ngIf="
-                        $any(item)['controls'].location.errors?.maxLength &&
-                        ($any(item)['controls'].location.dirty ||
-                          $any(item)['controls'].location.touched)
-                      "
-                      >location too long</mat-error
-                    >
+                    @if ( $any(item)['controls'].location.errors?.maxLength &&
+                    ($any(item)['controls'].location.dirty ||
+                    $any(item)['controls'].location.touched) ) {
+                    <mat-error>location too long</mat-error>
+                    }
                   </mat-form-field>
                 </div>
               </div>
+              }
             </div>
           </div>
           <!-- summary -->
@@ -193,19 +166,13 @@
             <mat-form-field class="long-text">
               <mat-label>summary</mat-label>
               <textarea rows="3" matInput [formControl]="summary"></textarea>
-              <mat-error
-                *ngIf="
-                  summary.errors?.required && (summary.dirty || summary.touched)
-                "
-                >summary required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  summary.errors?.maxLength &&
-                  (summary.dirty || summary.touched)
-                "
-                >summary too long</mat-error
-              >
+              @if ( summary.errors?.required && (summary.dirty ||
+              summary.touched) ) {
+              <mat-error>summary required</mat-error>
+              } @if ( summary.errors?.maxLength && (summary.dirty ||
+              summary.touched) ) {
+              <mat-error>summary too long</mat-error>
+              }
             </mat-form-field>
           </div>
           <!-- prologue -->
@@ -213,13 +180,10 @@
             <mat-form-field class="long-text">
               <mat-label>prologue</mat-label>
               <textarea rows="2" matInput [formControl]="prologue"></textarea>
-              <mat-error
-                *ngIf="
-                  prologue.errors?.maxLength &&
-                  (prologue.dirty || prologue.touched)
-                "
-                >prologue too long</mat-error
-              >
+              @if ( prologue.errors?.maxLength && (prologue.dirty ||
+              prologue.touched) ) {
+              <mat-error>prologue too long</mat-error>
+              }
             </mat-form-field>
           </div>
           <!-- epilogue -->
@@ -227,13 +191,10 @@
             <mat-form-field class="long-text">
               <mat-label>epilogue</mat-label>
               <textarea rows="2" matInput [formControl]="epilogue"></textarea>
-              <mat-error
-                *ngIf="
-                  epilogue.errors?.maxLength &&
-                  (epilogue.dirty || epilogue.touched)
-                "
-                >epilogue too long</mat-error
-              >
+              @if ( epilogue.errors?.maxLength && (epilogue.dirty ||
+              epilogue.touched) ) {
+              <mat-error>epilogue too long</mat-error>
+              }
             </mat-form-field>
           </div>
         </mat-tab>
@@ -252,14 +213,9 @@
                 character
               </button>
             </div>
-            <div
-              *ngFor="
-                let item of characters.controls;
-                let i = index;
-                let first = first;
-                let last = last
-              "
-            >
+            @for ( item of characters.controls; track item; let i = $index; let
+            first = $first; let last = $last) {
+            <div>
               <!-- child form -->
               <div [formGroupName]="i">
                 <!-- child actions -->
@@ -291,82 +247,57 @@
                 >
                   <mat-icon>arrow_downward</mat-icon>
                 </button>
-
                 <!-- child controls -->
                 <!-- role (bound) -->
-                <mat-form-field
-                  *ngIf="storyRoleEntries?.length"
-                  style="width: 8em"
-                >
+                @if (storyRoleEntries?.length) {
+                <mat-form-field style="width: 8em">
                   <mat-label>role</mat-label>
                   <mat-select formControlName="role">
-                    <mat-option
-                      *ngFor="let e of storyRoleEntries"
-                      [value]="e.id"
-                      >{{ e.value }}</mat-option
-                    >
+                    @for (e of storyRoleEntries; track e.id) {
+                    <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                    }
                   </mat-select>
-                  <mat-error
-                    *ngIf="
-                      $any(item)['controls'].role.errors?.required &&
-                      ($any(item)['controls'].role.dirty ||
-                        $any(item)['controls'].role.touched)
-                    "
-                    >role required</mat-error
-                  >
+                  @if ( $any(item)['controls'].role.errors?.required &&
+                  ($any(item)['controls'].role.dirty ||
+                  $any(item)['controls'].role.touched) ) {
+                  <mat-error>role required</mat-error>
+                  }
                 </mat-form-field>
+                }
                 <!-- role (free) -->
-                <mat-form-field
-                  *ngIf="!storyRoleEntries?.length"
-                  style="width: 8em"
-                >
+                @if (!storyRoleEntries?.length) {
+                <mat-form-field style="width: 8em">
                   <mat-label>role</mat-label>
                   <input matInput formControlName="role" />
-                  <mat-error
-                    *ngIf="
-                      $any(item)['controls'].role.errors?.required &&
-                      ($any(item)['controls'].role.dirty ||
-                        $any(item)['controls'].role.touched)
-                    "
-                    >role required</mat-error
-                  >
-                  <mat-error
-                    *ngIf="
-                      $any(item)['controls'].role.errors?.maxLength &&
-                      ($any(item)['controls'].role.dirty ||
-                        $any(item)['controls'].role.touched)
-                    "
-                    >role too long</mat-error
-                  >
+                  @if ( $any(item)['controls'].role.errors?.required &&
+                  ($any(item)['controls'].role.dirty ||
+                  $any(item)['controls'].role.touched) ) {
+                  <mat-error>role required</mat-error>
+                  } @if ( $any(item)['controls'].role.errors?.maxLength &&
+                  ($any(item)['controls'].role.dirty ||
+                  $any(item)['controls'].role.touched) ) {
+                  <mat-error>role too long</mat-error>
+                  }
                 </mat-form-field>
-
+                }
                 <!-- group -->
                 &nbsp;
                 <mat-checkbox formControlName="isGroup">group</mat-checkbox>
-
                 <!-- name -->
                 &nbsp;
                 <mat-form-field>
                   <mat-label>name</mat-label>
                   <input matInput formControlName="name" />
-                  <mat-error
-                    *ngIf="
-                      $any(item)['controls'].name.errors?.required &&
-                      ($any(item)['controls'].name.dirty ||
-                        $any(item)['controls'].name.touched)
-                    "
-                    >name required</mat-error
-                  >
-                  <mat-error
-                    *ngIf="
-                      $any(item)['controls'].name.errors?.maxLength &&
-                      ($any(item)['controls'].name.dirty ||
-                        $any(item)['controls'].name.touched)
-                    "
-                    >name too long</mat-error
-                  >
+                  @if ( $any(item)['controls'].name.errors?.required &&
+                  ($any(item)['controls'].name.dirty ||
+                  $any(item)['controls'].name.touched) ) {
+                  <mat-error>name required</mat-error>
+                  } @if ( $any(item)['controls'].name.errors?.maxLength &&
+                  ($any(item)['controls'].name.dirty ||
+                  $any(item)['controls'].name.touched) ) {
+                  <mat-error>name too long</mat-error>
+                  }
                 </mat-form-field>
-
                 <!-- sex -->
                 &nbsp;
                 <mat-form-field style="width: 5em">
@@ -379,6 +310,7 @@
                 </mat-form-field>
               </div>
             </div>
+            }
           </div>
         </mat-tab>
       </mat-tab-group>

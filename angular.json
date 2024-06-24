@@ -36,7 +36,8 @@
               "vendor": true
             },
             "preserveSymlinks": true,
-            "browser": "src/main.ts"
+            "browser": "src/main.ts",
+            "allowedCommonJsDependencies": ["gravatar"]
           },
           "configurations": {
             "production": {

@@ -18,23 +18,17 @@
             <mat-form-field>
               <mat-label>collection ID</mat-label>
               <input matInput [formControl]="collectionId" />
-              <mat-error
-                *ngIf="
-                  collectionId.errors?.required &&
-                  (collectionId.dirty || collectionId.touched)
-                "
-                >collection ID required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  collectionId.errors?.maxLength &&
-                  (collectionId.dirty || collectionId.touched)
-                "
-                >collection ID too long</mat-error
-              >
+              @if ( collectionId.errors?.required && (collectionId.dirty ||
+              collectionId.touched) ) {
+              <mat-error>collection ID required</mat-error>
+              } @if ( collectionId.errors?.maxLength && (collectionId.dirty ||
+              collectionId.touched) ) {
+              <mat-error>collection ID too long</mat-error>
+              }
             </mat-form-field>
           </div>
-          <div *ngIf="!isCollection?.value">
+          @if (!isCollection.value) {
+          <div>
             <!-- containerId -->
             <cadmus-lookup-pin
               lookupKey="collection"
@@ -47,91 +41,72 @@
             <mat-form-field>
               <mat-label>ordinal</mat-label>
               <input matInput [formControl]="ordinal" />
-              <mat-error
-                *ngIf="
-                  ordinal.errors?.required && (ordinal.dirty || ordinal.touched)
-                "
-                >ordinal required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  ordinal.errors?.maxLength &&
-                  (ordinal.dirty || ordinal.touched)
-                "
-                >ordinal too long</mat-error
-              >
+              @if ( ordinal.errors?.required && (ordinal.dirty ||
+              ordinal.touched) ) {
+              <mat-error>ordinal required</mat-error>
+              } @if ( ordinal.errors?.maxLength && (ordinal.dirty ||
+              ordinal.touched) ) {
+              <mat-error>ordinal too long</mat-error>
+              }
             </mat-form-field>
           </div>
+          }
 
           <div>
             <!-- title -->
             <mat-form-field>
               <mat-label>title</mat-label>
               <input matInput [formControl]="title" />
-              <mat-error
-                *ngIf="title.errors?.required && (title.dirty || title.touched)"
-                >title required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  title.errors?.maxLength && (title.dirty || title.touched)
-                "
-                >title too long</mat-error
-              >
+              @if (title.errors?.required && (title.dirty || title.touched)) {
+              <mat-error>title required</mat-error>
+              } @if ( title.errors?.maxLength && (title.dirty || title.touched)
+              ) {
+              <mat-error>title too long</mat-error>
+              }
             </mat-form-field>
             &nbsp;
             <!-- language (bound) -->
-            <mat-form-field *ngIf="taleLangEntries?.length" style="width: 9em">
+            @if (taleLangEntries?.length) {
+            <mat-form-field style="width: 9em">
               <mat-label>language</mat-label>
               <mat-select [formControl]="language">
-                <mat-option *ngFor="let e of taleLangEntries" [value]="e.id">{{
-                  e.value
-                }}</mat-option>
+                @for (e of taleLangEntries; track e.id) {
+                <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                }
               </mat-select>
-              <mat-error
-                *ngIf="
-                  language.errors?.required &&
-                  (language.dirty || language.touched)
-                "
-                >language required</mat-error
-              >
+              @if ( language.errors?.required && (language.dirty ||
+              language.touched) ) {
+              <mat-error>language required</mat-error>
+              }
             </mat-form-field>
+            }
 
             <!-- language (free) -->
-            <mat-form-field *ngIf="!taleLangEntries?.length" style="width: 8em">
+            @if (!taleLangEntries?.length) {
+            <mat-form-field style="width: 8em">
               <mat-label>language</mat-label>
               <input matInput [formControl]="language" />
-              <mat-error
-                *ngIf="
-                  language.errors?.required &&
-                  (language.dirty || language.touched)
-                "
-                >language required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  language.errors?.maxLength &&
-                  (language.dirty || language.touched)
-                "
-                >language too long</mat-error
-              >
+              @if ( language.errors?.required && (language.dirty ||
+              language.touched) ) {
+              <mat-error>language required</mat-error>
+              } @if ( language.errors?.maxLength && (language.dirty ||
+              language.touched) ) {
+              <mat-error>language too long</mat-error>
+              }
             </mat-form-field>
+            }
           </div>
           <div>
             <!-- place -->
             <mat-form-field>
               <mat-label>place</mat-label>
               <input matInput [formControl]="place" />
-              <mat-error
-                *ngIf="place.errors?.required && (place.dirty || place.touched)"
-                >place required</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  place.errors?.maxLength && (place.dirty || place.touched)
-                "
-                >place too long</mat-error
-              >
+              @if (place.errors?.required && (place.dirty || place.touched)) {
+              <mat-error>place required</mat-error>
+              } @if ( place.errors?.maxLength && (place.dirty || place.touched)
+              ) {
+              <mat-error>place too long</mat-error>
+              }
             </mat-form-field>
           </div>
           <div>
@@ -158,13 +133,10 @@
             <mat-form-field>
               <mat-label>narrator</mat-label>
               <input matInput [formControl]="narrator" />
-              <mat-error
-                *ngIf="
-                  narrator.errors?.maxLength &&
-                  (narrator.dirty || narrator.touched)
-                "
-                >narrator too long</mat-error
-              >
+              @if ( narrator.errors?.maxLength && (narrator.dirty ||
+              narrator.touched) ) {
+              <mat-error>narrator too long</mat-error>
+              }
             </mat-form-field>
           </div>
           <!-- author -->
@@ -174,13 +146,14 @@
           @if (hasAuthor.value) {
           <fieldset>
             <legend>author</legend>
+            @if (hasAuthor.value) {
             <renovella-cited-person
-              *ngIf="hasAuthor?.value"
               [langEntries]="taleLangEntries"
               [nameTypeEntries]="namePartTypeEntries"
               [person]="initialAuthor"
               (personChange)="onAuthorChange($event)"
             ></renovella-cited-person>
+            }
           </fieldset>
           }
         </mat-tab>
@@ -192,13 +165,14 @@
           @if (hasDedicatee.value) {
           <fieldset>
             <legend>dedicatee</legend>
+            @if (hasDedicatee.value) {
             <renovella-cited-person
-              *ngIf="hasDedicatee?.value"
               [langEntries]="taleLangEntries"
               [nameTypeEntries]="namePartTypeEntries"
               [person]="initialDedicatee"
               (personChange)="onDedicateeChange($event)"
             ></renovella-cited-person>
+            }
           </fieldset>
           }
         </mat-tab>
@@ -210,13 +184,10 @@
             <mat-form-field class="long-text">
               <mat-label>structure</mat-label>
               <input matInput [formControl]="structure" />
-              <mat-error
-                *ngIf="
-                  structure.errors?.maxLength &&
-                  (structure.dirty || structure.touched)
-                "
-                >structure too long</mat-error
-              >
+              @if ( structure.errors?.maxLength && (structure.dirty ||
+              structure.touched) ) {
+              <mat-error>structure too long</mat-error>
+              }
             </mat-form-field>
           </div>
           <!-- rubric -->
@@ -224,12 +195,10 @@
             <mat-form-field class="long-text">
               <mat-label>rubric</mat-label>
               <input matInput [formControl]="rubric" />
-              <mat-error
-                *ngIf="
-                  rubric.errors?.maxLength && (rubric.dirty || rubric.touched)
-                "
-                >rubric too long</mat-error
-              >
+              @if ( rubric.errors?.maxLength && (rubric.dirty || rubric.touched)
+              ) {
+              <mat-error>rubric too long</mat-error>
+              }
             </mat-form-field>
           </div>
 
@@ -238,13 +207,10 @@
             <mat-form-field class="long-text">
               <mat-label>incipit</mat-label>
               <textarea rows="2" matInput [formControl]="incipit"></textarea>
-              <mat-error
-                *ngIf="
-                  incipit.errors?.maxLength &&
-                  (incipit.dirty || incipit.touched)
-                "
-                >incipit too long</mat-error
-              >
+              @if ( incipit.errors?.maxLength && (incipit.dirty ||
+              incipit.touched) ) {
+              <mat-error>incipit too long</mat-error>
+              }
             </mat-form-field>
           </div>
 
@@ -253,13 +219,10 @@
             <mat-form-field class="long-text">
               <mat-label>explicit</mat-label>
               <textarea rows="2" matInput [formControl]="explicit"></textarea>
-              <mat-error
-                *ngIf="
-                  explicit.errors?.maxLength &&
-                  (explicit.dirty || explicit.touched)
-                "
-                >explicit too long</mat-error
-              >
+              @if ( explicit.errors?.maxLength && (explicit.dirty ||
+              explicit.touched) ) {
+              <mat-error>explicit too long</mat-error>
+              }
             </mat-form-field>
           </div>
         </mat-tab>

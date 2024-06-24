@@ -6,9 +6,9 @@
     <mat-form-field>
       <mat-label>language</mat-label>
       <mat-select [formControl]="language">
-        <mat-option *ngFor="let e of langEntries" [value]="e.id">{{
-          e.value
-        }}</mat-option>
+        @for (e of langEntries; track e.id) {
+        <mat-option [value]="e.id">{{ e.value }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
     } @else {
@@ -16,18 +16,13 @@
     <mat-form-field>
       <mat-label>language</mat-label>
       <input matInput [formControl]="language" />
-      <mat-error
-        *ngIf="
-          language.errors?.required && (language.dirty || language.touched)
-        "
-        >enter a language</mat-error
-      >
-      <mat-error
-        *ngIf="
-          language.errors?.maxLength && (language.dirty || language.touched)
-        "
-        >language too long</mat-error
-      >
+      @if ( language.errors?.required && (language.dirty || language.touched) )
+      {
+      <mat-error>enter a language</mat-error>
+      } @if ( language.errors?.maxLength && (language.dirty || language.touched)
+      ) {
+      <mat-error>language too long</mat-error>
+      }
     </mat-form-field>
     }
 
@@ -36,9 +31,9 @@
     <mat-form-field>
       <mat-label>tag</mat-label>
       <mat-select [formControl]="tag">
-        <mat-option *ngFor="let e of nameTagEntries" [value]="e.id">{{
-          e.value
-        }}</mat-option>
+        @for (e of nameTagEntries; track e.id) {
+        <mat-option [value]="e.id">{{ e.value }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
     } @else {
@@ -46,12 +41,11 @@
     <mat-form-field>
       <mat-label>tag</mat-label>
       <input matInput [formControl]="tag" />
-      <mat-error *ngIf="tag.errors?.required && (tag.dirty || tag.touched)"
-        >enter a tag</mat-error
-      >
-      <mat-error *ngIf="tag.errors?.maxLength && (tag.dirty || tag.touched)"
-        >tag too long</mat-error
-      >
+      @if (tag.errors?.required && (tag.dirty || tag.touched)) {
+      <mat-error>enter a tag</mat-error>
+      } @if (tag.errors?.maxLength && (tag.dirty || tag.touched)) {
+      <mat-error>tag too long</mat-error>
+      }
     </mat-form-field>
     }
 
@@ -76,14 +70,9 @@
         <mat-icon>add_circle</mat-icon> part
       </button>
     </div>
-    <div
-      *ngFor="
-        let item of parts.controls;
-        let i = index;
-        let first = first;
-        let last = last
-      "
-    >
+    @for ( item of parts.controls; track item; let i = $index; let first =
+    $first; let last = $last) {
+    <div>
       <!-- child form -->
       <div [formGroupName]="i">
         <!-- child actions -->
@@ -115,7 +104,6 @@
         >
           <mat-icon>arrow_downward</mat-icon>
         </button>
-
         <div class="form-row">
           <!-- child controls -->
           <!-- type (bound) -->
@@ -123,40 +111,30 @@
           <mat-form-field>
             <mat-label>type</mat-label>
             <mat-select formControlName="type">
-              <mat-option *ngFor="let e of nameTypeEntries" [value]="e.id">{{
-                e.value
-              }}</mat-option>
+              @for (e of nameTypeEntries; track e.id) {
+              <mat-option [value]="e.id">{{ e.value }}</mat-option>
+              }
             </mat-select>
-            <mat-error
-              *ngIf="
-                $any(item)['controls'].type.errors?.required &&
-                ($any(item)['controls'].type.dirty ||
-                  $any(item)['controls'].type.touched)
-              "
-              >select a type
-            </mat-error>
+            @if ( $any(item)['controls'].type.errors?.required &&
+            ($any(item)['controls'].type.dirty ||
+            $any(item)['controls'].type.touched) ) {
+            <mat-error>select a type </mat-error>
+            }
           </mat-form-field>
           } @else {
           <!-- type (free) -->
           <mat-form-field>
             <mat-label>type</mat-label>
             <input matInput formControlName="type" />
-            <mat-error
-              *ngIf="
-                $any(item)['controls'].type.errors?.required &&
-                ($any(item)['controls'].type.dirty ||
-                  $any(item)['controls'].type.touched)
-              "
-              >enter a type
-            </mat-error>
-            <mat-error
-              *ngIf="
-                $any(item)['controls'].type.errors?.maxLength &&
-                ($any(item)['controls'].type.dirty ||
-                  $any(item)['controls'].type.touched)
-              "
-              >type too long
-            </mat-error>
+            @if ( $any(item)['controls'].type.errors?.required &&
+            ($any(item)['controls'].type.dirty ||
+            $any(item)['controls'].type.touched) ) {
+            <mat-error>enter a type </mat-error>
+            } @if ( $any(item)['controls'].type.errors?.maxLength &&
+            ($any(item)['controls'].type.dirty ||
+            $any(item)['controls'].type.touched) ) {
+            <mat-error>type too long </mat-error>
+            }
           </mat-form-field>
           }
           <!-- value -->
@@ -169,26 +147,20 @@
               formControlName="value"
               autofocus
             />
-            <mat-error
-              *ngIf="
-                $any(item)['controls'].value.errors?.required &&
-                ($any(item)['controls'].value.dirty ||
-                  $any(item)['controls'].value.touched)
-              "
-              >enter a value
-            </mat-error>
-            <mat-error
-              *ngIf="
-                $any(item)['controls'].value.errors?.maxLength &&
-                ($any(item)['controls'].value.dirty ||
-                  $any(item)['controls'].value.touched)
-              "
-              >value too long
-            </mat-error>
+            @if ( $any(item)['controls'].value.errors?.required &&
+            ($any(item)['controls'].value.dirty ||
+            $any(item)['controls'].value.touched) ) {
+            <mat-error>enter a value </mat-error>
+            } @if ( $any(item)['controls'].value.errors?.maxLength &&
+            ($any(item)['controls'].value.dirty ||
+            $any(item)['controls'].value.touched) ) {
+            <mat-error>value too long </mat-error>
+            }
           </mat-form-field>
         </div>
       </div>
     </div>
+    }
   </div>
 
   <br />

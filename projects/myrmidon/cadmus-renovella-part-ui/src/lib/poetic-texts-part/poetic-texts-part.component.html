@@ -22,14 +22,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="
-              let t of texts.value;
-              let i = index;
-              let first = first;
-              let last = last
-            "
-          >
+          @for ( t of texts.value; track t; let i = $index; let first = $first;
+          let last = $last) {
+          <tr>
             <td>
               <button
                 type="button"
@@ -70,6 +65,7 @@
             <td>{{ t.incipit | ellipsis }}</td>
             <td>{{ t.metre }}</td>
           </tr>
+          }
         </tbody>
       </table>
 
