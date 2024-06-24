@@ -21,7 +21,7 @@
               "base": "dist/cadmus-renovella-app"
             },
             "index": "src/index.html",
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets", "src/env.js"],
             "styles": [
