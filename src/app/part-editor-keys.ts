@@ -7,7 +7,6 @@ import {
   EXTERNAL_IDS_PART_TYPEID,
 } from '@myrmidon/cadmus-part-general-ui';
 import { PartEditorKeys } from '@myrmidon/cadmus-core';
-import '@myrmidon/cadmus-renovella-part-ui';
 import {
   POETIC_TEXTS_PART_TYPEID,
   TALE_INFO_PART_TYPEID,

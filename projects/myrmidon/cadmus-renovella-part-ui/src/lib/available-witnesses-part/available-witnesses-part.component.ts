@@ -26,6 +26,7 @@ import {
   selector: 'renovella-available-witnesses-part',
   templateUrl: './available-witnesses-part.component.html',
   styleUrls: ['./available-witnesses-part.component.css'],
+  standalone: false,
 })
 export class AvailableWitnessesPartComponent
   extends ModelEditorComponentBase<AvailableWitnessesPart>

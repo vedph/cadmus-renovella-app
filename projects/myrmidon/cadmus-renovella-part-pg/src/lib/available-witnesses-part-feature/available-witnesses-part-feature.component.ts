@@ -9,6 +9,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'renovella-available-witnesses-part-feature',
   templateUrl: './available-witnesses-part-feature.component.html',
   styleUrls: ['./available-witnesses-part-feature.component.css'],
+  standalone: false,
 })
 export class AvailableWitnessesPartFeatureComponent
   extends EditPartFeatureBase

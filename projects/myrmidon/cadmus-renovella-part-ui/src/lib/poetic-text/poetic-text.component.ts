@@ -13,6 +13,7 @@ import {
   selector: 'renovella-poetic-text',
   templateUrl: './poetic-text.component.html',
   styleUrls: ['./poetic-text.component.css'],
+  standalone: false,
 })
 export class PoeticTextComponent {
   private _text?: PoeticText;

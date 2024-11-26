@@ -9,6 +9,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'renovella-poetic-texts-part-feature',
   templateUrl: './poetic-texts-part-feature.component.html',
   styleUrls: ['./poetic-texts-part-feature.component.css'],
+  standalone: false,
 })
 export class PoeticTextsPartFeatureComponent
   extends EditPartFeatureBase

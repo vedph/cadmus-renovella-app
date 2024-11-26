@@ -38,6 +38,7 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   selector: 'renovella-tale-info-part',
   templateUrl: './tale-info-part.component.html',
   styleUrls: ['./tale-info-part.component.css'],
+  standalone: false,
 })
 export class TaleInfoPartComponent
   extends ModelEditorComponentBase<TaleInfoPart>

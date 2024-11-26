@@ -9,6 +9,7 @@ import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
   selector: 'renovella-tale-info-part-feature',
   templateUrl: './tale-info-part-feature.component.html',
   styleUrls: ['./tale-info-part-feature.component.css'],
+  standalone: false,
 })
 export class TaleInfoPartFeatureComponent
   extends EditPartFeatureBase

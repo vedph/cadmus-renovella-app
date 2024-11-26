@@ -31,6 +31,7 @@ import {
   selector: 'renovella-tale-story-part',
   templateUrl: './tale-story-part.component.html',
   styleUrls: ['./tale-story-part.component.css'],
+  standalone: false,
 })
 export class TaleStoryPartComponent
   extends ModelEditorComponentBase<TaleStoryPart>
@@ -207,9 +208,7 @@ export class TaleStoryPartComponent
         character?.name,
         Validators.maxLength(100)
       ),
-      sex: this._formBuilder.control(
-        character?.sex
-      ),
+      sex: this._formBuilder.control(character?.sex),
       role: this._formBuilder.control(character?.role, [
         Validators.required,
         Validators.maxLength(50),

@@ -20,6 +20,7 @@ import { CitedPerson } from '../cited-persons-part';
   selector: 'renovella-cited-person',
   templateUrl: './cited-person.component.html',
   styleUrls: ['./cited-person.component.css'],
+  standalone: false,
 })
 export class CitedPersonComponent implements OnInit {
   private _person: CitedPerson | undefined;

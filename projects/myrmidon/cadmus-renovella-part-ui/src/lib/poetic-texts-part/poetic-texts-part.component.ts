@@ -25,6 +25,7 @@ import { DialogService } from '@myrmidon/ng-mat-tools';
   selector: 'renovella-poetic-texts-part',
   templateUrl: './poetic-texts-part.component.html',
   styleUrls: ['./poetic-texts-part.component.css'],
+  standalone: false,
 })
 export class PoeticTextsPartComponent
   extends ModelEditorComponentBase<PoeticTextsPart>
