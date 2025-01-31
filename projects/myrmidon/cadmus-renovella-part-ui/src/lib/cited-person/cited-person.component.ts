@@ -1,18 +1,36 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import {
   FormArray,
   FormControl,
   FormGroup,
   FormBuilder,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { DecoratedId } from '@myrmidon/cadmus-refs-decorated-ids';
-import { DocReference } from '@myrmidon/cadmus-refs-doc-references';
+import {
+  DecoratedId,
+  DecoratedIdsComponent,
+} from '@myrmidon/cadmus-refs-decorated-ids';
+import {
+  DocReference,
+  DocReferencesComponent,
+} from '@myrmidon/cadmus-refs-doc-references';
 import { ProperName, ProperNamePiece } from '@myrmidon/cadmus-refs-proper-name';
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 
 import { CitedPerson } from '../cited-persons-part';
 
@@ -20,43 +38,36 @@ import { CitedPerson } from '../cited-persons-part';
   selector: 'renovella-cited-person',
   templateUrl: './cited-person.component.html',
   styleUrls: ['./cited-person.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+    DecoratedIdsComponent,
+    DocReferencesComponent,
+  ],
 })
-export class CitedPersonComponent implements OnInit {
-  private _person: CitedPerson | undefined;
-
-  @Input()
-  public get person(): CitedPerson | undefined | null {
-    return this._person;
-  }
-  public set person(value: CitedPerson | undefined | null) {
-    if (this._person === value) {
-      return;
-    }
-    this._person = value || undefined;
-    this.updateForm(this._person);
-  }
+export class CitedPersonComponent {
+  public readonly person = model<CitedPerson>();
 
   // languages
-  @Input()
-  public langEntries: ThesaurusEntry[] | undefined;
+  public readonly langEntries = input<ThesaurusEntry[]>();
   // person-name-tags
-  @Input()
-  public nameTagEntries: ThesaurusEntry[] | undefined;
+  public readonly nameTagEntries = input<ThesaurusEntry[]>();
   // person-name-types
-  @Input()
-  public nameTypeEntries: ThesaurusEntry[] | undefined;
+  public readonly nameTypeEntries = input<ThesaurusEntry[]>();
   // person-id-tags
-  @Input()
-  public idTagEntries: ThesaurusEntry[] | undefined;
-  @Input()
-  public idTypeEntries: ThesaurusEntry[] | undefined;
+  public readonly idTagEntries = input<ThesaurusEntry[]>();
+  public readonly idTypeEntries = input<ThesaurusEntry[]>();
 
-  @Output()
-  public personChange: EventEmitter<CitedPerson>;
-
-  @Output()
-  public editorClose: EventEmitter<any>;
+  public readonly editorClose = output();
 
   public sources$: BehaviorSubject<DocReference[]>;
 
@@ -71,11 +82,6 @@ export class CitedPersonComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) {
     this.sources$ = new BehaviorSubject<DocReference[]>([]);
 
-    // events
-    this.personChange = new EventEmitter<CitedPerson>();
-    this.editorClose = new EventEmitter<any>();
-
-    // form
     this.language = _formBuilder.control(null, [
       Validators.required,
       Validators.maxLength(50),
@@ -84,7 +90,7 @@ export class CitedPersonComponent implements OnInit {
     this.rank = _formBuilder.control(0, { nonNullable: true });
     this.parts = _formBuilder.array(
       [],
-      NgToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1)
     );
     this.sources = _formBuilder.control([], { nonNullable: true });
     this.ids = _formBuilder.control([], { nonNullable: true });
@@ -98,12 +104,10 @@ export class CitedPersonComponent implements OnInit {
       sources: this.sources,
       ids: this.ids,
     });
-  }
 
-  public ngOnInit(): void {
-    if (this._person) {
-      this.updateForm(this._person);
-    }
+    effect(() => {
+      this.updateForm(this.person());
+    });
   }
 
   private updateForm(model: CitedPerson | undefined): void {
@@ -129,8 +133,8 @@ export class CitedPersonComponent implements OnInit {
     for (let i = 0; i < this.parts.length; i++) {
       const g = this.parts.controls[i] as FormGroup;
       pieces.push({
-        type: g.controls.type.value,
-        value: g.controls.value.value?.trim(),
+        type: g.controls['type'].value,
+        value: g.controls['value'].value?.trim(),
       });
     }
 
@@ -214,7 +218,6 @@ export class CitedPersonComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this._person = this.getPerson();
-    this.personChange.emit(this._person);
+    this.person.set(this.getPerson());
   }
 }

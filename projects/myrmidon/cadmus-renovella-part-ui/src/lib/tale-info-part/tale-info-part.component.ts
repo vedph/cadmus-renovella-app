@@ -1,14 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, effect, input, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   Validators,
   FormGroup,
   UntypedFormGroup,
   FormControl,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
 
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { Flag, FlagSetComponent } from '@myrmidon/cadmus-ui-flag-set';
+
+import {
+  CloseSaveButtonsComponent,
+  EditedObject,
+  LookupPinComponent,
+  ModelEditorComponentBase,
+} from '@myrmidon/cadmus-ui';
 import {
   ThesaurusEntry,
   DataPinInfo,
@@ -16,11 +33,15 @@ import {
 } from '@myrmidon/cadmus-core';
 
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
+import {
+  HistoricalDateComponent,
+  HistoricalDateModel,
+} from '@myrmidon/cadmus-refs-historical-date';
 
 import { TaleInfoPart, TALE_INFO_PART_TYPEID } from '../tale-info-part';
 import { CitedPerson } from '../cited-persons-part';
-import { Flag, FlagsPickerAdapter } from '@myrmidon/cadmus-ui-flags-picker';
+import { CitedPersonComponent } from '../cited-person/cited-person.component';
+import { MatButtonModule } from '@angular/material/button';
 
 function entryToFlag(entry: ThesaurusEntry): Flag {
   return {
@@ -38,22 +59,36 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   selector: 'renovella-tale-info-part',
   templateUrl: './tale-info-part.component.html',
   styleUrls: ['./tale-info-part.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatTooltipModule,
+    HistoricalDateComponent,
+    FlagSetComponent,
+    LookupPinComponent,
+    CloseSaveButtonsComponent,
+    CitedPersonComponent,
+  ],
 })
 export class TaleInfoPartComponent
   extends ModelEditorComponentBase<TaleInfoPart>
   implements OnInit
 {
-  private readonly _flagAdapter: FlagsPickerAdapter;
-  private _taleGenreEntries: ThesaurusEntry[];
-
   public isCollection: FormControl<boolean>;
   public collectionId: FormControl<string | null>;
   public containerId: FormControl<string | null>;
   public ordinal: FormControl<number>;
   public title: FormControl<string>;
   public language: FormControl<string>;
-  public genres: FormControl<Flag[]>;
+  public genres: FormControl<string[]>;
 
   public hasAuthor: FormControl<boolean>;
   public author: FormControl<CitedPerson | null>;
@@ -75,33 +110,15 @@ export class TaleInfoPartComponent
   // tale-languages
   public taleLangEntries: ThesaurusEntry[] | undefined;
   // tale-genres
-  @Input()
-  public get taleGenreEntries(): ThesaurusEntry[] | undefined {
-    return this._taleGenreEntries;
-  }
-  public set taleGenreEntries(value: ThesaurusEntry[] | undefined) {
-    if (this._taleGenreEntries === value) {
-      return;
-    }
-    this._taleGenreEntries = value || [];
-    this._flagAdapter.setSlotFlags(
-      'genres',
-      this._taleGenreEntries.map(entryToFlag)
-    );
-  }
-
+  public taleGenreEntries: ThesaurusEntry[] | undefined;
   // name-part-types
   public namePartTypeEntries: ThesaurusEntry[] | undefined;
 
   // flags
-  public genreFlags$: Observable<Flag[]>;
+  public genreFlags: Flag[] = [];
 
   constructor(authService: AuthJwtService, formBuilder: FormBuilder) {
     super(authService, formBuilder);
-    this._taleGenreEntries = [];
-    // flags
-    this._flagAdapter = new FlagsPickerAdapter();
-    this.genreFlags$ = this._flagAdapter.selectFlags('genres');
     // form
     this.title = formBuilder.control('', {
       validators: [Validators.required, Validators.maxLength(200)],
@@ -172,7 +189,7 @@ export class TaleInfoPartComponent
     });
   }
 
-  public ngOnInit(): void {
+  public override ngOnInit(): void {
     super.ngOnInit();
     this.isCollection.valueChanges.subscribe((coll: boolean | undefined) => {
       if (coll) {
@@ -190,8 +207,10 @@ export class TaleInfoPartComponent
     let key = 'tale-genres';
     if (this.hasThesaurus(key)) {
       this.taleGenreEntries = thesauri[key].entries;
+      this.genreFlags = this.taleGenreEntries!.map(entryToFlag) || [];
     } else {
       this.taleGenreEntries = undefined;
+      this.genreFlags = [];
     }
 
     key = 'name-part-type-entries';
@@ -224,9 +243,7 @@ export class TaleInfoPartComponent
     this.language.setValue(part.language);
     this.place.setValue(part.place);
     this.date.setValue(part.date);
-    this.genres.setValue(
-      this._flagAdapter.setSlotChecks('genres', part.genres)
-    );
+    this.genres.setValue(part.genres || []);
     this.hasAuthor.setValue(part.author ? true : false);
     this.author.setValue(part.author || null);
     this.initialAuthor = part.author;
@@ -263,7 +280,7 @@ export class TaleInfoPartComponent
     }
     part.title = this.title.value?.trim();
     part.language = this.language.value?.trim();
-    part.genres = this._flagAdapter.getOptionalCheckedFlagIds('genres') || [];
+    part.genres = this.genres.value || [];
     if (this.hasAuthor.value) {
       part.author = this.author.value || undefined;
     } else {
@@ -291,8 +308,8 @@ export class TaleInfoPartComponent
     this.date.markAsDirty();
   }
 
-  public onFlagsChange(flags: Flag[]): void {
-    this.genres.setValue(flags);
+  public onFlagIdsChange(ids: string[]): void {
+    this.genres.setValue(ids || []);
     this.genres.updateValueAndValidity();
     this.genres.markAsDirty();
   }

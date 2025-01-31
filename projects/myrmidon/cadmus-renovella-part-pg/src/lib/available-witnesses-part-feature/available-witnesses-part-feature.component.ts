@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
 import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
+import { AvailableWitnessesPartComponent } from '@myrmidon/cadmus-renovella-part-ui';
 
 @Component({
   selector: 'renovella-available-witnesses-part-feature',
   templateUrl: './available-witnesses-part-feature.component.html',
   styleUrls: ['./available-witnesses-part-feature.component.css'],
-  standalone: false,
+  imports: [CurrentItemBarComponent, AvailableWitnessesPartComponent],
 })
 export class AvailableWitnessesPartFeatureComponent
   extends EditPartFeatureBase

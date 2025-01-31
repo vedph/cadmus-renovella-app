@@ -1,11 +1,21 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, EventEmitter, input, Input, model, output, Output } from '@angular/core';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
+import { CommonModule } from '@angular/common';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PoeticText } from '../poetic-texts-part';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 
@@ -13,32 +23,25 @@ import {
   selector: 'renovella-poetic-text',
   templateUrl: './poetic-text.component.html',
   styleUrls: ['./poetic-text.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+  ],
 })
 export class PoeticTextComponent {
-  private _text?: PoeticText;
-
-  @Input()
-  public get text(): PoeticText | undefined {
-    return this._text;
-  }
-  public set text(value: PoeticText | undefined) {
-    if (this._text === value) {
-      return;
-    }
-    this._text = value;
-    this.updateForm(this._text);
-  }
+  public readonly text = model<PoeticText>();
 
   // poetic-text-metres
-  @Input()
-  public metreEntries: ThesaurusEntry[] | undefined;
+  public readonly metreEntries = input<ThesaurusEntry[]>();
 
-  @Output()
-  public textChange: EventEmitter<PoeticText>;
-
-  @Output()
-  public close: EventEmitter<any>;
+  public readonly close = output();
 
   public incipit: FormControl<string>;
   public metre: FormControl<string>;
@@ -61,9 +64,10 @@ export class PoeticTextComponent {
       metre: this.metre,
       note: this.note,
     });
-    // events
-    this.textChange = new EventEmitter<PoeticText>();
-    this.close = new EventEmitter<any>();
+
+    effect(() => {
+      this.updateForm(this.text());
+    });
   }
 
   private updateForm(value?: PoeticText): void {
@@ -93,7 +97,6 @@ export class PoeticTextComponent {
     if (this.form.invalid) {
       return;
     }
-    this._text = this.getPoeticText();
-    this.textChange.emit(this._text);
+    this.text.set(this.getPoeticText());
   }
 }

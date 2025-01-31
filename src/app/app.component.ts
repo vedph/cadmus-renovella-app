@@ -1,14 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Thesaurus, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { AppRepository } from '@myrmidon/cadmus-state';
-import { Router } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { take } from 'rxjs/operators';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 import {
   AuthJwtService,
+  GravatarPipe,
   GravatarService,
   User,
 } from '@myrmidon/auth-jwt-login';
-import { EnvService, RamStorageService } from '@myrmidon/ng-tools';
+import { EnvService, RamStorageService } from '@myrmidon/ngx-tools';
 
 import { ASSERTED_COMPOSITE_ID_CONFIGS_KEY } from '@myrmidon/cadmus-refs-asserted-ids';
 import { ViafRefLookupService } from '@myrmidon/cadmus-refs-viaf-lookup';
@@ -18,9 +26,19 @@ import { RefLookupConfig } from '@myrmidon/cadmus-refs-lookup';
 
 @Component({
   selector: 'app-root',
+  imports: [
+    CommonModule,
+    RouterModule,
+    RouterOutlet,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatToolbarModule,
+    // myrmidon
+    GravatarPipe,
+  ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  standalone: false,
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   public user?: User;
@@ -47,7 +65,7 @@ export class AppComponent implements OnInit {
     storage.store(ASSERTED_COMPOSITE_ID_CONFIGS_KEY, [
       {
         name: 'VIAF',
-        iconUrl: '/assets/img/viaf128.png',
+        iconUrl: '/img/viaf128.png',
         description: 'Virtual International Authority File',
         label: 'ID',
         service: viaf,
@@ -56,7 +74,7 @@ export class AppComponent implements OnInit {
       },
       {
         name: 'DBpedia',
-        iconUrl: '/assets/img/dbpedia128.png',
+        iconUrl: '/img/dbpedia128.png',
         description: 'DBpedia',
         label: 'ID',
         service: dbpedia,
@@ -65,7 +83,7 @@ export class AppComponent implements OnInit {
       },
       {
         name: 'geonames',
-        iconUrl: '/assets/img/geonames128.png',
+        iconUrl: '/img/geonames128.png',
         description: 'GeoNames',
         label: 'ID',
         service: geonames,
@@ -75,7 +93,7 @@ export class AppComponent implements OnInit {
     ] as RefLookupConfig[]);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.user = this._authService.currentUserValue || undefined;
     this.logged = this.user !== null;
 

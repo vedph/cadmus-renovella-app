@@ -45,9 +45,9 @@
             <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
             @if (hasDate.value) {
             <cadmus-refs-historical-date
-              [date]="date.value"
-              (dateChange)="onDateChange($event)"
-            ></cadmus-refs-historical-date>
+              [date]="date.value || undefined"
+              (dateChange)="onDateChange($event!)"
+            />
             }
           </div>
 
@@ -71,40 +71,42 @@
               first = $first; let last = $last) {
               <div>
                 <!-- child form -->
-                <div [formGroupName]="i">
+                <div [formGroupName]="i" class="form-row">
                   <!-- child actions -->
-                  {{ i + 1 }}.
-                  <button
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Remove this place"
-                    color="warn"
-                    (click)="removePlace(i)"
-                  >
-                    <mat-icon class="mat-warn">remove_circle</mat-icon>
-                  </button>
-                  <button
-                    [disabled]="first"
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Move place up"
-                    (click)="movePlaceUp(i)"
-                  >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    [disabled]="last"
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Move place down"
-                    (click)="movePlaceDown(i)"
-                  >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
+                  <div>
+                    {{ i + 1 }}.
+                    <button
+                      mat-icon-button
+                      type="button"
+                      matTooltip="Remove this place"
+                      color="warn"
+                      (click)="removePlace(i)"
+                    >
+                      <mat-icon class="mat-warn">remove_circle</mat-icon>
+                    </button>
+                    <button
+                      [disabled]="first"
+                      mat-icon-button
+                      type="button"
+                      matTooltip="Move place up"
+                      (click)="movePlaceUp(i)"
+                    >
+                      <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                    <button
+                      [disabled]="last"
+                      mat-icon-button
+                      type="button"
+                      matTooltip="Move place down"
+                      (click)="movePlaceDown(i)"
+                    >
+                      <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                  </div>
                   <!-- child controls -->
                   <!-- type (bound) -->
                   @if (storyPlaceTypeEntries?.length) {
-                  <mat-form-field style="width: 8em">
+                  <mat-form-field>
                     <mat-label>type</mat-label>
                     <mat-select formControlName="type">
                       @for (e of storyPlaceTypeEntries; track e.id) {
@@ -120,7 +122,7 @@
                   }
                   <!-- type (free) -->
                   @if (!storyPlaceTypeEntries?.length) {
-                  <mat-form-field style="width: 8em">
+                  <mat-form-field>
                     <mat-label>type</mat-label>
                     <input matInput formControlName="type" />
                     @if ( $any(item)['controls'].type.errors?.required &&
@@ -135,7 +137,6 @@
                   </mat-form-field>
                   }
                   <!-- name -->
-                  &nbsp;
                   <mat-form-field>
                     <mat-label>name</mat-label>
                     <input matInput formControlName="name" />
@@ -146,7 +147,6 @@
                     }
                   </mat-form-field>
                   <!-- location -->
-                  &nbsp;
                   <mat-form-field>
                     <mat-label>location</mat-label>
                     <input matInput formControlName="location" />
@@ -166,10 +166,10 @@
             <mat-form-field class="long-text">
               <mat-label>summary</mat-label>
               <textarea rows="3" matInput [formControl]="summary"></textarea>
-              @if ( summary.errors?.required && (summary.dirty ||
+              @if ( $any(summary).errors?.required && (summary.dirty ||
               summary.touched) ) {
               <mat-error>summary required</mat-error>
-              } @if ( summary.errors?.maxLength && (summary.dirty ||
+              } @if ( $any(summary).errors?.maxLength && (summary.dirty ||
               summary.touched) ) {
               <mat-error>summary too long</mat-error>
               }
@@ -180,7 +180,7 @@
             <mat-form-field class="long-text">
               <mat-label>prologue</mat-label>
               <textarea rows="2" matInput [formControl]="prologue"></textarea>
-              @if ( prologue.errors?.maxLength && (prologue.dirty ||
+              @if ( $any(prologue).errors?.maxLength && (prologue.dirty ||
               prologue.touched) ) {
               <mat-error>prologue too long</mat-error>
               }
@@ -191,7 +191,7 @@
             <mat-form-field class="long-text">
               <mat-label>epilogue</mat-label>
               <textarea rows="2" matInput [formControl]="epilogue"></textarea>
-              @if ( epilogue.errors?.maxLength && (epilogue.dirty ||
+              @if ( $any(epilogue).errors?.maxLength && (epilogue.dirty ||
               epilogue.touched) ) {
               <mat-error>epilogue too long</mat-error>
               }
@@ -217,40 +217,42 @@
             first = $first; let last = $last) {
             <div>
               <!-- child form -->
-              <div [formGroupName]="i">
+              <div [formGroupName]="i" class="form-row">
                 <!-- child actions -->
-                {{ i + 1 }}.
-                <button
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Remove this character"
-                  color="warn"
-                  (click)="removeCharacter(i)"
-                >
-                  <mat-icon class="mat-warn">remove_circle</mat-icon>
-                </button>
-                <button
-                  [disabled]="first"
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Move character up"
-                  (click)="moveCharacterUp(i)"
-                >
-                  <mat-icon>arrow_upward</mat-icon>
-                </button>
-                <button
-                  [disabled]="last"
-                  mat-icon-button
-                  type="button"
-                  matTooltip="Move character down"
-                  (click)="moveCharacterDown(i)"
-                >
-                  <mat-icon>arrow_downward</mat-icon>
-                </button>
+                <div>
+                  {{ i + 1 }}.
+                  <button
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Remove this character"
+                    color="warn"
+                    (click)="removeCharacter(i)"
+                  >
+                    <mat-icon class="mat-warn">remove_circle</mat-icon>
+                  </button>
+                  <button
+                    [disabled]="first"
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Move character up"
+                    (click)="moveCharacterUp(i)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    [disabled]="last"
+                    mat-icon-button
+                    type="button"
+                    matTooltip="Move character down"
+                    (click)="moveCharacterDown(i)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                </div>
                 <!-- child controls -->
                 <!-- role (bound) -->
                 @if (storyRoleEntries?.length) {
-                <mat-form-field style="width: 8em">
+                <mat-form-field>
                   <mat-label>role</mat-label>
                   <mat-select formControlName="role">
                     @for (e of storyRoleEntries; track e.id) {
@@ -266,7 +268,7 @@
                 }
                 <!-- role (free) -->
                 @if (!storyRoleEntries?.length) {
-                <mat-form-field style="width: 8em">
+                <mat-form-field>
                   <mat-label>role</mat-label>
                   <input matInput formControlName="role" />
                   @if ( $any(item)['controls'].role.errors?.required &&
@@ -281,10 +283,8 @@
                 </mat-form-field>
                 }
                 <!-- group -->
-                &nbsp;
                 <mat-checkbox formControlName="isGroup">group</mat-checkbox>
                 <!-- name -->
-                &nbsp;
                 <mat-form-field>
                   <mat-label>name</mat-label>
                   <input matInput formControlName="name" />
@@ -299,7 +299,6 @@
                   }
                 </mat-form-field>
                 <!-- sex -->
-                &nbsp;
                 <mat-form-field style="width: 5em">
                   <mat-label>sex</mat-label>
                   <mat-select formControlName="sex">
@@ -320,7 +319,7 @@
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

@@ -4,12 +4,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
 import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
+import { TaleInfoPartComponent } from '@myrmidon/cadmus-renovella-part-ui';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
 
 @Component({
   selector: 'renovella-tale-info-part-feature',
   templateUrl: './tale-info-part-feature.component.html',
   styleUrls: ['./tale-info-part-feature.component.css'],
-  standalone: false,
+  imports: [CurrentItemBarComponent, TaleInfoPartComponent],
 })
 export class TaleInfoPartFeatureComponent
   extends EditPartFeatureBase

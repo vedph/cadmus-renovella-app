@@ -16,5 +16,3 @@ export * from './lib/tale-story-part/tale-story-part.component';
 
 export * from './lib/poetic-texts-part';
 export * from './lib/poetic-texts-part/poetic-texts-part.component';
-
-export * from './lib/cadmus-renovella-part-ui.module';

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Route } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,13 +16,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { CadmusCoreModule, PendingChangesGuard } from '@myrmidon/cadmus-core';
-import { CadmusStateModule } from '@myrmidon/cadmus-state';
-import { CadmusUiModule } from '@myrmidon/cadmus-ui';
-import { CadmusUiPgModule } from '@myrmidon/cadmus-ui-pg';
-import { NgToolsModule } from '@myrmidon/ng-tools';
+import { PendingChangesGuard } from '@myrmidon/cadmus-core';
 import {
-  CadmusRenovellaPartUiModule,
   AVAILABLE_WITNESSES_PART_TYPEID,
   POETIC_TEXTS_PART_TYPEID,
   TALE_INFO_PART_TYPEID,
@@ -63,12 +58,6 @@ export const RouterModuleForChild = RouterModule.forChild([
 ]);
 
 @NgModule({
-  declarations: [
-    AvailableWitnessesPartFeatureComponent,
-    TaleInfoPartFeatureComponent,
-    TaleStoryPartFeatureComponent,
-    PoeticTextsPartFeatureComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -87,19 +76,6 @@ export const RouterModuleForChild = RouterModule.forChild([
     MatSnackBarModule,
     MatTabsModule,
     MatTooltipModule,
-    // cadmus
-    NgToolsModule,
-    CadmusCoreModule,
-    CadmusStateModule,
-    CadmusUiModule,
-    CadmusUiPgModule,
-    CadmusRenovellaPartUiModule,
-  ],
-  exports: [
-    AvailableWitnessesPartFeatureComponent,
-    TaleInfoPartFeatureComponent,
-    TaleStoryPartFeatureComponent,
-    PoeticTextsPartFeatureComponent,
   ],
 })
 export class CadmusRenovellaPartPgModule {}

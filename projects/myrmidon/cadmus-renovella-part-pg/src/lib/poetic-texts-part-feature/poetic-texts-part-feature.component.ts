@@ -4,12 +4,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EditPartFeatureBase, PartEditorService } from '@myrmidon/cadmus-state';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService, ThesaurusService } from '@myrmidon/cadmus-api';
+import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
+import { PoeticTextsPartComponent } from '@myrmidon/cadmus-renovella-part-ui';
 
 @Component({
   selector: 'renovella-poetic-texts-part-feature',
   templateUrl: './poetic-texts-part-feature.component.html',
   styleUrls: ['./poetic-texts-part-feature.component.css'],
-  standalone: false,
+  imports: [CurrentItemBarComponent, PoeticTextsPartComponent],
 })
 export class PoeticTextsPartFeatureComponent
   extends EditPartFeatureBase

@@ -2,11 +2,11 @@
   <h4>name</h4>
   <div class="form-row">
     <!-- language (bound) -->
-    @if (langEntries?.length) {
+    @if (langEntries()?.length) {
     <mat-form-field>
       <mat-label>language</mat-label>
       <mat-select [formControl]="language">
-        @for (e of langEntries; track e.id) {
+        @for (e of langEntries(); track e.id) {
         <mat-option [value]="e.id">{{ e.value }}</mat-option>
         }
       </mat-select>
@@ -16,22 +16,22 @@
     <mat-form-field>
       <mat-label>language</mat-label>
       <input matInput [formControl]="language" />
-      @if ( language.errors?.required && (language.dirty || language.touched) )
-      {
+      @if ( $any(language).errors?.required && (language.dirty ||
+      language.touched) ) {
       <mat-error>enter a language</mat-error>
-      } @if ( language.errors?.maxLength && (language.dirty || language.touched)
-      ) {
+      } @if ( $any(language).errors?.maxLength && (language.dirty ||
+      language.touched) ) {
       <mat-error>language too long</mat-error>
       }
     </mat-form-field>
     }
 
     <!-- tag (bound) -->
-    @if (nameTagEntries?.length) {
+    @if (nameTagEntries()?.length) {
     <mat-form-field>
       <mat-label>tag</mat-label>
       <mat-select [formControl]="tag">
-        @for (e of nameTagEntries; track e.id) {
+        @for (e of nameTagEntries(); track e.id) {
         <mat-option [value]="e.id">{{ e.value }}</mat-option>
         }
       </mat-select>
@@ -41,9 +41,9 @@
     <mat-form-field>
       <mat-label>tag</mat-label>
       <input matInput [formControl]="tag" />
-      @if (tag.errors?.required && (tag.dirty || tag.touched)) {
+      @if ($any(tag).errors?.required && (tag.dirty || tag.touched)) {
       <mat-error>enter a tag</mat-error>
-      } @if (tag.errors?.maxLength && (tag.dirty || tag.touched)) {
+      } @if ($any(tag).errors?.maxLength && (tag.dirty || tag.touched)) {
       <mat-error>tag too long</mat-error>
       }
     </mat-form-field>
@@ -74,44 +74,46 @@
     $first; let last = $last) {
     <div>
       <!-- child form -->
-      <div [formGroupName]="i">
+      <div [formGroupName]="i" class="form-row">
         <!-- child actions -->
-        {{ i + 1 }}.
-        <button
-          mat-icon-button
-          type="button"
-          matTooltip="Remove this part"
-          color="warn"
-          (click)="removePart(i)"
-        >
-          <mat-icon class="mat-warn">remove_circle</mat-icon>
-        </button>
-        <button
-          [disabled]="first"
-          mat-icon-button
-          type="button"
-          matTooltip="Move part up"
-          (click)="movePartUp(i)"
-        >
-          <mat-icon>arrow_upward</mat-icon>
-        </button>
-        <button
-          [disabled]="last"
-          mat-icon-button
-          type="button"
-          matTooltip="Move part down"
-          (click)="movePartDown(i)"
-        >
-          <mat-icon>arrow_downward</mat-icon>
-        </button>
+        <div>
+          {{ i + 1 }}.
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Remove this part"
+            color="warn"
+            (click)="removePart(i)"
+          >
+            <mat-icon class="mat-warn">remove_circle</mat-icon>
+          </button>
+          <button
+            [disabled]="first"
+            mat-icon-button
+            type="button"
+            matTooltip="Move part up"
+            (click)="movePartUp(i)"
+          >
+            <mat-icon>arrow_upward</mat-icon>
+          </button>
+          <button
+            [disabled]="last"
+            mat-icon-button
+            type="button"
+            matTooltip="Move part down"
+            (click)="movePartDown(i)"
+          >
+            <mat-icon>arrow_downward</mat-icon>
+          </button>
+        </div>
         <div class="form-row">
           <!-- child controls -->
           <!-- type (bound) -->
-          @if (nameTypeEntries?.length) {
+          @if (nameTypeEntries()?.length) {
           <mat-form-field>
             <mat-label>type</mat-label>
             <mat-select formControlName="type">
-              @for (e of nameTypeEntries; track e.id) {
+              @for (e of nameTypeEntries(); track e.id) {
               <mat-option [value]="e.id">{{ e.value }}</mat-option>
               }
             </mat-select>
@@ -172,10 +174,10 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <cadmus-refs-decorated-ids
-      [tagEntries]="idTagEntries"
+      [tagEntries]="idTagEntries()"
       [ids]="ids.value"
       (idsChange)="onIdsChange($event)"
-    ></cadmus-refs-decorated-ids>
+    />
   </mat-expansion-panel>
 
   <br />
@@ -187,11 +189,11 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <cadmus-refs-doc-references
-      [tagEntries]="idTagEntries"
-      [typeEntries]="idTypeEntries"
+      [tagEntries]="idTagEntries()"
+      [typeEntries]="idTypeEntries()"
       [references]="sources.value"
       (referencesChange)="onSourcesChange($event)"
-    ></cadmus-refs-doc-references>
+    />
   </mat-expansion-panel>
 
   <br />

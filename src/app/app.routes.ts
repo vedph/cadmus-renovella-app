@@ -1,25 +1,23 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
-// myrmidon
 import {
-  AuthJwtAdminGuardService,
   AuthJwtGuardService,
+  AuthJwtAdminGuardService,
 } from '@myrmidon/auth-jwt-login';
-import { PendingChangesGuard } from '@myrmidon/cadmus-core';
 import { EditorGuardService } from '@myrmidon/cadmus-api';
+import { PendingChangesGuard } from '@myrmidon/cadmus-core';
 
-// locals
 import { HomeComponent } from './home/home.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 import { ManageUsersPageComponent } from './manage-users-page/manage-users-page.component';
 import { RegisterUserPageComponent } from './register-user-page/register-user-page.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { LoginPageComponent } from './login-page/login-page.component';
 
-const routes: Routes = [
+export const routes: Routes = [
+  // local home
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  // auth
+  // local auth
   { path: 'login', component: LoginPageComponent },
   {
     path: 'reset-password',
@@ -36,62 +34,46 @@ const routes: Routes = [
     component: ManageUsersPageComponent,
     canActivate: [AuthJwtAdminGuardService],
   },
-  // cadmus
-  {
-    path: 'demo/layers',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-layer-demo').then(
-        (module) => module.CadmusLayerDemoModule
-      ),
-  },
   // cadmus - items
   {
-    path: 'items',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-item-list').then(
-        (module) => module.CadmusItemListModule
-      ),
-    canActivate: [AuthJwtGuardService],
-  },
-  {
     path: 'items/:id',
-    loadChildren: () =>
+    loadComponent: () =>
       import('@myrmidon/cadmus-item-editor').then(
-        (module) => module.CadmusItemEditorModule
+        (module) => module.ItemEditorComponent
       ),
     canActivate: [AuthJwtGuardService],
     canDeactivate: [PendingChangesGuard],
   },
   {
+    path: 'items',
+    loadComponent: () =>
+      import('@myrmidon/cadmus-item-list').then(
+        (module) => module.ItemListComponent
+      ),
+    canActivate: [AuthJwtGuardService],
+  },
+  {
     path: 'search',
-    loadChildren: () =>
+    loadComponent: () =>
       import('@myrmidon/cadmus-item-search').then(
-        (module) => module.CadmusItemSearchModule
+        (module) => module.ItemSearchComponent
       ),
     canActivate: [AuthJwtGuardService],
   },
   // cadmus - thesauri
   {
-    path: 'thesauri',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-thesaurus-list').then(
-        (module) => module.CadmusThesaurusListModule
+    path: 'thesauri/:id',
+    loadComponent: () =>
+      import('@myrmidon/cadmus-thesaurus-editor').then(
+        (module) => module.ThesaurusEditorFeatureComponent
       ),
     canActivate: [EditorGuardService],
   },
-  // cadmus - flags
   {
-    path: 'flags',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-flags-pg').then(
-        (module) => module.CadmusFlagsPgModule
-      ),
-  },
-  {
-    path: 'thesauri/:id',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-thesaurus-editor').then(
-        (module) => module.CadmusThesaurusEditorModule
+    path: 'thesauri',
+    loadComponent: () =>
+      import('@myrmidon/cadmus-thesaurus-list').then(
+        (module) => module.ThesaurusListComponent
       ),
     canActivate: [EditorGuardService],
   },
@@ -104,11 +86,12 @@ const routes: Routes = [
       ),
     canActivate: [AuthJwtGuardService],
   },
+  // cadmus - graph
   {
-    path: 'items/:iid/renovella',
-    loadChildren: () =>
-      import('@myrmidon/cadmus-renovella-part-pg').then(
-        (module) => module.CadmusRenovellaPartPgModule
+    path: 'graph',
+    loadComponent: () =>
+      import('@myrmidon/cadmus-graph-pg-ex').then(
+        (module) => module.GraphEditorExFeatureComponent
       ),
     canActivate: [AuthJwtGuardService],
   },
@@ -121,14 +104,24 @@ const routes: Routes = [
       ),
     canActivate: [AuthJwtGuardService],
   },
+  // cadmus - flags
+  {
+    path: 'flags',
+    loadComponent: () =>
+      import('@myrmidon/cadmus-flags-pg').then(
+        (module) => module.FlagsEditorFeatureComponent
+      ),
+    canActivate: [AuthJwtGuardService],
+  },
+  // cadmus - renovella
+  {
+    path: 'items/:iid/renovella',
+    loadChildren: () =>
+      import('@myrmidon/cadmus-renovella-part-pg').then(
+        (module) => module.CadmusRenovellaPartPgModule
+      ),
+    canActivate: [AuthJwtGuardService],
+  },
   // fallback
   { path: '**', component: HomeComponent },
 ];
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-  ],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}

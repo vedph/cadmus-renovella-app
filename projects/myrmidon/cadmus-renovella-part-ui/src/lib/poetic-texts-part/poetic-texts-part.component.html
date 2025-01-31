@@ -24,7 +24,7 @@
         <tbody>
           @for ( t of texts.value; track t; let i = $index; let first = $first;
           let last = $last) {
-          <tr>
+          <tr [class.selected]="i === editedIndex">
             <td>
               <button
                 type="button"
@@ -69,6 +69,7 @@
         </tbody>
       </table>
 
+      @if (editedText) {
       <mat-expansion-panel [expanded]="editedText" [disabled]="!editedText">
         <mat-expansion-panel-header
           >#{{ editedIndex + 1 }}</mat-expansion-panel-header
@@ -76,17 +77,18 @@
         <renovella-poetic-text
           [metreEntries]="metreEntries"
           [text]="editedText"
-          (textChange)="onTextChange($event)"
+          (textChange)="onTextChange($event!)"
           (close)="closeText()"
-        ></renovella-poetic-text>
+        />
       </mat-expansion-panel>
+      }
     </mat-card-content>
     <mat-card-actions>
       <cadmus-close-save-buttons
         [form]="form"
         [noSave]="userLevel < 2"
         (closeRequest)="close()"
-      ></cadmus-close-save-buttons>
+      />
     </mat-card-actions>
   </mat-card>
 </form>

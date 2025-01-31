@@ -1,36 +1,30 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
       "@myrmidon/cadmus-renovella-part-pg": [
-        "dist/myrmidon/cadmus-renovella-part-pg/myrmidon-cadmus-renovella-part-pg",
-        "dist/myrmidon/cadmus-renovella-part-pg"
+        "./dist/myrmidon/cadmus-renovella-part-pg"
       ],
       "@myrmidon/cadmus-renovella-part-ui": [
-        "dist/myrmidon/cadmus-renovella-part-ui/myrmidon-cadmus-renovella-part-ui",
-        "dist/myrmidon/cadmus-renovella-part-ui"
+        "./dist/myrmidon/cadmus-renovella-part-ui"
       ]
     },
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "declaration": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "useDefineForClassFields": false
+    "module": "ES2022"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

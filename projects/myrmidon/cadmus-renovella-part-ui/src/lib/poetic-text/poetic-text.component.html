@@ -16,11 +16,11 @@
 
   <div>
     <!-- metre (bound) -->
-    @if (metreEntries?.length) {
+    @if (metreEntries()?.length) {
     <mat-form-field>
       <mat-label>metre</mat-label>
       <mat-select [formControl]="metre">
-        @for (e of metreEntries; track e.id) {
+        @for (e of metreEntries(); track e.id) {
         <mat-option [value]="e.id">{{ e.value }}</mat-option>
         }
       </mat-select>

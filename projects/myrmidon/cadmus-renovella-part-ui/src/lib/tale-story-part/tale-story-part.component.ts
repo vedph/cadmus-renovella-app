@@ -6,15 +6,33 @@ import {
   FormBuilder,
   FormGroup,
   UntypedFormGroup,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import {
+  CloseSaveButtonsComponent,
+  EditedObject,
+  ModelEditorComponentBase,
+} from '@myrmidon/cadmus-ui';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { HistoricalDateModel } from '@myrmidon/cadmus-refs-historical-date';
+import {
+  HistoricalDateComponent,
+  HistoricalDateModel,
+} from '@myrmidon/cadmus-refs-historical-date';
 
 import {
   StoryCharacter,
@@ -22,6 +40,7 @@ import {
   TaleStoryPart,
   TALE_STORY_PART_TYPEID,
 } from '../tale-story-part';
+import { MatTabsModule } from '@angular/material/tabs';
 
 /**
  * Tale story editor component.
@@ -31,7 +50,21 @@ import {
   selector: 'renovella-tale-story-part',
   templateUrl: './tale-story-part.component.html',
   styleUrls: ['./tale-story-part.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatTooltipModule,
+    HistoricalDateComponent,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class TaleStoryPartComponent
   extends ModelEditorComponentBase<TaleStoryPart>
@@ -69,24 +102,24 @@ export class TaleStoryPartComponent
     this.epilogue = _formBuilder.control(null, Validators.maxLength(1000));
     this.characters = _formBuilder.array(
       [],
-      NgToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1)
     );
     this.age = _formBuilder.control(null);
     this.hasDate = _formBuilder.control(false, { nonNullable: true });
     this.date = _formBuilder.control(
       null,
-      NgToolsValidators.conditionalValidator(
+      NgxToolsValidators.conditionalValidator(
         () => this.hasDate.value,
         Validators.required
       )
     );
     this.places = _formBuilder.array(
       [],
-      NgToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1)
     );
   }
 
-  public ngOnInit(): void {
+  public override ngOnInit(): void {
     super.ngOnInit();
   }
 
@@ -115,7 +148,8 @@ export class TaleStoryPartComponent
     }
   }
 
-  public ngOnDestroy(): void {
+  public override ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.unsubscribeChars();
     this.unsubscribePlaces();
   }
@@ -274,10 +308,10 @@ export class TaleStoryPartComponent
     for (let i = 0; i < this.characters.length; i++) {
       const g = this.characters.at(i) as UntypedFormGroup;
       entries.push({
-        name: g.controls.name.value?.trim(),
-        sex: g.controls.sex.value?.trim(),
-        role: g.controls.role.value?.trim(),
-        isGroup: g.controls.isGroup.value,
+        name: g.controls['name'].value?.trim(),
+        sex: g.controls['sex'].value?.trim(),
+        role: g.controls['role'].value?.trim(),
+        isGroup: g.controls['isGroup'].value,
       });
     }
     return entries;
@@ -346,9 +380,9 @@ export class TaleStoryPartComponent
     for (let i = 0; i < this.places.length; i++) {
       const g = this.places.at(i) as UntypedFormGroup;
       entries.push({
-        type: g.controls.type.value?.trim(),
-        name: g.controls.name.value?.trim(),
-        location: g.controls.location.value?.trim(),
+        type: g.controls['type'].value?.trim(),
+        name: g.controls['name'].value?.trim(),
+        location: g.controls['location'].value?.trim(),
       });
     }
     return entries.length ? entries : [];

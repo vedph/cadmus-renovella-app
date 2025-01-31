@@ -1,6 +1,6 @@
-# Cadmus Re.Novella App
+# CadmusRenovellaApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.3.
 
 ## Docker
 
@@ -22,7 +22,24 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 3. build a new image for production: `docker build . -t vedph2020/cadmus-renovella-app:3.0.6-prod`. The production version is labeled like this one, with `-prod` suffix.
 
+## Setup
+
+```sh
+ng new cadmus-renovella-app
+cd cadmus-renovella-app
+ng add @angular/material
+ng add @angular/localize
+ng g library @myrmidon/cadmus-renovella-part-ui --prefix cadmus
+ng g library @myrmidon/cadmus-renovella-part-pg --prefix cadmus
+```
+
 ## History
+
+### 7.0.0
+
+- 2025-01-31:
+  - ⚠️ migrated to standalone and signals.
+  - updated Angular and packages.
 
 ### 6.0.0
 

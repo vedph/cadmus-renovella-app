@@ -4,19 +4,36 @@ import {
   FormGroup,
   UntypedFormGroup,
   FormControl,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-import { NgToolsValidators } from '@myrmidon/ng-tools';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { DialogService } from '@myrmidon/ngx-mat-tools';
+import { EllipsisPipe, NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import {
+  CloseSaveButtonsComponent,
+  EditedObject,
+  ModelEditorComponentBase,
+} from '@myrmidon/cadmus-ui';
 
 import {
   PoeticText,
   PoeticTextsPart,
   POETIC_TEXTS_PART_TYPEID,
 } from '../poetic-texts-part';
-import { DialogService } from '@myrmidon/ng-mat-tools';
+import { PoeticTextComponent } from '../poetic-text/poetic-text.component';
 
 /**
  * Poetic texts info component. Thesauri: poetic-text-metres (optional).
@@ -25,7 +42,22 @@ import { DialogService } from '@myrmidon/ng-mat-tools';
   selector: 'renovella-poetic-texts-part',
   templateUrl: './poetic-texts-part.component.html',
   styleUrls: ['./poetic-texts-part.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+    EllipsisPipe,
+    CloseSaveButtonsComponent,
+    PoeticTextComponent,
+  ],
 })
 export class PoeticTextsPartComponent
   extends ModelEditorComponentBase<PoeticTextsPart>
@@ -48,12 +80,12 @@ export class PoeticTextsPartComponent
     this.editedIndex = -1;
     // form
     this.texts = formBuilder.control([], {
-      validators: NgToolsValidators.strictMinLengthValidator(1),
+      validators: NgxToolsValidators.strictMinLengthValidator(1),
       nonNullable: true,
     });
   }
 
-  public ngOnInit(): void {
+  public override ngOnInit(): void {
     super.ngOnInit();
   }
 

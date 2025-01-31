@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   UntypedFormBuilder,
   Validators,
@@ -6,9 +7,23 @@ import {
   FormGroup,
   FormArray,
   UntypedFormGroup,
+  ReactiveFormsModule,
 } from '@angular/forms';
 
-import { EditedObject, ModelEditorComponentBase } from '@myrmidon/cadmus-ui';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import {
+  CloseSaveButtonsComponent,
+  EditedObject,
+  ModelEditorComponentBase,
+} from '@myrmidon/cadmus-ui';
 import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
@@ -26,7 +41,19 @@ import {
   selector: 'renovella-available-witnesses-part',
   templateUrl: './available-witnesses-part.component.html',
   styleUrls: ['./available-witnesses-part.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+    CloseSaveButtonsComponent,
+  ],
 })
 export class AvailableWitnessesPartComponent
   extends ModelEditorComponentBase<AvailableWitnessesPart>
@@ -48,7 +75,7 @@ export class AvailableWitnessesPartComponent
     this.witnesses = _formBuilder.array([]);
   }
 
-  public ngOnInit(): void {
+  public override ngOnInit(): void {
     super.ngOnInit();
   }
 
@@ -170,10 +197,10 @@ export class AvailableWitnessesPartComponent
     for (let i = 0; i < this.witnesses.length; i++) {
       const g = this.witnesses.at(i) as FormGroup;
       witnesses.push({
-        id: g.controls.id.value?.trim(),
-        isPartial: g.controls.partial.value ? true : undefined,
-        note: g.controls.note.value?.trim(),
-        externalIds: g.controls.externalIds.value?.split('\n'),
+        id: g.controls['id'].value?.trim(),
+        isPartial: g.controls['partial'].value ? true : undefined,
+        note: g.controls['note'].value?.trim(),
+        externalIds: g.controls['externalIds'].value?.split('\n'),
       });
     }
     return witnesses;
