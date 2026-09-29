@@ -6,7 +6,7 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -43,7 +43,6 @@ import { PoeticTextComponent } from '../poetic-text/poetic-text.component';
   templateUrl: './poetic-texts-part.component.html',
   styleUrls: ['./poetic-texts-part.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -56,8 +55,8 @@ import { PoeticTextComponent } from '../poetic-text/poetic-text.component';
     MatTooltipModule,
     EllipsisPipe,
     CloseSaveButtonsComponent,
-    PoeticTextComponent,
-  ],
+    PoeticTextComponent
+],
 })
 export class PoeticTextsPartComponent
   extends ModelEditorComponentBase<PoeticTextsPart>

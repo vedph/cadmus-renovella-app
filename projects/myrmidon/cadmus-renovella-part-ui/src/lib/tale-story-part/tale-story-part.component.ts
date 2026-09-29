@@ -8,7 +8,7 @@ import {
   UntypedFormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -51,7 +51,6 @@ import { MatTabsModule } from '@angular/material/tabs';
   templateUrl: './tale-story-part.component.html',
   styleUrls: ['./tale-story-part.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -63,8 +62,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatTooltipModule,
     HistoricalDateComponent,
-    CloseSaveButtonsComponent,
-  ],
+    CloseSaveButtonsComponent
+],
 })
 export class TaleStoryPartComponent
   extends ModelEditorComponentBase<TaleStoryPart>

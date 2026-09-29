@@ -1,6 +1,6 @@
 import { Component, effect, EventEmitter, input, Input, model, output, Output } from '@angular/core';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-import { CommonModule } from '@angular/common';
+
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -24,7 +24,6 @@ import {
   templateUrl: './poetic-text.component.html',
   styleUrls: ['./poetic-text.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -32,8 +31,8 @@ import {
     MatIconModule,
     MatInputModule,
     MatSelectModule,
-    MatTooltipModule,
-  ],
+    MatTooltipModule
+],
 })
 export class PoeticTextComponent {
   public readonly text = model<PoeticText>();

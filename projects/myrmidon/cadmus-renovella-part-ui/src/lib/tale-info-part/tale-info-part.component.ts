@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -60,7 +60,6 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   templateUrl: './tale-info-part.component.html',
   styleUrls: ['./tale-info-part.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -75,8 +74,8 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
     FlagSetComponent,
     LookupPinComponent,
     CloseSaveButtonsComponent,
-    CitedPersonComponent,
-  ],
+    CitedPersonComponent
+],
 })
 export class TaleInfoPartComponent
   extends ModelEditorComponentBase<TaleInfoPart>

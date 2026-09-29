@@ -7,7 +7,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { BehaviorSubject } from 'rxjs';
 
 import { MatCardModule } from '@angular/material/card';
@@ -39,7 +39,6 @@ import { CitedPerson } from '../cited-persons-part';
   templateUrl: './cited-person.component.html',
   styleUrls: ['./cited-person.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -51,8 +50,8 @@ import { CitedPerson } from '../cited-persons-part';
     MatSelectModule,
     MatTooltipModule,
     DecoratedIdsComponent,
-    DocReferencesComponent,
-  ],
+    DocReferencesComponent
+],
 })
 export class CitedPersonComponent {
   public readonly person = model<CitedPerson>();

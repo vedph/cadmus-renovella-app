@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   UntypedFormBuilder,
   Validators,
@@ -42,7 +42,6 @@ import {
   templateUrl: './available-witnesses-part.component.html',
   styleUrls: ['./available-witnesses-part.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -52,8 +51,8 @@ import {
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
-    CloseSaveButtonsComponent,
-  ],
+    CloseSaveButtonsComponent
+],
 })
 export class AvailableWitnessesPartComponent
   extends ModelEditorComponentBase<AvailableWitnessesPart>
