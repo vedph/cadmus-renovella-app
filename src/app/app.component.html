@@ -1,78 +1,162 @@
 <header>
-  <mat-toolbar color="primary" class="mat-primary">
-    <span id="logo"
-      ><img src="./img/logo-white-40.png" alt="Fusisoft"
-    /></span>
+  <mat-toolbar
+    class="env-branded-toolbar"
+    [style.--app-env-color]="branding().bg"
+    [style.--app-env-on-color]="branding().text"
+  >
+    <span id="logo"><img src="./img/logo-white-40.png" alt="Fusisoft" /></span>
     <a mat-button routerLink="/home">Cadmus Re.Novella</a>
 
-    @if (logged && itemBrowsers) {
-    <button type="button" mat-button [matMenuTriggerFor]="itemMenu">
-      Items
-    </button>
-    }
-    <mat-menu #itemMenu>
-      <a mat-menu-item routerLink="/items">Items</a>
-      @for (entry of itemBrowsers; track entry) {
-      <a
-        mat-menu-item
-        [routerLink]="'item-browser/' + getItemBrowserRoute(entry.id)"
-        >{{ entry.value }}</a
-      >
+    @if (!isMobile()) {
+      <!-- items menu -->
+      @if (logged() && itemBrowsers()) {
+        <button type="button" mat-button [matMenuTriggerFor]="itemMenu">
+          Items
+        </button>
       }
-    </mat-menu>
-    @if (logged && !itemBrowsers) {
-    <a mat-button routerLink="/items">Items</a>
-    } @if (logged) {
-    <a mat-button routerLink="/search">Search</a>
+      <!-- item menu -->
+      @if (logged() && !itemBrowsers()) {
+        <button type="button" mat-button routerLink="/items">Items</button>
+      }
+      @if (logged()) {
+        <!-- search menu -->
+        <button type="button" mat-button routerLink="/search">Search</button>
+        <!-- graph menu -->
+        <button type="button" mat-button routerLink="/graph">Graph</button>
+        <!-- stats menu -->
+        <button type="button" mat-button routerLink="/stats">Stats</button>
+      }
     }
 
-    <!-- profile menu -->
-    @if (user && user.roles.includes('admin')) {
-    <button type="button" mat-button [matMenuTriggerFor]="profileMenu">
-      Profile
-    </button>
-    <mat-menu #profileMenu>
+    @if (isMobile()) {
+      <!-- hamburger menu -->
+      <button
+        type="button"
+        mat-icon-button
+        [matMenuTriggerFor]="mobileMenu"
+        aria-label="Open menu"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+
+    <!-- items menu content (shared by desktop button and mobile hamburger) -->
+    <mat-menu #itemMenu>
+      <a mat-menu-item routerLink="/items">Items</a>
+      @for (entry of itemBrowsers(); track entry.id) {
+        <a
+          mat-menu-item
+          [routerLink]="'item-browser/' + getItemBrowserRoute(entry.id)"
+          >{{ entry.value }}</a
+        >
+      }
+    </mat-menu>
+
+    <!-- user menu content (shared by desktop button and mobile hamburger) -->
+    <mat-menu #userMenu>
+      <a mat-menu-item routerLink="/reset-password">Reset password</a>
+    </mat-menu>
+
+    <!-- admin menu content (shared by desktop button and mobile hamburger) -->
+    <mat-menu #adminMenu>
+      <a mat-menu-item routerLink="/manage-users">Manage users</a>
+      <a mat-menu-item routerLink="/register-user">Register user</a>
+      <mat-divider />
       <a mat-menu-item routerLink="/flags"> Flags </a>
       <a mat-menu-item routerLink="/thesauri"> Thesauri </a>
+      <a mat-menu-item routerLink="/profile/facets"> Facets </a>
+      <mat-divider />
+      <a mat-menu-item routerLink="/profile/import/facets"> Import facets </a>
+      <a mat-menu-item routerLink="/profile/import/settings">
+        Import settings
+      </a>
     </mat-menu>
-    }
+
+    <!-- hamburger menu, grouping most navigation for small viewports -->
+    <mat-menu #mobileMenu>
+      @if (logged() && itemBrowsers()) {
+        <button type="button" mat-menu-item [matMenuTriggerFor]="itemMenu">
+          Items
+        </button>
+      }
+      @if (logged() && !itemBrowsers()) {
+        <a mat-menu-item routerLink="/items">Items</a>
+      }
+      @if (logged()) {
+        <a mat-menu-item routerLink="/search">Search</a>
+        <a mat-menu-item routerLink="/graph">Graph</a>
+        <a mat-menu-item routerLink="/stats">Stats</a>
+      }
+      @if (user()) {
+        <mat-divider />
+        <button type="button" mat-menu-item [matMenuTriggerFor]="userMenu">
+          User
+        </button>
+        @if (user()!.roles.includes("admin")) {
+          <button type="button" mat-menu-item [matMenuTriggerFor]="adminMenu">
+            Admin
+          </button>
+        }
+      }
+    </mat-menu>
 
     <span class="tb-fill-remaining-space"></span>
 
-    @if (user) {
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <img [src]="user.email | gravatar : 32" alt="{{ user.userName }}" />
-      @if (user && user.roles.includes('admin')) {
-      <mat-icon class="small-icon" title="admin">build</mat-icon>
-      } @if (user && !user.emailConfirmed) {
-      <mat-icon
-        class="small-icon"
-        title="You must verify your email address! Please check your mailbox {{
-          user.email
-        }}"
-        >feedback</mat-icon
-      >
-      }
-      <!-- admin menu -->
-      @if (user && user.roles.includes('admin')) {
-      <button type="button" mat-button [matMenuTriggerFor]="adminMenu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      }
-      <mat-menu #adminMenu>
-        <a mat-menu-item routerLink="/manage-users">Manage users</a>
-        <a mat-menu-item routerLink="/register-user">Register user</a>
-      </mat-menu>
-    </div>
-    } @if (!logged) {
-    <div>
-      <a mat-button routerLink="/login">Login</a>
-    </div>
-    } @if (logged) {
-    <div>
-      <a mat-button (click)="logout()">Logout</a>
-    </div>
+    <!-- user -->
+    @if (user()) {
+      <div>
+        <!-- indicators -->
+        <img
+          alt="avatar"
+          [src]="user()!.email | gravatar: 32"
+          [alt]="user()!.userName"
+        />
+        @if (user() && user()!.roles.includes("admin")) {
+          <mat-icon class="small-icon" title="admin">build</mat-icon>
+        }
+        @if (user() && !user()!.emailConfirmed) {
+          <mat-icon
+            class="small-icon"
+            title="You must verify your email address! Please check your mailbox {{
+              user()!.email
+            }}"
+            >feedback</mat-icon
+          >
+        }
+        @if (!isMobile()) {
+          <!-- user menu -->
+          <button type="button" mat-button [matMenuTriggerFor]="userMenu">
+            User
+          </button>
+          <!-- admin menu -->
+          @if (user() && user()!.roles.includes("admin")) {
+            <button type="button" mat-button [matMenuTriggerFor]="adminMenu">
+              Admin
+            </button>
+          }
+        }
+      </div>
     }
+
+    <!-- login -->
+    @if (!logged()) {
+      <button
+        type="button"
+        mat-icon-button
+        [routerLink]="['/login']"
+        [queryParams]="{ returnUrl: 'items' }"
+      >
+        <mat-icon>login</mat-icon>
+      </button>
+    }
+    <!-- logout -->
+    @if (logged()) {
+      <button type="button" mat-icon-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    }
+
+    <ngx-theme-toggle />
   </mat-toolbar>
 </header>
 
@@ -91,7 +175,7 @@
       <a rel="noopener" href="https://www.unive.it/pag/39287" target="_blank"
         >VeDPH</a
       >
-      - Re.Novella {{ version }}
+      - Re.Novella {{ version() }}
     </p>
   </div>
 </footer>

@@ -13,30 +13,32 @@
           <div>
             <!-- age (bound) -->
             @if (storyAgeEntries?.length) {
-            <mat-form-field>
-              <mat-label>age</mat-label>
-              <mat-select [formControl]="age">
-                @for (e of storyAgeEntries; track e.id) {
-                <mat-option [value]="e.id">{{ e.value }}</mat-option>
+              <mat-form-field>
+                <mat-label>age</mat-label>
+                <mat-select [formControl]="age">
+                  @for (e of storyAgeEntries; track e.id) {
+                    <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                  }
+                </mat-select>
+                @if ($any(age).errors?.required && (age.dirty || age.touched)) {
+                  <mat-error>age required</mat-error>
                 }
-              </mat-select>
-              @if ($any(age).errors?.required && (age.dirty || age.touched)) {
-              <mat-error>age required</mat-error>
-              }
-            </mat-form-field>
+              </mat-form-field>
             }
             <!-- age (free) -->
             @if (!storyAgeEntries?.length) {
-            <mat-form-field>
-              <mat-label>age</mat-label>
-              <input matInput [formControl]="age" />
-              @if ($any(age).errors?.required && (age.dirty || age.touched)) {
-              <mat-error>age required</mat-error>
-              } @if ( $any(age).errors?.maxLength && (age.dirty || age.touched)
-              ) {
-              <mat-error>age too long</mat-error>
-              }
-            </mat-form-field>
+              <mat-form-field>
+                <mat-label>age</mat-label>
+                <input matInput [formControl]="age" />
+                @if ($any(age).errors?.required && (age.dirty || age.touched)) {
+                  <mat-error>age required</mat-error>
+                }
+                @if (
+                  $any(age).errors?.maxLength && (age.dirty || age.touched)
+                ) {
+                  <mat-error>age too long</mat-error>
+                }
+              </mat-form-field>
             }
           </div>
 
@@ -44,10 +46,10 @@
           <div>
             <mat-checkbox [formControl]="hasDate">has date</mat-checkbox>
             @if (hasDate.value) {
-            <cadmus-refs-historical-date
-              [date]="date.value || undefined"
-              (dateChange)="onDateChange($event!)"
-            />
+              <cadmus-refs-historical-date
+                [date]="date.value || undefined"
+                (dateChange)="onDateChange($event!)"
+              />
             }
           </div>
 
@@ -67,97 +69,115 @@
                   place
                 </button>
               </div>
-              @for ( item of places.controls; track item; let i = $index; let
-              first = $first; let last = $last) {
-              <div>
-                <!-- child form -->
-                <div [formGroupName]="i" class="form-row">
-                  <!-- child actions -->
-                  <div>
-                    {{ i + 1 }}.
-                    <button
-                      mat-icon-button
-                      type="button"
-                      matTooltip="Remove this place"
-                      color="warn"
-                      (click)="removePlace(i)"
-                    >
-                      <mat-icon class="mat-warn">remove_circle</mat-icon>
-                    </button>
-                    <button
-                      [disabled]="first"
-                      mat-icon-button
-                      type="button"
-                      matTooltip="Move place up"
-                      (click)="movePlaceUp(i)"
-                    >
-                      <mat-icon>arrow_upward</mat-icon>
-                    </button>
-                    <button
-                      [disabled]="last"
-                      mat-icon-button
-                      type="button"
-                      matTooltip="Move place down"
-                      (click)="movePlaceDown(i)"
-                    >
-                      <mat-icon>arrow_downward</mat-icon>
-                    </button>
-                  </div>
-                  <!-- child controls -->
-                  <!-- type (bound) -->
-                  @if (storyPlaceTypeEntries?.length) {
-                  <mat-form-field>
-                    <mat-label>type</mat-label>
-                    <mat-select formControlName="type">
-                      @for (e of storyPlaceTypeEntries; track e.id) {
-                      <mat-option [value]="e.id">{{ e.value }}</mat-option>
+              @for (
+                item of places.controls;
+                track item;
+                let i = $index;
+                let first = $first;
+                let last = $last
+              ) {
+                <div>
+                  <!-- child form -->
+                  <div [formGroupName]="i" class="form-row">
+                    <!-- child actions -->
+                    <div>
+                      {{ i + 1 }}.
+                      <button
+                        mat-icon-button
+                        type="button"
+                        matTooltip="Remove this place"
+                        color="warn"
+                        (click)="removePlace(i)"
+                      >
+                        <mat-icon class="mat-warn">remove_circle</mat-icon>
+                      </button>
+                      <button
+                        [disabled]="first"
+                        mat-icon-button
+                        type="button"
+                        matTooltip="Move place up"
+                        (click)="movePlaceUp(i)"
+                      >
+                        <mat-icon>arrow_upward</mat-icon>
+                      </button>
+                      <button
+                        [disabled]="last"
+                        mat-icon-button
+                        type="button"
+                        matTooltip="Move place down"
+                        (click)="movePlaceDown(i)"
+                      >
+                        <mat-icon>arrow_downward</mat-icon>
+                      </button>
+                    </div>
+                    <!-- child controls -->
+                    <!-- type (bound) -->
+                    @if (storyPlaceTypeEntries?.length) {
+                      <mat-form-field>
+                        <mat-label>type</mat-label>
+                        <mat-select formControlName="type">
+                          @for (e of storyPlaceTypeEntries; track e.id) {
+                            <mat-option [value]="e.id">{{
+                              e.value
+                            }}</mat-option>
+                          }
+                        </mat-select>
+                        @if (
+                          $any(item)["controls"].type.errors?.required &&
+                          ($any(item)["controls"].type.dirty ||
+                            $any(item)["controls"].type.touched)
+                        ) {
+                          <mat-error>type required</mat-error>
+                        }
+                      </mat-form-field>
+                    }
+                    <!-- type (free) -->
+                    @if (!storyPlaceTypeEntries?.length) {
+                      <mat-form-field>
+                        <mat-label>type</mat-label>
+                        <input matInput formControlName="type" />
+                        @if (
+                          $any(item)["controls"].type.errors?.required &&
+                          ($any(item)["controls"].type.dirty ||
+                            $any(item)["controls"].type.touched)
+                        ) {
+                          <mat-error>type required</mat-error>
+                        }
+                        @if (
+                          $any(item)["controls"].type.errors?.maxLength &&
+                          ($any(item)["controls"].type.dirty ||
+                            $any(item)["controls"].type.touched)
+                        ) {
+                          <mat-error>type too long</mat-error>
+                        }
+                      </mat-form-field>
+                    }
+                    <!-- name -->
+                    <mat-form-field>
+                      <mat-label>name</mat-label>
+                      <input matInput formControlName="name" />
+                      @if (
+                        $any(item)["controls"].name.errors?.maxLength &&
+                        ($any(item)["controls"].name.dirty ||
+                          $any(item)["controls"].name.touched)
+                      ) {
+                        <mat-error>name too long</mat-error>
                       }
-                    </mat-select>
-                    @if ( $any(item)['controls'].type.errors?.required &&
-                    ($any(item)['controls'].type.dirty ||
-                    $any(item)['controls'].type.touched) ) {
-                    <mat-error>type required</mat-error>
-                    }
-                  </mat-form-field>
-                  }
-                  <!-- type (free) -->
-                  @if (!storyPlaceTypeEntries?.length) {
-                  <mat-form-field>
-                    <mat-label>type</mat-label>
-                    <input matInput formControlName="type" />
-                    @if ( $any(item)['controls'].type.errors?.required &&
-                    ($any(item)['controls'].type.dirty ||
-                    $any(item)['controls'].type.touched) ) {
-                    <mat-error>type required</mat-error>
-                    } @if ( $any(item)['controls'].type.errors?.maxLength &&
-                    ($any(item)['controls'].type.dirty ||
-                    $any(item)['controls'].type.touched) ) {
-                    <mat-error>type too long</mat-error>
-                    }
-                  </mat-form-field>
-                  }
-                  <!-- name -->
-                  <mat-form-field>
-                    <mat-label>name</mat-label>
-                    <input matInput formControlName="name" />
-                    @if ( $any(item)['controls'].name.errors?.maxLength &&
-                    ($any(item)['controls'].name.dirty ||
-                    $any(item)['controls'].name.touched) ) {
-                    <mat-error>name too long</mat-error>
-                    }
-                  </mat-form-field>
-                  <!-- location -->
-                  <mat-form-field>
-                    <mat-label>location</mat-label>
-                    <input matInput formControlName="location" />
-                    @if ( $any(item)['controls'].location.errors?.maxLength &&
-                    ($any(item)['controls'].location.dirty ||
-                    $any(item)['controls'].location.touched) ) {
-                    <mat-error>location too long</mat-error>
-                    }
-                  </mat-form-field>
+                    </mat-form-field>
+                    <!-- location -->
+                    <mat-form-field>
+                      <mat-label>location</mat-label>
+                      <input matInput formControlName="location" />
+                      @if (
+                        $any(item)["controls"].location.errors?.maxLength &&
+                        ($any(item)["controls"].location.dirty ||
+                          $any(item)["controls"].location.touched)
+                      ) {
+                        <mat-error>location too long</mat-error>
+                      }
+                    </mat-form-field>
+                  </div>
                 </div>
-              </div>
               }
             </div>
           </div>
@@ -166,12 +186,17 @@
             <mat-form-field class="long-text">
               <mat-label>summary</mat-label>
               <textarea rows="3" matInput [formControl]="summary"></textarea>
-              @if ( $any(summary).errors?.required && (summary.dirty ||
-              summary.touched) ) {
-              <mat-error>summary required</mat-error>
-              } @if ( $any(summary).errors?.maxLength && (summary.dirty ||
-              summary.touched) ) {
-              <mat-error>summary too long</mat-error>
+              @if (
+                $any(summary).errors?.required &&
+                (summary.dirty || summary.touched)
+              ) {
+                <mat-error>summary required</mat-error>
+              }
+              @if (
+                $any(summary).errors?.maxLength &&
+                (summary.dirty || summary.touched)
+              ) {
+                <mat-error>summary too long</mat-error>
               }
             </mat-form-field>
           </div>
@@ -180,9 +205,11 @@
             <mat-form-field class="long-text">
               <mat-label>prologue</mat-label>
               <textarea rows="2" matInput [formControl]="prologue"></textarea>
-              @if ( $any(prologue).errors?.maxLength && (prologue.dirty ||
-              prologue.touched) ) {
-              <mat-error>prologue too long</mat-error>
+              @if (
+                $any(prologue).errors?.maxLength &&
+                (prologue.dirty || prologue.touched)
+              ) {
+                <mat-error>prologue too long</mat-error>
               }
             </mat-form-field>
           </div>
@@ -191,9 +218,11 @@
             <mat-form-field class="long-text">
               <mat-label>epilogue</mat-label>
               <textarea rows="2" matInput [formControl]="epilogue"></textarea>
-              @if ( $any(epilogue).errors?.maxLength && (epilogue.dirty ||
-              epilogue.touched) ) {
-              <mat-error>epilogue too long</mat-error>
+              @if (
+                $any(epilogue).errors?.maxLength &&
+                (epilogue.dirty || epilogue.touched)
+              ) {
+                <mat-error>epilogue too long</mat-error>
               }
             </mat-form-field>
           </div>
@@ -213,102 +242,119 @@
                 character
               </button>
             </div>
-            @for ( item of characters.controls; track item; let i = $index; let
-            first = $first; let last = $last) {
-            <div>
-              <!-- child form -->
-              <div [formGroupName]="i" class="form-row">
-                <!-- child actions -->
-                <div>
-                  {{ i + 1 }}.
-                  <button
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Remove this character"
-                    color="warn"
-                    (click)="removeCharacter(i)"
-                  >
-                    <mat-icon class="mat-warn">remove_circle</mat-icon>
-                  </button>
-                  <button
-                    [disabled]="first"
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Move character up"
-                    (click)="moveCharacterUp(i)"
-                  >
-                    <mat-icon>arrow_upward</mat-icon>
-                  </button>
-                  <button
-                    [disabled]="last"
-                    mat-icon-button
-                    type="button"
-                    matTooltip="Move character down"
-                    (click)="moveCharacterDown(i)"
-                  >
-                    <mat-icon>arrow_downward</mat-icon>
-                  </button>
-                </div>
-                <!-- child controls -->
-                <!-- role (bound) -->
-                @if (storyRoleEntries?.length) {
-                <mat-form-field>
-                  <mat-label>role</mat-label>
-                  <mat-select formControlName="role">
-                    @for (e of storyRoleEntries; track e.id) {
-                    <mat-option [value]="e.id">{{ e.value }}</mat-option>
+            @for (
+              item of characters.controls;
+              track item;
+              let i = $index;
+              let first = $first;
+              let last = $last
+            ) {
+              <div>
+                <!-- child form -->
+                <div [formGroupName]="i" class="form-row">
+                  <!-- child actions -->
+                  <div>
+                    {{ i + 1 }}.
+                    <button
+                      mat-icon-button
+                      type="button"
+                      matTooltip="Remove this character"
+                      color="warn"
+                      (click)="removeCharacter(i)"
+                    >
+                      <mat-icon class="mat-warn">remove_circle</mat-icon>
+                    </button>
+                    <button
+                      [disabled]="first"
+                      mat-icon-button
+                      type="button"
+                      matTooltip="Move character up"
+                      (click)="moveCharacterUp(i)"
+                    >
+                      <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                    <button
+                      [disabled]="last"
+                      mat-icon-button
+                      type="button"
+                      matTooltip="Move character down"
+                      (click)="moveCharacterDown(i)"
+                    >
+                      <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                  </div>
+                  <!-- child controls -->
+                  <!-- role (bound) -->
+                  @if (storyRoleEntries?.length) {
+                    <mat-form-field>
+                      <mat-label>role</mat-label>
+                      <mat-select formControlName="role">
+                        @for (e of storyRoleEntries; track e.id) {
+                          <mat-option [value]="e.id">{{ e.value }}</mat-option>
+                        }
+                      </mat-select>
+                      @if (
+                        $any(item)["controls"].role.errors?.required &&
+                        ($any(item)["controls"].role.dirty ||
+                          $any(item)["controls"].role.touched)
+                      ) {
+                        <mat-error>role required</mat-error>
+                      }
+                    </mat-form-field>
+                  }
+                  <!-- role (free) -->
+                  @if (!storyRoleEntries?.length) {
+                    <mat-form-field>
+                      <mat-label>role</mat-label>
+                      <input matInput formControlName="role" />
+                      @if (
+                        $any(item)["controls"].role.errors?.required &&
+                        ($any(item)["controls"].role.dirty ||
+                          $any(item)["controls"].role.touched)
+                      ) {
+                        <mat-error>role required</mat-error>
+                      }
+                      @if (
+                        $any(item)["controls"].role.errors?.maxLength &&
+                        ($any(item)["controls"].role.dirty ||
+                          $any(item)["controls"].role.touched)
+                      ) {
+                        <mat-error>role too long</mat-error>
+                      }
+                    </mat-form-field>
+                  }
+                  <!-- group -->
+                  <mat-checkbox formControlName="isGroup">group</mat-checkbox>
+                  <!-- name -->
+                  <mat-form-field>
+                    <mat-label>name</mat-label>
+                    <input matInput formControlName="name" />
+                    @if (
+                      $any(item)["controls"].name.errors?.required &&
+                      ($any(item)["controls"].name.dirty ||
+                        $any(item)["controls"].name.touched)
+                    ) {
+                      <mat-error>name required</mat-error>
                     }
-                  </mat-select>
-                  @if ( $any(item)['controls'].role.errors?.required &&
-                  ($any(item)['controls'].role.dirty ||
-                  $any(item)['controls'].role.touched) ) {
-                  <mat-error>role required</mat-error>
-                  }
-                </mat-form-field>
-                }
-                <!-- role (free) -->
-                @if (!storyRoleEntries?.length) {
-                <mat-form-field>
-                  <mat-label>role</mat-label>
-                  <input matInput formControlName="role" />
-                  @if ( $any(item)['controls'].role.errors?.required &&
-                  ($any(item)['controls'].role.dirty ||
-                  $any(item)['controls'].role.touched) ) {
-                  <mat-error>role required</mat-error>
-                  } @if ( $any(item)['controls'].role.errors?.maxLength &&
-                  ($any(item)['controls'].role.dirty ||
-                  $any(item)['controls'].role.touched) ) {
-                  <mat-error>role too long</mat-error>
-                  }
-                </mat-form-field>
-                }
-                <!-- group -->
-                <mat-checkbox formControlName="isGroup">group</mat-checkbox>
-                <!-- name -->
-                <mat-form-field>
-                  <mat-label>name</mat-label>
-                  <input matInput formControlName="name" />
-                  @if ( $any(item)['controls'].name.errors?.required &&
-                  ($any(item)['controls'].name.dirty ||
-                  $any(item)['controls'].name.touched) ) {
-                  <mat-error>name required</mat-error>
-                  } @if ( $any(item)['controls'].name.errors?.maxLength &&
-                  ($any(item)['controls'].name.dirty ||
-                  $any(item)['controls'].name.touched) ) {
-                  <mat-error>name too long</mat-error>
-                  }
-                </mat-form-field>
-                <!-- sex -->
-                <mat-form-field style="width: 5em">
-                  <mat-label>sex</mat-label>
-                  <mat-select formControlName="sex">
-                    <mat-option [value]="null">-</mat-option>
-                    <mat-option value="M">M</mat-option>
-                    <mat-option value="F">F</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                    @if (
+                      $any(item)["controls"].name.errors?.maxLength &&
+                      ($any(item)["controls"].name.dirty ||
+                        $any(item)["controls"].name.touched)
+                    ) {
+                      <mat-error>name too long</mat-error>
+                    }
+                  </mat-form-field>
+                  <!-- sex -->
+                  <mat-form-field style="width: 5em">
+                    <mat-label>sex</mat-label>
+                    <mat-select formControlName="sex">
+                      <mat-option [value]="null">-</mat-option>
+                      <mat-option value="M">M</mat-option>
+                      <mat-option value="F">F</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </div>
-            </div>
             }
           </div>
         </mat-tab>

@@ -22,65 +22,70 @@
           </tr>
         </thead>
         <tbody>
-          @for ( t of texts.value; track t; let i = $index; let first = $first;
-          let last = $last) {
-          <tr [class.selected]="i === editedIndex">
-            <td>
-              <button
-                type="button"
-                color="primary"
-                mat-icon-button
-                (click)="editText(t, i)"
-              >
-                <mat-icon class="mat-primary">edit</mat-icon>
-              </button>
-              <button
-                type="button"
-                color="warn"
-                mat-icon-button
-                (click)="removeText(i)"
-              >
-                <mat-icon class="mat-warn">delete</mat-icon>
-              </button>
-              <button
-                [disabled]="first"
-                mat-icon-button
-                type="button"
-                matTooltip="Move text up"
-                (click)="moveTextUp(i)"
-              >
-                <mat-icon>arrow_upward</mat-icon>
-              </button>
-              <button
-                [disabled]="last"
-                mat-icon-button
-                type="button"
-                matTooltip="Move text down"
-                (click)="moveTextDown(i)"
-              >
-                <mat-icon>arrow_downward</mat-icon>
-              </button>
-            </td>
-            <td>{{ i + 1 }}</td>
-            <td>{{ t.incipit | ellipsis }}</td>
-            <td>{{ t.metre }}</td>
-          </tr>
+          @for (
+            t of texts.value;
+            track t;
+            let i = $index;
+            let first = $first;
+            let last = $last
+          ) {
+            <tr [class.selected]="i === editedIndex">
+              <td>
+                <button
+                  type="button"
+                  color="primary"
+                  mat-icon-button
+                  (click)="editText(t, i)"
+                >
+                  <mat-icon class="mat-primary">edit</mat-icon>
+                </button>
+                <button
+                  type="button"
+                  color="warn"
+                  mat-icon-button
+                  (click)="removeText(i)"
+                >
+                  <mat-icon class="mat-warn">delete</mat-icon>
+                </button>
+                <button
+                  [disabled]="first"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move text up"
+                  (click)="moveTextUp(i)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  [disabled]="last"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Move text down"
+                  (click)="moveTextDown(i)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ t.incipit | ellipsis }}</td>
+              <td>{{ t.metre }}</td>
+            </tr>
           }
         </tbody>
       </table>
 
       @if (editedText) {
-      <mat-expansion-panel [expanded]="editedText" [disabled]="!editedText">
-        <mat-expansion-panel-header
-          >#{{ editedIndex + 1 }}</mat-expansion-panel-header
-        >
-        <renovella-poetic-text
-          [metreEntries]="metreEntries"
-          [text]="editedText"
-          (textChange)="onTextChange($event!)"
-          (close)="closeText()"
-        />
-      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="editedText" [disabled]="!editedText">
+          <mat-expansion-panel-header
+            >#{{ editedIndex + 1 }}</mat-expansion-panel-header
+          >
+          <renovella-poetic-text
+            [metreEntries]="metreEntries"
+            [text]="editedText"
+            (textChange)="onTextChange($event!)"
+            (close)="closeText()"
+          />
+        </mat-expansion-panel>
       }
     </mat-card-content>
     <mat-card-actions>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -11,6 +11,7 @@ import { CurrentItemBarComponent } from '@myrmidon/cadmus-ui-pg';
   selector: 'renovella-tale-info-part-feature',
   templateUrl: './tale-info-part-feature.component.html',
   styleUrls: ['./tale-info-part-feature.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CurrentItemBarComponent, TaleInfoPartComponent],
 })
 export class TaleInfoPartFeatureComponent

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,6 +12,7 @@ import { AvailableWitnessesPartComponent } from '@myrmidon/cadmus-renovella-part
   selector: 'renovella-available-witnesses-part-feature',
   templateUrl: './available-witnesses-part-feature.component.html',
   styleUrls: ['./available-witnesses-part-feature.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CurrentItemBarComponent, AvailableWitnessesPartComponent],
 })
 export class AvailableWitnessesPartFeatureComponent

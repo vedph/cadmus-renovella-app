@@ -1,6 +1,6 @@
 <cadmus-current-item-bar />
 <renovella-available-witnesses-part
-  [identity]="identity"
+  [identity]="identity()"
   [data]="$any(data)"
   (dataChange)="save($event!.value!)"
   (editorClose)="close()"

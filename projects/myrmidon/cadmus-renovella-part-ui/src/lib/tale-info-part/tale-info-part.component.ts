@@ -1,4 +1,4 @@
-import { Component, effect, input, Input, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -7,7 +7,6 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-
 
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,7 +21,6 @@ import { Flag, FlagSetComponent } from '@myrmidon/cadmus-ui-flag-set';
 
 import {
   CloseSaveButtonsComponent,
-  EditedObject,
   LookupPinComponent,
   ModelEditorComponentBase,
 } from '@myrmidon/cadmus-ui';
@@ -30,6 +28,7 @@ import {
   ThesaurusEntry,
   DataPinInfo,
   ThesauriSet,
+  EditedObject,
 } from '@myrmidon/cadmus-core';
 
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
@@ -59,6 +58,7 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
   selector: 'renovella-tale-info-part',
   templateUrl: './tale-info-part.component.html',
   styleUrls: ['./tale-info-part.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -74,8 +74,8 @@ function entryToFlag(entry: ThesaurusEntry): Flag {
     FlagSetComponent,
     LookupPinComponent,
     CloseSaveButtonsComponent,
-    CitedPersonComponent
-],
+    CitedPersonComponent,
+  ],
 })
 export class TaleInfoPartComponent
   extends ModelEditorComponentBase<TaleInfoPart>
@@ -133,7 +133,7 @@ export class TaleInfoPartComponent
     ]);
     this.date = formBuilder.control(
       { a: { value: 0 } },
-      { validators: Validators.required, nonNullable: true }
+      { validators: Validators.required, nonNullable: true },
     );
     this.genres = formBuilder.control([], { nonNullable: true });
 

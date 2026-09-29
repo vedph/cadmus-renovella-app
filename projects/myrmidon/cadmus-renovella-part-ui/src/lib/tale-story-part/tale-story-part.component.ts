@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   FormControl,
   Validators,
@@ -25,10 +30,13 @@ import { NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 import {
   CloseSaveButtonsComponent,
-  EditedObject,
   ModelEditorComponentBase,
 } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  ThesauriSet,
+  ThesaurusEntry,
+  EditedObject,
+} from '@myrmidon/cadmus-core';
 import {
   HistoricalDateComponent,
   HistoricalDateModel,
@@ -50,6 +58,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'renovella-tale-story-part',
   templateUrl: './tale-story-part.component.html',
   styleUrls: ['./tale-story-part.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -62,8 +71,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatTooltipModule,
     HistoricalDateComponent,
-    CloseSaveButtonsComponent
-],
+    CloseSaveButtonsComponent,
+  ],
 })
 export class TaleStoryPartComponent
   extends ModelEditorComponentBase<TaleStoryPart>
@@ -88,7 +97,10 @@ export class TaleStoryPartComponent
   // story-ages
   public storyAgeEntries: ThesaurusEntry[] | undefined;
 
-  constructor(authService: AuthJwtService, private _formBuilder: FormBuilder) {
+  constructor(
+    authService: AuthJwtService,
+    private _formBuilder: FormBuilder,
+  ) {
     super(authService, _formBuilder);
     this._charSubs = [];
     this._placeSubs = [];
@@ -101,7 +113,7 @@ export class TaleStoryPartComponent
     this.epilogue = _formBuilder.control(null, Validators.maxLength(1000));
     this.characters = _formBuilder.array(
       [],
-      NgxToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1),
     );
     this.age = _formBuilder.control(null);
     this.hasDate = _formBuilder.control(false, { nonNullable: true });
@@ -109,12 +121,12 @@ export class TaleStoryPartComponent
       null,
       NgxToolsValidators.conditionalValidator(
         () => this.hasDate.value,
-        Validators.required
-      )
+        Validators.required,
+      ),
     );
     this.places = _formBuilder.array(
       [],
-      NgxToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1),
     );
   }
 
@@ -239,7 +251,7 @@ export class TaleStoryPartComponent
     return this._formBuilder.group({
       name: this._formBuilder.control(
         character?.name,
-        Validators.maxLength(100)
+        Validators.maxLength(100),
       ),
       sex: this._formBuilder.control(character?.sex),
       role: this._formBuilder.control(character?.role, [
@@ -255,7 +267,7 @@ export class TaleStoryPartComponent
     this._charSubs.push(
       g.valueChanges.pipe(debounceTime(300)).subscribe((_) => {
         this.form?.markAsDirty();
-      })
+      }),
     );
     this.characters.push(g);
     this.characters.updateValueAndValidity();
@@ -327,7 +339,7 @@ export class TaleStoryPartComponent
       name: this._formBuilder.control(item?.name, Validators.maxLength(100)),
       location: this._formBuilder.control(
         item?.location,
-        Validators.maxLength(100)
+        Validators.maxLength(100),
       ),
     });
   }
@@ -337,7 +349,7 @@ export class TaleStoryPartComponent
     this._placeSubs.push(
       g.valueChanges.pipe(debounceTime(300)).subscribe((_) => {
         this.form?.markAsDirty();
-      })
+      }),
     );
     this.places.push(g);
     this.places.markAsDirty();

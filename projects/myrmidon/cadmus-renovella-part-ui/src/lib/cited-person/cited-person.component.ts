@@ -1,4 +1,11 @@
-import { Component, effect, input, model, output } from '@angular/core';
+import {
+  Component,
+  effect,
+  input,
+  model,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -38,6 +45,7 @@ import { CitedPerson } from '../cited-persons-part';
   selector: 'renovella-cited-person',
   templateUrl: './cited-person.component.html',
   styleUrls: ['./cited-person.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -50,8 +58,8 @@ import { CitedPerson } from '../cited-persons-part';
     MatSelectModule,
     MatTooltipModule,
     DecoratedIdsComponent,
-    DocReferencesComponent
-],
+    DocReferencesComponent,
+  ],
 })
 export class CitedPersonComponent {
   public readonly person = model<CitedPerson>();
@@ -89,7 +97,7 @@ export class CitedPersonComponent {
     this.rank = _formBuilder.control(0, { nonNullable: true });
     this.parts = _formBuilder.array(
       [],
-      NgxToolsValidators.strictMinLengthValidator(1)
+      NgxToolsValidators.strictMinLengthValidator(1),
     );
     this.sources = _formBuilder.control([], { nonNullable: true });
     this.ids = _formBuilder.control([], { nonNullable: true });

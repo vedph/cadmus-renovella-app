@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import {
   UntypedFormBuilder,
@@ -21,10 +21,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
   CloseSaveButtonsComponent,
-  EditedObject,
   ModelEditorComponentBase,
 } from '@myrmidon/cadmus-ui';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  ThesauriSet,
+  ThesaurusEntry,
+  EditedObject,
+} from '@myrmidon/cadmus-core';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
 
 import {
@@ -41,6 +44,7 @@ import {
   selector: 'renovella-available-witnesses-part',
   templateUrl: './available-witnesses-part.component.html',
   styleUrls: ['./available-witnesses-part.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -51,8 +55,8 @@ import {
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
-    CloseSaveButtonsComponent
-],
+    CloseSaveButtonsComponent,
+  ],
 })
 export class AvailableWitnessesPartComponent
   extends ModelEditorComponentBase<AvailableWitnessesPart>
@@ -67,7 +71,7 @@ export class AvailableWitnessesPartComponent
 
   constructor(
     authService: AuthJwtService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
   ) {
     super(authService, _formBuilder);
     // form
@@ -108,7 +112,7 @@ export class AvailableWitnessesPartComponent
   }
 
   protected override onDataSet(
-    data?: EditedObject<AvailableWitnessesPart>
+    data?: EditedObject<AvailableWitnessesPart>,
   ): void {
     // thesauri
     if (data?.thesauri) {
@@ -121,7 +125,7 @@ export class AvailableWitnessesPartComponent
 
   protected getValue(): AvailableWitnessesPart {
     let part = this.getEditedPart(
-      AVAILABLE_WITNESSES_PART_TYPEID
+      AVAILABLE_WITNESSES_PART_TYPEID,
     ) as AvailableWitnessesPart;
     part.witnesses = this.getWitnesses();
     return part;
@@ -137,7 +141,7 @@ export class AvailableWitnessesPartComponent
       note: this._formBuilder.control(witness?.note, Validators.maxLength(300)),
       externalIds: this._formBuilder.control(
         witness?.externalIds?.join('\n'),
-        Validators.maxLength(5000)
+        Validators.maxLength(5000),
       ),
     });
     g.valueChanges.subscribe((_) => {

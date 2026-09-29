@@ -1,6 +1,13 @@
-import { Component, effect, EventEmitter, input, Input, model, output, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  input,
+  model,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ThesaurusEntry } from '@myrmidon/cadmus-core';
-
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +30,7 @@ import {
   selector: 'renovella-poetic-text',
   templateUrl: './poetic-text.component.html',
   styleUrls: ['./poetic-text.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -31,8 +39,8 @@ import {
     MatIconModule,
     MatInputModule,
     MatSelectModule,
-    MatTooltipModule
-],
+    MatTooltipModule,
+  ],
 })
 export class PoeticTextComponent {
   public readonly text = model<PoeticText>();

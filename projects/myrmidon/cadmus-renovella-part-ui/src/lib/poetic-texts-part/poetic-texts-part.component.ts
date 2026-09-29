@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,7 +6,6 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,10 +20,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DialogService } from '@myrmidon/ngx-mat-tools';
 import { EllipsisPipe, NgxToolsValidators } from '@myrmidon/ngx-tools';
 import { AuthJwtService } from '@myrmidon/auth-jwt-login';
-import { ThesauriSet, ThesaurusEntry } from '@myrmidon/cadmus-core';
+import {
+  ThesauriSet,
+  ThesaurusEntry,
+  EditedObject,
+} from '@myrmidon/cadmus-core';
 import {
   CloseSaveButtonsComponent,
-  EditedObject,
   ModelEditorComponentBase,
 } from '@myrmidon/cadmus-ui';
 
@@ -42,6 +44,7 @@ import { PoeticTextComponent } from '../poetic-text/poetic-text.component';
   selector: 'renovella-poetic-texts-part',
   templateUrl: './poetic-texts-part.component.html',
   styleUrls: ['./poetic-texts-part.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
@@ -55,8 +58,8 @@ import { PoeticTextComponent } from '../poetic-text/poetic-text.component';
     MatTooltipModule,
     EllipsisPipe,
     CloseSaveButtonsComponent,
-    PoeticTextComponent
-],
+    PoeticTextComponent,
+  ],
 })
 export class PoeticTextsPartComponent
   extends ModelEditorComponentBase<PoeticTextsPart>
@@ -73,7 +76,7 @@ export class PoeticTextsPartComponent
   constructor(
     authService: AuthJwtService,
     formBuilder: FormBuilder,
-    private _dialog: DialogService
+    private _dialog: DialogService,
   ) {
     super(authService, formBuilder);
     this.editedIndex = -1;
@@ -134,7 +137,7 @@ export class PoeticTextsPartComponent
         incipit: '',
         metre: '',
       },
-      -1
+      -1,
     );
   }
 

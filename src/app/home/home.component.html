@@ -64,7 +64,7 @@
         >: this web application.
       </li>
     </ul>
-    @if (!logged) {
+    @if (!logged()) {
     <p style="margin-bottom: 8px">
       <a mat-mini-fab color="primary" class="mat-primary" routerLink="/login"
         ><mat-icon>login</mat-icon></a
